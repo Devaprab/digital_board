@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
       return {
@@ -39,6 +40,10 @@ export default {
       };
     },
   computed: {
+    ...mapGetters(['getSelectedTopics']),
+    Topics() {
+      return this.getSelectedTopics;
+    },
       topics() {
         return this.$store.getters.getTopics || [];
       },
@@ -48,6 +53,7 @@ export default {
     },
     mounted() {
       this.getTopics();
+      console.log(this.Topics);
     },
   methods: {
     async getTopics() {

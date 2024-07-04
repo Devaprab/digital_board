@@ -3,4 +3,5 @@ export default {
     getLanguage: (state) => state.language,
     getTopics: (state) => state.mainTopics,
     getSelectedTopics: (state) => state.selectedTopics,
+    getFirstSub : (state) => state.firstSub,
 }

@@ -12,6 +12,11 @@ const route = createRouter({
             path: '/digitalBoard/selectedTopics',
             name: 'card',
             component: () => import("./components/SelectedTopic.vue")
+        },
+        {
+            path: '/digitalBoard/detailsPage',
+            name: 'detailsPage',
+            component: () => import("./components/MainPage.vue")
         }
     ]
 })

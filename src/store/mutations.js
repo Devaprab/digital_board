@@ -15,6 +15,10 @@ export default {
       },
       clearSelectedTopics(state) {
         state.selectedTopics = [];
-      }
+      },
+      setFirstSub(state, payload) {
+        state.firstSub = payload;
+        sessionStorage.setItem('firstSub', JSON.stringify(payload));
+      },
       
 }

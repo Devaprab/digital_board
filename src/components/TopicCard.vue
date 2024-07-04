@@ -1,18 +1,32 @@
 <template>
-  <div class="image-container mx-auto my-5 d-flex flex-column justify-content-end ps-5 pb-5 bg-success">
-    <div class="image-details ms-5 pb-5 " style="background-image: url(@/assets/ancient.jpg);">
-      <h1 class="image-title">title </h1>
+  <!-- <div v-for="topic in Topics" :key="topic.uId" class="image-container mx-auto my-5 d-flex flex-column justify-content-end ps-5 pb-5">
+    <div v-if="topic" class="image-details ms-5 pb-5" :style="{ 'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}` }">
+      <h1 class="image-title">{{ topic[0].title }}</h1>
       <div class="description-container">
-        <p>
-          topic1.description 
-        </p> 
+        <p>{{  topic[0].description }}</p>
       </div>
       <div v-if="isTruncated">
-        <router-link to="/details" class="see-more">...See More</router-link>
+        <p class="see-more">...See More</p>
       </div>
     </div>
-  </div> 
-  </template>
+  </div> -->
+  <div v-for="topic in Topics" :key="topic.uId"  class="image-container mx-auto my-5 d-flex flex-column justify-content-end ps-5 pb-5"
+     :style="{'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}`
+    }" @click="goToTopic(topic[0].commonId)">
+    <div v-if="topic" class="image-details ms-5 pb-5">
+      <h1 class="image-title">{{ topic[0].title }}</h1>
+      <div class="description-container text-white">
+        <p>
+          {{ topic[0].description }}
+        </p> 
+      </div>
+      <!-- <div class="see-more ">... See More</div> -->
+      <div v-if="isTruncated">
+        <p class="see-more">...See More</p>
+      </div>
+    </div>
+  </div>
+</template>
 
 <script>
 export default {
@@ -21,26 +35,52 @@ export default {
       isTruncated: false, // Initially, text is not truncated
     };
   },
+  props: {
+    Topics: {
+      type: Array,
+      required: true,
+      default: () => [] // Default to an empty array if no topics are passed
+    }
+  },
   computed: {
-        language() {
-            return this.$store.getters.getLanguage;
+    language() {
+      return this.$store.getters.getLanguage;
+    }
+  },
+  mounted() {
+    this.isTruncated = !this.isTruncated;
+    console.log(this.isTruncated + " truncated");
+  },
+  methods: {
+    getBackgroundImage(topic) {
+      const defaultImg = require('@/assets/ancient.jpg');
+      if (topic.imgDataList && topic.imgDataList.length > 0) {
+        const backgroundImage = topic.imgDataList[0].furl || '';
+        return `url(${backgroundImage})`;
+      }
+      return `url(${defaultImg})`;
+    },
+    async goToTopic(item) {
+    const payload = {
+          language: this.language,
+          item: item
         }
-    },
-    mounted() { 
-      this.isTruncated = !this.isTruncated;
-      console.log(this.isTruncated + "truncated");
-       
-    },
-    // methods: {
-    //     getBackgroundImage() { 
-    //   const defaultImg = require('@/assets/ancient.jpg');  
-    // //   if (mainheading && mainheading.imgDataList && mainheading.imgDataList.length > 0) {
-    // //     const backgroundImage = mainheading.imgDataList[0].furl||'';
-    // //     return `url(${ backgroundImage })`; 
-    // //   }
-    //   return `url(${defaultImg})`; 
-    // }
-    // }
+        try {
+          const response = await this.$store.dispatch('getMainDetails', payload)
+
+        if (response) {
+          console.log(response.data);
+          // this.subTopic = response.data;
+          console.log('item',response.data);
+      
+          this.$router.push({name:'detailsPage'})
+        }
+      } catch (error) {
+        console.log(error.message);
+        console.error(error);
+      }
+      },
+  }
 }
 </script>
 
@@ -66,7 +106,7 @@ export default {
 .image-title {
   font-size: 45px;
   font-weight: bold;
-  /* color: white; */
+  color: white;
 }
 
 .description-container {
@@ -85,7 +125,7 @@ line-height: 32px;
 .image-description {
   font-size: 13px;
   line-height: 1.4;
-  /* color: white; */
+  color: white;
   width: 500px;
 }
 .see-more {

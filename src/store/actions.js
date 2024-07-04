@@ -30,5 +30,18 @@ export default {
   
       const results = await Promise.all(topicPromises);
       return results.every(result => result);
-    }
+    },
+    async getMainDetails({commit, rootGetters}, payload) {
+      try {
+        const response = await axios.get(`${rootGetters.getUrl}/api/qrcode/getScanDetails?dtId=${payload.language}&commonId=${payload.item}`);
+        if (response.status >= 200 || response.status < 300) {
+          console.log(response.data);
+          commit('setFirstSub', response.data);
+          return true;
+        }
+      } catch (error) {
+        console.log(error.message);
+        console.error(error);
+      }
+    },
 }
