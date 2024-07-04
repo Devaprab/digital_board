@@ -23,14 +23,37 @@
             <div class="main-card text-center">
                     <p class="text-wrap  text-justify py-5 px-3" v-html="topic.description" > 
                     </p>
+                    <Carousel v-if="topic.imgDataList && topic.imgDataList.length" :items-to-show="2.5" :wrap-around="true">
+                      <Slide v-for="image in topic.imgDataList" :key="image.imgID">
+                        <div class="carousel__item">
+                          <img :src="image.furl" :alt="image.fname" class="carousel-image"/>
+                        </div>
+                      </Slide>
+                      <template #addons>
+                        <Navigation />
+                      </template>
+                    </Carousel>
             </div>
         </div>
+   
+         <!-- Add the carousal here -->
+         
     </div>
 </template>
 
 <script>
-export default {
-    computed: {
+import { defineComponent } from 'vue'
+import { Carousel, Navigation, Slide } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css'
+
+export default defineComponent({
+  name: 'WrapAround',
+  components: {
+    Carousel,
+    Slide,
+    Navigation,
+  },
+  computed: {
     mainTopics() {
       return this.$store.getters.getFirstSub;
     }
@@ -38,9 +61,8 @@ export default {
   mounted() {
     console.log(this.mainTopics);
   },
-}
+})
 </script>
-
 <style scoped>
 .topic-list {
   height: 100vh;
@@ -71,7 +93,7 @@ export default {
 }
 
 ::-webkit-scrollbar, :deep(::-webkit-scrollbar){
-  width: 6px;
+  width: 5px;
   height: auto;
   
 }
@@ -97,6 +119,17 @@ export default {
   text-align: justify;
   font-size: 20px;
   height: 20rem;
+}
+
+.carousel__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-image {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 </style>
