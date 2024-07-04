@@ -18,7 +18,8 @@
     <div class="topics ms-5">
       <div class="topic my-2" v-for="(topic, index) in topics" :key="index">
         <div class="d-flex gap-2 align-items-center">
-          <input type="checkbox" :value="topic">
+          <input type="checkbox" :value="topic" :checked="selectedTopics.includes(topic.commonId)" 
+          @change="handleCheckboxChange(topic.commonId)">
           <label>{{ topic.title }}</label>
         </div>
 
@@ -69,7 +70,42 @@ export default {
         catch (error) {
           console.error(error)
         }
+      },
+      handleCheckboxChange(topic) {
+        if (this.selectedTopics.includes(topic)) {
+          this.selectedTopics = this.selectedTopics.filter(t => t.commonId !== topic);
+        } else {
+          if (this.selectedTopics.length < 4) {
+            this.selectedTopics.push(topic);
+          } else {
+            this.selectedTopics.shift();
+            this.selectedTopics.push(topic);
+          }
+        }
+      },
+      async submitSelection() {
+      if (this.selectedTopics.length < 1) {
+        alert('Please select at least one topic.');
+        return;
       }
+      if (this.selectedTopics.length >= 5) {
+        alert('You can select a maximum of 4 topics.');
+        return;
+      }
+      try {
+        const res = await this.$store.dispatch('selectedTopics', {
+          language: this.language,
+          selectedTopics: this.selectedTopics,
+        });
+        if (res) {
+          this.$router.push('/digitalBoard/selectedTopics')
+        } else {
+          console.log('Failed to submit topics');
+        }
+      } catch (error) {
+        console.error('Error submitting topics', error);
+      }
+    }
   }
 }
 </script>

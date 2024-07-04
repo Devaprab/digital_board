@@ -5,9 +5,10 @@ import rootActions from './actions.js';
 const store = createStore({
   state() {
     return {
-      // baseUrl: 'http://localhost:8082',
-      // baseUrl: 'http://192.168.1.35:8081',
-      baseUrl: 'https://aksharammuseum.com',
+      // baseUrl: 'http://localhost:8083',
+      baseUrl: 'http://192.168.1.30:8083',
+      // baseUrl: 'https://aksharammuseum.com',
+      selectedTopics: [],
       language: sessionStorage.getItem('language') || 2,
       mainTopics: JSON.parse(sessionStorage.getItem('mainTopics')) || [],
     }
