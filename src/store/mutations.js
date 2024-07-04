@@ -18,8 +18,16 @@ export default {
     state.selectedCommonIds = payload;
     sessionStorage.setItem('selectedCommonIds', JSON.stringify(payload));
   },
+   setMainData(state, payload) {
+    state.mainData = payload;
+    sessionStorage.setItem('mainData', JSON.stringify(payload));
+  },
   setFirstSub(state, payload) {
     state.firstSub = payload;
     sessionStorage.setItem('firstSub', JSON.stringify(payload));
-  },     
+  },    
+   setSecondSub(state, payload) {
+    state.secondSub = payload;
+    sessionStorage.setItem('secondSub', JSON.stringify(payload));
+  },
 }

@@ -12,7 +12,9 @@ const store = createStore({
       selectedTopics: JSON.parse(sessionStorage.getItem('selectedTopics')) || [],
       language: sessionStorage.getItem('language') || 2,
       mainTopics: JSON.parse(sessionStorage.getItem('mainTopics')) || [],
-      firstSub : JSON.parse(sessionStorage.getItem('firstSub')) || [],
+      mainData: JSON.parse(sessionStorage.getItem('mainData')) || [],
+      firstSub: JSON.parse(sessionStorage.getItem('firstSub')) || [],
+      secondSub: JSON.parse(sessionStorage.getItem('secondSub')) || []
     }
 },
 getters: rootGetters,

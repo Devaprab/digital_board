@@ -52,10 +52,6 @@ export default {
           const response = await this.$store.dispatch('getMainDetails', payload)
 
         if (response) {
-          console.log(response.data);
-          // this.subTopic = response.data;
-          console.log('item',response.data);
-      
           this.$router.push({name:'detailsPage'})
         }
       } catch (error) {

@@ -4,5 +4,7 @@ export default {
     getTopics: (state) => state.mainTopics,
     getSelectedTopics: (state) => state.selectedTopics,
     getSelectedCommonIds: (state) => state.selectedCommonIds,
-    getFirstSub : (state) => state.firstSub,
+    getMainData:(state) => state.mainData,
+    getFirstSub: (state) => state.firstSub,
+    getSecondSub : (state) => state.secondSub,
 }
