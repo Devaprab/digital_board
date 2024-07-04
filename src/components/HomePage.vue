@@ -1,7 +1,7 @@
 <template>
-  <div class="topic-list d-flex flex-column ">
+  <div class="topic-list d-flex flex-column justify-content-between">
     <div class="d-flex justify-content-end ">
-      <v-btn class="translate-btn text-capitalize" size="x-large"  @click="toggleDtId" rounded style="color: #3e7132;">
+      <v-btn class="translate-btn text-capitalize" size="x-large" @click="toggleDtId" rounded style="color: #3e7132;">
         <svg width="50" height="50" viewBox="0 0 85 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g opacity="0.8">
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -17,79 +17,73 @@
     <h1 class="text-center">SELECT TOPICS</h1>
     <div class="topics ms-5">
       <div class="topic my-2" v-for="(topic, index) in topics" :key="index">
-        <div class="d-flex gap-2 align-items-center">
-          <input type="checkbox" :value="topic" :checked="selectedTopics.includes(topic.commonId)" 
-          @change="handleCheckboxChange(topic.commonId)">
-          <label>{{ topic.title }}</label>
+        <div class="d-flex gap-2 align-items-start">
+          <input type="checkbox" :value="topic" :checked="selectedTopics.includes(topic.commonId)"
+            @change="handleCheckboxChange(topic.commonId)" class="mt-3">
+          <label class="lh-1">{{ topic.title }}</label>
         </div>
 
       </div>
     </div>
     <div class="d-flex justify-content-end">
-      <v-btn @click="submitSelection" size="x-large" style="color: #3e7132;">Submit</v-btn>
+      <v-btn @click="submitSelection" size="x-large" style="color: #3e7132;" variant="elevated">Submit</v-btn>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
   data() {
-      return {
-        selectedTopics: [],
-      };
-    },
+    return {
+      selectedTopics: [],
+    };
+  },
   computed: {
-    ...mapGetters(['getSelectedTopics']),
-    Topics() {
-      return this.getSelectedTopics;
+    topics() {
+      return this.$store.getters.getTopics || [];
     },
-      topics() {
-        return this.$store.getters.getTopics || [];
-      },
-      language() { 
-        return this.$store.getters.getLanguage;
-      }
-    },
-    mounted() {
-      this.getTopics();
-      console.log(this.Topics);
-    },
+    language() {
+      return this.$store.getters.getLanguage;
+    }
+  },
+  mounted() {
+    this.getTopics();
+  },
   methods: {
     async getTopics() {
-        try {
-          await this.$store.dispatch('getTopics', this.language)
-        }
-        catch (error) {
-          console.log(error);
-        }
+      try {
+        await this.$store.dispatch('getTopics', this.language)
+      }
+      catch (error) {
+        console.log(error);
+      }
     },
     async toggleDtId() {
-        if (this.language === 1) {
-          this.$store.commit('setLanguage', 2);
+      if (this.language === 1) {
+        this.$store.commit('setLanguage', 2);
+      } else {
+        this.$store.commit('setLanguage', 1);
+      }
+      try {
+        await this.getTopics();
+      }
+      catch (error) {
+        console.error(error)
+      }
+    },
+    handleCheckboxChange(topic) {
+      if (this.selectedTopics.includes(topic)) {
+        this.selectedTopics = this.selectedTopics.filter(t => t !== topic);
+      } else {
+        if (this.selectedTopics.length < 4) {
+          this.selectedTopics.push(topic);
         } else {
-          this.$store.commit('setLanguage', 1);
+          this.selectedTopics.shift();
+          this.selectedTopics.push(topic);
         }
-        try {
-          await this.getTopics();
-        }
-        catch (error) {
-          console.error(error)
-        }
-      },
-      handleCheckboxChange(topic) {
-        if (this.selectedTopics.includes(topic)) {
-          this.selectedTopics = this.selectedTopics.filter(t => t.commonId !== topic);
-        } else {
-          if (this.selectedTopics.length < 4) {
-            this.selectedTopics.push(topic);
-          } else {
-            this.selectedTopics.shift();
-            this.selectedTopics.push(topic);
-          }
-        }
-      },
-      async submitSelection() {
+      }
+    },
+    async submitSelection() {
       if (this.selectedTopics.length < 1) {
         alert('Please select at least one topic.');
         return;
@@ -99,56 +93,55 @@ export default {
         return;
       }
       try {
+        this.$store.commit('setCommonIds', this.selectedTopics)
         const res = await this.$store.dispatch('selectedTopics', {
           language: this.language,
           selectedTopics: this.selectedTopics,
         });
         if (res) {
           this.$router.push('/digitalBoard/selectedTopics')
-        } else {
-          console.log('Failed to submit topics');
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error submitting topics', error);
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
 .topic-list {
-height: 100vh;
-/* background-image: linear-gradient(to bottom, rgb(1, 39, 3), #74a965aa); */
-background-image: linear-gradient(to bottom right, #110b03, #3e7132);
-font-family: Arial, sans-serif;
-color: #ffffff;
-padding: 20px;
+  height: 100vh;
+  /* background-image: linear-gradient(to bottom, rgb(1, 39, 3), #74a965aa); */
+  background-image: linear-gradient(to bottom right, #110b03, #3e7132);
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  padding: 20px;
 }
+
 .topic-list h1 {
-    font-family: "Prata", serif;
-    font-weight: 600;
-    font-style: normal;
-    letter-spacing: 2px;
-    font-size: 4em;
-    margin-bottom: 20px;
-    color: #ffffff;
-    text-align: center;
-  }
-
-  label {
-    font-size: 2rem;
-    font-family: "Prata", serif;
-  }
-
-  input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(2.5);
-  }
-
-  .topics {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
+  font-family: "Prata", serif;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 2px;
+  font-size: 4em;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-align: center;
+}
+label {
+  font-size: 2rem;
+  font-family: "Prata", serif;
+}
+input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(2.5);
+}
+.topics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  gap: 24px;
+}
 </style>

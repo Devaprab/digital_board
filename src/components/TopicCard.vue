@@ -1,28 +1,11 @@
 <template>
-  <!-- <div v-for="topic in Topics" :key="topic.uId" class="image-container mx-auto my-5 d-flex flex-column justify-content-end ps-5 pb-5">
-    <div v-if="topic" class="image-details ms-5 pb-5" :style="{ 'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}` }">
-      <h1 class="image-title">{{ topic[0].title }}</h1>
-      <div class="description-container">
-        <p>{{  topic[0].description }}</p>
-      </div>
-      <div v-if="isTruncated">
-        <p class="see-more">...See More</p>
-      </div>
-    </div>
-  </div> -->
-  <div v-for="topic in Topics" :key="topic.uId"  class="image-container mx-auto my-5 d-flex flex-column justify-content-end ps-5 pb-5"
-     :style="{'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}`
+  <div v-for="topic in Topics" :key="topic.uId"
+    class="image-container mx-auto my-5 d-flex flex-column justify-content-end ps-5 pb-5" :style="{'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}`
     }" @click="goToTopic(topic[0].commonId)">
     <div v-if="topic" class="image-details ms-5 pb-5">
       <h1 class="image-title">{{ topic[0].title }}</h1>
       <div class="description-container text-white">
-        <p>
-          {{ topic[0].description }}
-        </p> 
-      </div>
-      <!-- <div class="see-more ">... See More</div> -->
-      <div v-if="isTruncated">
-        <p class="see-more">...See More</p>
+        <p v-html="topic[0].description"></p>
       </div>
     </div>
   </div>
@@ -87,19 +70,16 @@ export default {
 <style scoped>
 .image-container {
   background-size: cover;
-
   width: 100%;
   aspect-ratio: 1936 / 848;
   border-radius: 25px;
   position: relative;
   cursor: pointer;
 }
-
-
 .image-details {
   font-weight: 400;
   width: 80%;
-  height: 200px;
+  height: 300px;
   aspect-ratio: 942/277;
 }
 
@@ -111,7 +91,7 @@ export default {
 
 .description-container {
   overflow: hidden;
-  height: 88px;
+  height: 180px;
   width:70%;
   
 }
@@ -133,5 +113,19 @@ line-height: 32px;
     cursor: pointer;
     text-decoration: none;
     line-height: 32px;
+}
+:deep(pre) {
+  text-wrap: wrap;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  min-height: auto;
+  max-height: 180px;
+  padding-right: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: justify;
+  font-size: 16px;
+  display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 </style>

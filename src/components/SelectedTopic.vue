@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex justify-content-end mx-5 my-5">
-        <!-- <v-btn class="text-capitalize translate-btn" size="x-large" rounded prepend-icon="mdi-arrow-left" @click="this.$router.push('/')">Back</v-btn> -->
-        <v-btn class="translate-btn text-capitalize " @click="toggleDtId" size="x-large" rounded>
+        <v-btn class="translate-btn text-capitalize " @click="toggleDtId" size="x-large" rounded variant="outlined">
           <svg width="50" height="50" viewBox="0 0 85 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g opacity="0.8">
               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -25,12 +24,15 @@ import { mapGetters } from 'vuex';
 export default {
   components: { TopicCard },
   computed: {
-    ...mapGetters(['getSelectedTopics']),
+    ...mapGetters(['getSelectedTopics','getSelectedCommonIds','getLanguage']),
     Topics() {
       return this.getSelectedTopics;
     },
     language() {
-      return this.$store.getters.getLanguage;
+      return this.getLanguage;
+    },
+    commonId() {
+      return this.getSelectedCommonIds;
     }
   },
   mounted () {
@@ -38,31 +40,23 @@ export default {
   },
   methods: {
     async toggleDtId() {
-    
-    if (this.language === 1) {
-      this.$store.commit('setLanguage', 2);
-    } else {
-      this.$store.commit('setLanguage', 1);
-    }
-    const payload = {
-      language: this.language,
-      Topics: [this.Topics.commonId]
-    }
-    console.log('Selected topics:', payload);
-    try {
-      await this.$store.dispatch('selectedTopics', payload) 
-    }
-    catch (error) {
-      console.error(error)
-    }
-
-  },
+      if (this.language === 1) {
+        this.$store.commit('setLanguage', 2);
+      } else {
+        this.$store.commit('setLanguage', 1);
+      }
+      const payload = {
+        language: this.language,
+        selectedTopics: this.commonId
+      }
+      console.log('Selected topics:', payload);
+      try {
+        await this.$store.dispatch('selectedTopics', payload) 
+      }
+      catch (error) {
+        console.error(error)
+      }
+    },
   }
-
 }
-
 </script>
-
-<style>
-
-</style>
