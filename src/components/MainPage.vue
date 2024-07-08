@@ -109,7 +109,7 @@ export default defineComponent({
 <style scoped>
 .topic-list {
   
-  height: 100vh;
+  height: 100dvh;
   /* background-image: linear-gradient(to bottom right, #110b03, #3e7132); */
   background-color: #2e2c0f;
   font-family: Arial, sans-serif;

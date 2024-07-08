@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="topic-list">
         <div class="d-flex justify-content-between align-items-start nav mt-4 mb-4 mx-2">
             <router-link to="/digitalBoard/detailsPage/firstSub"><v-btn class="home-btn text-capitalize" rounded
                     size="x-large"><v-icon class="mdi mdi-arrow-left"></v-icon>Back</v-btn></router-link>
@@ -68,7 +68,7 @@ export default defineComponent({
 <style scoped>
 .topic-list {
 
-    height: 100vh;
+    height: 100dvh;
     background-image: linear-gradient(to bottom right, #110b03, #3e7132);
     font-family: Arial, sans-serif;
     color: #ffffff;
