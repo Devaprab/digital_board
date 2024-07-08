@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-center align-items-start">
         <!-- <router-link to="/digitalBoard/selectedTopics"><v-btn class="home-btn text-capitalize" rounded
             size="x-large"><v-icon class="mdi mdi-arrow-left"></v-icon>Back</v-btn></router-link> -->
-        <h1 style="color: white; font-size: 250%;" class="text-center text-wrap">{{topic.title}}</h1>
+        <h1 style="color: white; font-size: 260%;" class="text-center text-wrap">{{topic.title}}</h1>
         <!-- <v-btn class="translate-btn text-capitalize" rounded size="x-large">
           <svg width="50" height="50" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g opacity="0.8">
@@ -27,7 +27,7 @@
               <li @click="goToSub(sub)" class="subtopics">{{ sub.title }}
                 <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >=1 " >
                   <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId">
-                    <li style="font-size: 90%;">{{ top.title }}</li>
+                    <li style="font-size: 100%;">{{ top.title }}</li>
                   </ul>
                 </div>
               </li>
@@ -173,11 +173,11 @@ export default defineComponent({
   /* font-family:Arial, Helvetica, sans-serif; */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: justify;
-  font-size: 110%;
+  font-size: 120%;
   font-weight: 500;
 }
 .main-card li{
-  font-size: 110%;
+  font-size: 120%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   /* font-family: Arial, Helvetica, sans-serif; */
