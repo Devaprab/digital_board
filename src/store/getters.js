@@ -6,5 +6,7 @@ export default {
     getSelectedCommonIds: (state) => state.selectedCommonIds,
     getMainData:(state) => state.mainData,
     getFirstSub: (state) => state.firstSub,
-    getSecondSub : (state) => state.secondSub,
+    getSecondSub: (state) => state.secondSub,
+    getPath1: (state) => state.path1,
+    getPath2: (state) => state.path2,
 }

@@ -27,7 +27,7 @@
 export default {
   data() {
     return {
-      isTruncated: false, // Initially, text is not truncated
+      
     };
   },
   props: {
@@ -42,10 +42,7 @@ export default {
       return this.$store.getters.getLanguage;
     }
   },
-  mounted() {
-    this.isTruncated = !this.isTruncated;
-    console.log(this.isTruncated + " truncated");
-  },
+  
   methods: {
     getBackgroundImage(topic) {
       const defaultImg = require('@/assets/ancient.jpg');
@@ -96,9 +93,9 @@ export default {
 }
 
 .image-title {
-  font-size: 40px;
+  font-size: 32px;
   font-weight: 600;
-  line-height: 40px;
+  line-height: 48px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: white;
 }
@@ -117,7 +114,7 @@ export default {
   line-height: 32px;
 }
 .image-description {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.4;
   color: white;
   width: 500px;
@@ -132,7 +129,7 @@ export default {
   padding-right: 5px;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: justify;
-  font-size: 20px;
+  font-size: 18px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
