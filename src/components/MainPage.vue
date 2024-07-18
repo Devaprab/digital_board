@@ -193,7 +193,7 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
   background: #f5eded;
   cursor: pointer;
 }
-/* :deep(pre){
+:deep(pre){
   text-wrap: wrap;
   overflow-y: auto;
   overflow-x: hidden;
@@ -205,7 +205,7 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
   text-align: justify;
   font-size: 120%;
   font-weight: 500;
-} */
+}
 .main-card li{
   font-size: 120%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
