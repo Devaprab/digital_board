@@ -1,5 +1,5 @@
 <template>
-  <v-main style="background-color:#FDFAF6; height: 100%;">
+  <v-main class="main">
     <div class="d-flex justify-content-end translate-card py-5">
       <v-btn class="text-capitalize" @click="toggleDtId" size="x-large" variant="outlined">
         <svg width="50" height="50" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,11 +67,15 @@ export default {
 }
 </script>
 <style scoped>
-.body{
-  height: 100vh;
-  /* background-image: linear-gradient(90deg, rgba(215, 125, 57, 0.13), rgba(131, 110, 37, 0.17)); */
-  background-color: #f1e7d1e2;
+.main{
+  background: #FDFAF6;
+  background-image: url('@/assets/noise.svg');
+    background-size: cover;
+   background-position: center;
+    height: 100%;
+    /* margin: 0; */
 }
+
 .topic-card, .translate-card{
   margin-inline: 4%;
 }
