@@ -16,7 +16,7 @@ const route = createRouter({
         {
             path: '/digitalBoard/detailsPage',
             name: 'detailsPage',
-            component: () => import("./components/MainPage.vue")
+            component: () => import("./components/DetailsView.vue")
         },
         {
             path: '/digitalBoard/detailsPage/firstSub',

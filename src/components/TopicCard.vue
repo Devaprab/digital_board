@@ -88,12 +88,12 @@ export default {
   /* height: 200px; */
   position:absolute;
   bottom:20%;
-  aspect-ratio: auto;
+  aspect-ratio: 942/277;
   left:7%;
 }
 
 .image-title {
-  font-size: 32px;
+  font-size: 100%;
   font-weight: 600;
   line-height: 48px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -102,7 +102,7 @@ export default {
 
 .description-container {
   overflow: hidden;
-  /* height: 180px; */
+  height: 100px;
   width:80%;
   
 }
@@ -114,7 +114,7 @@ export default {
   line-height: 32px;
 }
 .image-description {
-  font-size: 18px;
+  font-size: 50%;
   line-height: 1.4;
   color: white;
   width: 500px;
