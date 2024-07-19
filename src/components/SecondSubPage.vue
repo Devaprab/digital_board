@@ -47,7 +47,7 @@
 
 <template>
     <div>
-      <div class="topic-list d-flex flex-column justify-content-center">
+      <div class="topic-list d-flex flex-column justify-content-start pt-5">
         <div class="d-flex justify-content-center align-items-start">
           <h1 style="color: #1c1405; font-size: 200%; font-weight: 700;" class="text-center text-wrap mb-4">
             {{topic.title}}</h1>
@@ -56,18 +56,18 @@
         <div class=" card">
           <div class="main-card p-4"
             :style="{ 'background-image': `radial-gradient(circle,rgba(37, 37, 37, 0.253), rgba(22, 18, 18, 0.982)), ${getBackgroundImage(topic)}` }">
-            <div style="width: 75%; height:95%; overflow-x:hidden">
+            <div style="width: 64%; height:90%; overflow-x:hidden">
               <p class=" text-wrap text-justify px-5 mt-5 description" v-html="topic.description">
               </p>
             </div>
           </div>
-          <v-card class="carousel-wrapper" style="height: 400px; width: 500px;" elevation="10">
-            <v-carousel class="sub-carousel" height="400" width="500" hide-delimiters cover :show-arrows="false" cycle
-              interval="3000" hide-delimiter-background="true" :touch="true" style="">
-              <v-carousel-item @click="openDialog(image.furl)" v-for="image in topic.imgData2List" :key="image.furl"
-                class="sub-carousel "><v-img :src="image.furl" contain height="400" class="image-box" cover></v-img>
-              </v-carousel-item>
-            </v-carousel>
+          <v-card class="carousel-wrapper" elevation="10">
+            <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="3000"
+            :touch="true" style="" height="100%">
+            <v-carousel-item @click="openDialog(image.furl)" v-for="image in topic.imgData2List" :key="image.furl"
+              class="sub-carousel image-box " cover :src="image.furl">
+            </v-carousel-item>
+          </v-carousel>
           </v-card>
         </div>
       </div>
@@ -292,8 +292,6 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
     background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;
-  backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
   /* overflow-x: hidden; */
 }
 .desc {
@@ -309,8 +307,9 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
 .carousel-wrapper {
   aspect-ratio: 813/650;
   position: absolute;
-  left: 80%;
-  top: 17%;
+  left: 74%;
+  top: 15%;
+
   width: 50%;
   aspect-ratio: 271 / 200;
 
@@ -318,7 +317,7 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
 .image-box{
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   border: 2px solid rgb(247, 236, 194);
-  object-position: center;
+  /* object-position: center; */
 }
 :deep(.carousel-wrapper .v-btn){
   background-color: transparent;
@@ -379,5 +378,6 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
 }
 :deep(.description){
   font-size: 110%;
+  
 }
 </style>
