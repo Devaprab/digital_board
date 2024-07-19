@@ -59,7 +59,7 @@
         </div>
         <div class="d-flex justify-content-between align-items-center nav mx-5 mt-3 pe-3">
         <router-link to="/digitalBoard/detailsPage">
-          <v-btn icon="mdi-home" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
+          <v-btn icon="mdi-arrow-left" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
         <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="translate" variant="tonal"
           elevation="10" color="#5D4037">
