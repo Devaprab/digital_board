@@ -91,6 +91,9 @@ export default ({
     computed: {
         topic() {
             return this.$store.getters.getFirstSub;
+        },
+        language() {
+            return this.$store.getters.getLanguage;
         }
     },
     mounted() {
@@ -123,6 +126,17 @@ export default ({
       this.selectedImage = imageSrc;
       this.dialog = true;
     },
+    translate() {
+      if (this.language == 1) {
+        this.$store.commit('setLanguage', 2);
+      } else {
+        this.$store.commit('setLanguage', 1);
+      }
+      this.goToTopic()
+    },
+    async goToTopic() {
+      await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language,})
+    }
     }
 })
 </script>
