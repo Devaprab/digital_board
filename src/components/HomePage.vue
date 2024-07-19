@@ -60,7 +60,7 @@ export default {
       }
     },
     async toggleDtId() {
-      if (this.language === 1) {
+      if (this.language == 1) {
         this.$store.commit('setLanguage', 2);
       } else {
         this.$store.commit('setLanguage', 1);
