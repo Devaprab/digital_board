@@ -106,6 +106,9 @@ export default ({
     computed: {
         topic() {
             return this.$store.getters.getSecondSub;
+        },
+        language() {
+            return this.$store.getters.getLanguage;
         }
     },
     mounted() {
@@ -131,6 +134,7 @@ export default ({
       this.selectedImage = imageSrc;
       this.dialog = true;
     },
+    
     //     openDialog(imageSrc,imgArray) {
     //   this.selectedImage = imageSrc;
     //   this.selImgArray = imgArray;
@@ -145,6 +149,17 @@ export default ({
       const nameParts = fname.split('_').slice(1);
       
       return nameParts.join(' ').replace(/\.[^/.]+$/, '');
+    },
+    translate() {
+      if (this.language == 1) {
+        this.$store.commit('setLanguage', 2);
+      } else {
+        this.$store.commit('setLanguage', 1);
+      }
+      this.goToTopic()
+    },
+    async goToTopic() {
+      await this.$store.dispatch('getSub2Details', { language: this.language, id: this.topic.ssCommonId })
     }
     }
 })

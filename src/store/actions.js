@@ -56,7 +56,7 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry2/getAllByCommonId/${payload.id}?dtId=${payload.language}`);
         if (response.status >= 200 && response.status < 300) {
-          commit('setSubData', response.data[0])
+          commit('setFirstSub', response.data[0])
           return true;
         }
       }
@@ -69,7 +69,7 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry3/getSecondSub?dtId=${payload.language}&ssCommonId=${payload.id}`);
         if (response.status >= 200 && response.status < 300) {
-          commit('setSub2Data', response.data[0])
+          commit('setSecondSub', response.data[0])
           return true;
         }
       }
