@@ -16,7 +16,7 @@
                 <li @click="goToSub(sub)" class="subtopics">{{ sub.title }}
                   <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >=1 ">
                     <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId">
-                      <li style="font-size: 100%;" class="mt-2" @click="goToSub2(top)">{{
+                      <li style="font-size: 100%;" class="mt-2" @click="goToSub2(top,$event)">{{
                         top.title }}</li>
                     </ul>
                   </div>
@@ -84,7 +84,8 @@ export default {
         this.$store.commit('setFirstSub', topic);
         this.$router.push({name:'subPage'});
     },
-    goToSub2(topic) { 
+    goToSub2(topic, event) { 
+      event.stopPropagation();
       this.$store.commit('setSecondSub', topic);
       this.$router.push({ name: 'sub2Page' });
     },
