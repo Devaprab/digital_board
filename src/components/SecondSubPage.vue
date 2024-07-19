@@ -47,7 +47,7 @@
 
 <template>
     <div>
-      <div class="topic-list d-flex flex-column justify-content-start pt-5">
+      <div class="topic-list d-flex flex-column justify-content-center">
         <div class="d-flex justify-content-center align-items-start">
           <h1 style="color: #1c1405; font-size: 200%; font-weight: 700;" class="text-center text-wrap mb-4">
             {{topic.title}}</h1>
@@ -70,6 +70,20 @@
           </v-carousel>
           </v-card>
         </div>
+        <div class="d-flex justify-content-between align-items-center nav mx-5 mt-3 pe-3">
+        <router-link to="/digitalBoard/detailsPage">
+          <v-btn icon="mdi-arrow-left" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
+        </router-link>
+        <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="translate" variant="tonal"
+          elevation="10" color="#5D4037">
+          <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+            class="svg-icon">
+            <g opacity="1">
+              <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
+              <path class="svg-path" :d="path2" fill="#5D4037" />
+            </g>
+          </svg>Translate</v-btn>
+      </div>
       </div>
       <v-dialog v-model="dialog" max-width="650">
         <v-img :src="selectedImage" contain></v-img>
@@ -265,10 +279,10 @@ export default ({
   overflow-x: hidden;
 }
 
-.home-btn{
+/* .home-btn{
   background-color: #FFB4AB;
   color: #690005;
-}
+} */
 .card{
   width: 80%;
   background-color: transparent;
@@ -379,5 +393,22 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
 :deep(.description){
   font-size: 110%;
   
+}
+
+.translate-btn{
+  border: 2px solid #5D4037;
+}
+.home-btn{
+animation: scaleUpDown 1s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+@keyframes scaleUpDown {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 </style>
