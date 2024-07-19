@@ -12,7 +12,7 @@
     </div>
 
     <div class="topic-card d-flex flex-column justify-content-center ">
-      <v-img src="@/assets/AksharamLogo.png" height="700" class="logo" alt="logo" max-height="700"></v-img>
+      <!-- <v-img src="@/assets/AksharamLogo.png" height="700" class="logo" alt="logo" max-height="700"></v-img> -->
 
       <topic-card :Topics="Topics"></topic-card>
     </div>

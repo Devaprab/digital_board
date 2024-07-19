@@ -77,7 +77,8 @@ export default {
 .image-container {
   background-size: cover;
   width: 100%;
-  aspect-ratio: 1948 / 800;
+  /* aspect-ratio: 1948 / 800; */
+  aspect-ratio: 1948 / 500;
   border-radius: 20px;
   margin-bottom: 5%;
   position: relative;
@@ -85,7 +86,7 @@ export default {
 .image-details {
   font-weight: 400;
   width: 85%;
-  /* height: 200px; */
+  height: 150px;
   position:absolute;
   bottom:20%;
   aspect-ratio: 942/277;
@@ -93,9 +94,9 @@ export default {
 }
 
 .image-title {
-  font-size: 100%;
+  font-size: 120%;
   font-weight: 600;
-  line-height: 48px;
+  /* line-height: 48px; */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: white;
 }
@@ -120,7 +121,7 @@ export default {
   width: 500px;
 }
 
-:deep(pre) {
+/* :deep(pre) {
   text-wrap: wrap;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -133,7 +134,7 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-}
+} */
 .scrollright-container {
   background: transparent;
   position: absolute;
