@@ -2,14 +2,14 @@
   <v-main class="main">
     <header class=" py-3 d-flex justify-content-between my-2 mx-5">
       <h3 class=" select-topic text-uppercase">Select Topics</h3>
-      <v-btn class="" @click="toggleDtId" color="#1B5E20" variant="elevated" rounded >
-        <svg width="40" height="40" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="toggleDtId" variant="outlined"
+        elevation="10" >
+        <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
           <g opacity="1">
-            <path fill-rule="evenodd" clip-rule="evenodd" :d="path1" fill="#ffffff" />
-            <path :d="path2" fill="#ffffff" />
+            <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#216D17" />
+            <path class="svg-path" :d="path2" fill="#216D17" />
           </g>
-        </svg>
-        Translate</v-btn>
+        </svg>Translate</v-btn>
     </header>
 
     <div class="d-flex gap-4 ms-5 flex-column flex-wrap">
@@ -172,6 +172,14 @@ export default {
   font-size: 18px;
   font-weight: 400;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.translate-btn{
+  background-color: #043e04;
+  color: #f7f4d3 !important;
+  
+}
+.svg-path{
+fill: #f7f4d3 !important;
 }
 .submit{
   margin-bottom: 30px;

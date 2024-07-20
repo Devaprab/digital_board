@@ -6,27 +6,27 @@ const route = createRouter({
         {
             path: '/digitalBoard',
             name: 'home',
-            component: () => import("./components/HomePage.vue")
+            component: () => import("./components/horizontal/HomePage.vue")
         },
         {
             path: '/digitalBoard/selectedTopics',
             name: 'card',
-            component: () => import("./components/SelectedTopic.vue")
+            component: () => import("./components/horizontal/SelectedTopic.vue")
         },
         {
             path: '/digitalBoard/detailsPage',
             name: 'detailsPage',
-            component: () => import("./components/MainPage.vue")
+            component: () => import("./components/horizontal/MainPage.vue")
         },
         {
             path: '/digitalBoard/detailsPage/firstSub',
             name: 'subPage',
-            component: () => import("./components/FirstSubPage.vue")
+            component: () => import("./components/horizontal/FirstSubPage.vue")
         },
         {
             path: '/digitalBoard/detailsPage/secondSub',
             name: 'sub2Page',
-            component: () => import("./components/SecondSubPage.vue")
+            component: () => import("./components/horizontal/SecondSubPage.vue")
         }
     ],
     scrollBehavior(_, _2, savedPosition) {
