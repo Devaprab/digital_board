@@ -58,7 +58,7 @@
         </v-card>
       </div>
       <div class="d-flex justify-content-between align-items-center nav mx-5 mt-3 pe-3">
-        <router-link to="/digitalBoard/detailsPage">
+        <router-link to="/digitalBoard/detailsPage/portrait">
           <v-btn icon="mdi-arrow-left" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
         <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="translate" variant="tonal"
@@ -111,7 +111,7 @@ export default ({
         goToSub(topic) {
            
                 this.$store.commit('setSecondSub', topic);
-                this.$router.push({ name: 'sub2Page' });
+                this.$router.push({ name: 'sub2Page-portrait' });
             
         },
         getBackgroundImage(topic) {

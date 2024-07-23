@@ -1,32 +1,50 @@
 <!-- <template>
     <div class="topic-list">
         <div class="d-flex justify-content-center align-items-start nav mt-2 mb-2 mx-2">
-            <h1 style="color: white; font-size: 260%;" class="text-center text-wrap">{{ topic.title }}</h1>
+            <h1 style="color: white; font-size: 260%;" class="text-center  text-wrap">{{ topic.title }}</h1>
         </div>
         <div class=" card mx-auto">
             <div class="main-card p-4">
                 <p class="text-wrap  text-justify px-5 mt-5" v-html="topic.description">
                 </p>
-                <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
-                    <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId">
-                        <li class="subtopics" @click="goToSub(sub)">{{ sub.title }}</li>
-                    </ul>
-                </div>
-                <Carousel v-if="topic.imgDataList && topic.imgDataList.length" :items-to-show="2.5" :wrap-around="true"
-                    class="mx-5">
-                    <Slide v-for="image in topic.imgDataList" :key="image.imgID">
-                        <div class="carousel__item">
-                            <img :src="image.furl" :alt="image.fname" class="carousel-image" />
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <Navigation />
-                    </template>
-                </Carousel>
+                <div class="carousel-wrapper">
+                    <v-carousel class="sub-carousel" height="300" hide-delimiters cover :hide-arrows="topic.imgData2List.length === 1" :show-arrows="topic.imgData2List.length > 1" >
+                        <v-carousel-item @click="openDialog(image.furl, topic.imgData2List)" :src="image.furl" v-for="image in topic.imgData2List" :key="image.imgID" class="sub-carousel">
+                        </v-carousel-item>
+                    </v-carousel>
+      </div>
             </div>
         </div>
     </div>
+    <v-dialog v-model="dialog">
+        <v-icon class="mdi mdi-close-box close-btn" size="x-large" @click="dialog = false"></v-icon>
+        <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
+      <Slide v-for="image in topic.imgData2List" :key="image.imgID">
+        <div class="carousel__item" style="width: 30%;">
+          <div class="text-wrap">
+            <img :src="image.furl" :alt="image.fname" class="carousel-image" />
+            <p>{{ extractName(image.fname) }}</p>
+          </div>
+        </div>
+      </Slide>
+    </Carousel>
+
+  <Carousel
+    id="thumbnails"
+    :items-to-show="4"
+    :wrap-around="true"
+    v-model="currentSlide"
+    ref="carousel"
+  >
+  <Slide v-for="(image, index) in topic.imgData2List" :key="image.imgID">
+        <div class="carousel__item" style="width: 25%;" @click="slideTo(index)">
+          <img :src="image.furl" :alt="image.fname" class="carousel-image" />
+        </div>
+      </Slide>
+  </Carousel>
+    </v-dialog>
 </template> -->
+
 <template>
   <div>
     <div class="topic-list d-flex flex-column justify-content-center">
@@ -41,24 +59,19 @@
           <div style="width: 64%; height:90%; overflow-x:hidden" class="mt-4">
             <p class=" text-wrap text-justify px-5 description" v-html="topic.description">
             </p>
-            <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
-              <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId">
-                <li class="subtopics" @click="goToSub(sub)">{{ sub.title }}</li>
-              </ul>
-            </div>
           </div>
         </div>
         <v-card class="carousel-wrapper" elevation="10">
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="3000"
             :touch="true" style="" height="100%">
-            <v-carousel-item @click="openDialog(image.furl)" v-for="image in topic.imgDataList" :key="image.furl"
+            <v-carousel-item @click="openDialog(image.furl)" v-for="image in topic.imgData2List" :key="image.furl"
               class="sub-carousel image-box " cover :src="image.furl">
             </v-carousel-item>
           </v-carousel>
         </v-card>
       </div>
       <div class="d-flex justify-content-between align-items-center nav mx-5 mt-3 pe-3">
-        <router-link to="/digitalBoard/detailsPage">
+        <router-link to="/digitalBoard/detailsPage/portrait">
           <v-btn icon="mdi-arrow-left" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
         <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="translate" variant="tonal"
@@ -80,17 +93,19 @@
 
 <script>
 export default ({
-    data(){
-    return {
-      dialog: false,
-      selectedImage: null,
+    data() {
+        return{
+            dialog: false,
+            currentSlide: 0,
+            selImgArray : [],
+            selectedImage: null,
       path1: this.$store.getters.getPath1,
       path2: this.$store.getters.getPath2
-    }
-  },
+        }
+    },
     computed: {
         topic() {
-            return this.$store.getters.getFirstSub;
+            return this.$store.getters.getSecondSub;
         },
         language() {
             return this.$store.getters.getLanguage;
@@ -107,17 +122,10 @@ export default ({
     document.body.style.backgroundImage = ''
   },
     methods: {
-       
-        goToSub(topic) {
-           
-                this.$store.commit('setSecondSub', topic);
-                this.$router.push({ name: 'sub2Page' });
-            
-        },
         getBackgroundImage(topic) {
       const defaultImg = require('@/assets/ancient.jpg');
-      if (topic.imgDataList && topic.imgDataList.length > 0) {
-        const backgroundImage = topic.imgDataList[0].furl || '';
+      if (topic.imgData2List && topic.imgData2List.length > 0) {
+        const backgroundImage = topic.imgData2List[0].furl || '';
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
@@ -125,6 +133,22 @@ export default ({
     openDialog(imageSrc) {
       this.selectedImage = imageSrc;
       this.dialog = true;
+    },
+    
+    //     openDialog(imageSrc,imgArray) {
+    //   this.selectedImage = imageSrc;
+    //   this.selImgArray = imgArray;
+    //   console.log(this.selImgArray)
+    //   this.dialog = true;
+    // },
+    // slideTo(val) {
+    //   this.currentSlide = val
+    //   console.log('currenteSlide',this.selImgArray[this.currentSlide] )
+    // },
+    extractName(fname) {
+      const nameParts = fname.split('_').slice(1);
+      
+      return nameParts.join(' ').replace(/\.[^/.]+$/, '');
     },
     translate() {
       if (this.language == 1) {
@@ -135,7 +159,7 @@ export default ({
       this.goToTopic()
     },
     async goToTopic() {
-      await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language,})
+      await this.$store.dispatch('getSub2Details', { language: this.language, id: this.topic.ssCommonId })
     }
     }
 })
@@ -143,13 +167,14 @@ export default ({
 <!-- <style scoped>
 .topic-list {
   
-    height: 100dvh;
+  height: 100dvh;
   background-color: #2e2c0f;
   font-family: Arial, sans-serif;
   color: #ffffff;
   padding: 20px;
   overflow-x: hidden;
 }
+
 .home-btn {
     background-color: #FFB4AB;
     color: #690005;
@@ -166,7 +191,6 @@ export default ({
   width:100%;
   aspect-ratio: 1676 / 800;
   height: 90dvh;
-  
   background: url('@/assets/cream.jpg');
   background-size: cover;
   background-repeat: no-repeat;
@@ -182,6 +206,7 @@ export default ({
     aspect-ratio: 1107 / 600;
     white-space: pre-wrap;
     overflow-x: hidden;
+
 }
 
 ::-webkit-scrollbar,
@@ -214,7 +239,6 @@ export default ({
   min-height: auto;
   max-height: auto;
   padding-right: 5px;
- 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: justify;
   font-size: 120%;
@@ -225,24 +249,36 @@ export default ({
   font-size: 120%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
-
   text-align: justify;
 }
 .carousel__item {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 .carousel-image {
     width: 95%;
-    aspect-ratio: 1;
+    background-size: cover;
+    aspect-ratio: 1/1.5;
 }
+
 .subtopics {
     text-decoration: underline;
     cursor: pointer;
 }
-</style> -->
+#gallery {
+    position: relative;
+}
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: white;
+    z-index: 1000;
+}
 
+</style> -->
 <style scoped>
 .topic-list {
   height: 100dvh;
