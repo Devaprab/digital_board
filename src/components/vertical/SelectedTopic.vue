@@ -11,7 +11,7 @@
         Translate</v-btn>
     </div>
 
-    <div class="topic-card d-flex flex-column justify-content-center ">
+    <div class="topic-card  ">
       <!-- <v-img src="@/assets/AksharamLogo.png" height="700" class="logo" alt="logo" max-height="700"></v-img> -->
 
       <topic-card :Topics="Topics"></topic-card>
@@ -67,7 +67,10 @@ export default {
 }
 </script>
 <style scoped>
-.main{
+
+
+@media only screen and (orientation: portrait) {
+  .main{
   background: #FDFAF6;
   background-image: url('@/assets/noise.svg');
     background-size: cover;
@@ -78,6 +81,9 @@ export default {
 
 .topic-card, .translate-card{
   margin-inline: 4%;
+  display: flex;                  
+  flex-direction: column;      
+  justify-content: center;
 }
 .topic-card{
   height: 90%;
@@ -85,25 +91,31 @@ export default {
 .logo{
 margin-bottom: 8%;
 }
-
-@media only screen and (orientation: portrait) {
-    .demo {
-        background-color: yellow;
-        font-size: 200px;
-        height: 100dvh;
-        width: 100dvw;
-        color: white;
-    }
 }
 
 @media only screen and (orientation: landscape) {
-    .demo {
-        background-color: red;
-        font-size: 200px;
-        height: 100dvh;
-        width: 100dvw;
-        color: white;
-    }
+  .main{
+  background: #FDFAF6;
+  background-image: url('@/assets/noise.svg');
+    background-size: cover;
+   background-position: center;
+    height: 100%;
+    /* margin: 0; */
+}
+
+.topic-card, .translate-card{
+  margin-inline: 4%;
+  display: flex;                  
+  flex-direction: row;        
+  justify-content: center;
+  gap: 1.5rem;
+}
+.topic-card{
+  height: 90%;
+}
+.logo{
+margin-bottom: 8%;
+}
 }
 
 </style>

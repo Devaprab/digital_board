@@ -8,7 +8,7 @@
       <div class=" card mb-3">
         <div class="main-card p-4"
           :style="{ 'background-image': `radial-gradient(circle,rgba(37, 37, 37, 0.253), rgba(22, 18, 18, 0.982)), ${getBackgroundImage(topic)}` }">
-          <div style="width: 64%; height:90%; overflow-x:hidden" class="mt-4">
+          <div style="" class="mt-4 full-desc">
             <p class=" text-wrap text-justify px-5 description" v-html="topic.description">
             </p>
             <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >=1 " class="px-5">
@@ -117,7 +117,162 @@ export default {
 }
 </script>
 <style scoped>
-.topic-list {
+
+@keyframes scaleUpDown {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@media only screen and (orientation: portrait) {
+  .topic-list {
+  height: 100dvh;
+  background: #e9e1d7;
+  background-image: url('@/assets/cream.jpg');
+  background-size: cover;
+  background-position: center;
+  /* font-family: Arial, sans-serif; */
+  color: #1c1405;
+  /* padding-inline: 20px; */
+  overflow-x: hidden;
+}
+
+/* .home-btn{
+  background-color: #FFB4AB;
+  color: #690005;
+} */
+.card{
+  width: 80%;
+  background-color: transparent;
+  border: none;
+  position: relative;
+}
+.main-card {
+  border-radius: 0 30px 30px 0;
+  width:100%;
+  /* aspect-ratio: 1676 / 800; */
+  height: 80vh;
+  /* background-color: #363A33; */
+  /* background: url('@/assets/cream.jpg'); */
+  /* background: #f1eae1;
+    background-image: url('@/assets/noise.svg');
+  background-size:cover; */
+  border: 2px solid cornsilk;
+  border-left: none;
+box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    background-position: center;
+    background-size: cover;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  /* overflow-x: hidden; */
+}
+.desc {
+  width: 100%;
+  font-size: 110%;
+  line-height: 180%;
+  height: auto;
+  aspect-ratio: 1107 / 600;
+  white-space: pre-wrap;
+  overflow-x: hidden;
+
+}
+.carousel-wrapper {
+  aspect-ratio: 813/650;
+  position: absolute;
+  left: 14%;
+  top: 5%;
+
+  width: 75%;
+  aspect-ratio: 271 / 200;
+
+}
+.image-box{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  border: 2px solid rgb(247, 236, 194);
+  /* object-position: center; */
+}
+:deep(.carousel-wrapper .v-btn){
+  background-color: transparent;
+}
+.sub-carousel {
+  width: 100%;
+  height: 100%;
+}
+::-webkit-scrollbar, :deep(::-webkit-scrollbar){
+  width: 5px;
+  height: auto; 
+}
+::-webkit-scrollbar-track, :deep(::-webkit-scrollbar-track) {
+  background: #272B25;
+}
+::-webkit-scrollbar-thumb, :deep(::-webkit-scrollbar-thumb) {
+  background: #8D9387;
+  border-radius: 30px;
+}
+::-webkit-scrollbar-thumb:hover, :deep(::-webkit-scrollbar-thumb:hover) {
+  background: #f5eded;
+  cursor: pointer;
+}
+:deep(pre){
+  text-wrap: wrap;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: auto;
+  max-height: auto;
+  padding-right: 5px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: justify;
+  font-size: 120%;
+  font-weight: 500;
+}
+.main-card li{
+  font-size: 120%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  text-align: justify;
+}
+.carousel__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.carousel-image {
+  width: 95%;
+  aspect-ratio: 1;
+}
+.subtopics{
+  /* text-decoration: underline; */
+  cursor: pointer;
+  font-size: 110%;
+  font-weight: 400;
+}
+:deep(.description){
+  font-size: 110%;
+  
+}
+.translate-btn{
+  border: 2px solid #5D4037;
+}
+.home-btn{
+animation: scaleUpDown 1s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.full-desc{
+  width: 90%;
+   height:90%;
+    overflow-x:hidden;
+}
+}
+
+@media only screen and (orientation: landscape) {
+  .topic-list {
   height: 100dvh;
   background: #e9e1d7;
   background-image: url('@/assets/cream.jpg');
@@ -251,13 +406,10 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
 animation: scaleUpDown 1s ease-in-out infinite;
   animation-delay: 0.8s;
 }
-@keyframes scaleUpDown {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+.full-desc{
+  width: 75%;
+   height:90%;
+    overflow-x:hidden;
+}
 }
 </style>
