@@ -1,49 +1,26 @@
-<!-- <template>
-    <div class="topic-list">
-        <div class="d-flex justify-content-center align-items-start nav mt-2 mb-2 mx-2">
-            <h1 style="color: white; font-size: 260%;" class="text-center text-wrap">{{ topic.title }}</h1>
-        </div>
-        <div class=" card mx-auto">
-            <div class="main-card p-4">
-                <p class="text-wrap  text-justify px-5 mt-5" v-html="topic.description">
-                </p>
-                <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
-                    <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId">
-                        <li class="subtopics" @click="goToSub(sub)">{{ sub.title }}</li>
-                    </ul>
-                </div>
-                <Carousel v-if="topic.imgDataList && topic.imgDataList.length" :items-to-show="2.5" :wrap-around="true"
-                    class="mx-5">
-                    <Slide v-for="image in topic.imgDataList" :key="image.imgID">
-                        <div class="carousel__item">
-                            <img :src="image.furl" :alt="image.fname" class="carousel-image" />
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <Navigation />
-                    </template>
-                </Carousel>
-            </div>
-        </div>
-    </div>
-</template> -->
 <template>
   <div>
-    <div class="topic-list d-flex flex-column justify-content-center">
+    <div class="topic-list d-flex flex-column justify-content-center" v-for="topic in mainTopics" :key="topic.uId">
       <div class="d-flex justify-content-center align-items-start">
-        <h1 style="color: #1c1405; font-size: 200%; font-weight: 700;" class="text-center text-wrap mb-4">
+        <h1 style="color: #1c1405; font-size: 200%; font-weight: 700;" class="text-center text-wrap mb-4 mx-3 mt-2">
           {{topic.title}}</h1>
       </div>
-
-      <div class=" card">
+      <div class=" card mb-3">
         <div class="main-card p-4"
           :style="{ 'background-image': `radial-gradient(circle,rgba(37, 37, 37, 0.253), rgba(22, 18, 18, 0.982)), ${getBackgroundImage(topic)}` }">
           <div style="width: 64%; height:90%; overflow-x:hidden" class="mt-4">
-            <p class=" text-wrap text-justify px-5 description" v-html="formattedDescription(topic.description)">
+            <p class=" text-wrap text-justify px-5 description" v-html="topic.description">
             </p>
-            <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
-              <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId">
-                <li class="subtopics" @click="goToSub(sub)">{{ sub.title }}</li>
+            <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >=1 " class="px-5">
+              <ul v-for="sub in topic.combinedDataSubList" :key="sub.commonId" style="z-index: 2;">
+                <li @click="goToSub(sub)" class="subtopics">{{ sub.title }}
+                  <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >=1 ">
+                    <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId">
+                      <li style="font-size: 100%;" class="mt-2" @click="goToSub2(top,$event)">{{
+                        top.title }}</li>
+                    </ul>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -57,9 +34,9 @@
           </v-carousel>
         </v-card>
       </div>
-      <div class="d-flex justify-content-between align-items-center nav mx-5 mt-3 pe-3">
-        <router-link to="/digitalBoard/detailsPage">
-          <v-btn icon="mdi-arrow-left" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
+      <div class="d-flex justify-content-between align-items-center nav mx-5 mb-3 pe-3">
+        <router-link to="/digitalBoard/selectedTopics/portrait">
+          <v-btn icon="mdi-home" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
         <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="translate" variant="tonal"
           elevation="10" color="#5D4037">
@@ -79,8 +56,8 @@
 </template>
 
 <script>
-export default ({
-    data(){
+export default {
+  data(){
     return {
       dialog: false,
       selectedImage: null,
@@ -88,38 +65,32 @@ export default ({
       path2: this.$store.getters.getPath2
     }
   },
-    computed: {
-        topic() {
-            return this.$store.getters.getFirstSub;
-        },
-        language() {
-            return this.$store.getters.getLanguage;
-      },
+  computed: {
+    mainTopics() {
+      return this.$store.getters.getMainData;
     },
-    mounted() {
+    language() {
+      return this.$store.getters.getLanguage;
+    }
+  },
+  mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
-      console.log(window.innerHeight)
-      console.log(window.innerWidth)
-    
   },
   unmounted() {
     document.body.style.backgroundImage = ''
   },
-    methods: {
-      formattedDescription(description) {
-        if (description) {
-          return description.replace(/\n/g, '<br>');
-        }
-        else return '';
-      },
-        goToSub(topic) {
-           
-                this.$store.commit('setSecondSub', topic);
-                this.$router.push({ name: 'sub2Page' });
-            
-        },
-        getBackgroundImage(topic) {
+  methods: {
+    goToSub(topic) { 
+        this.$store.commit('setFirstSub', topic);
+        this.$router.push({name:'subPage-portrait'});
+    },
+    goToSub2(topic, event) { 
+      event.stopPropagation();
+      this.$store.commit('setSecondSub', topic);
+      this.$router.push({ name: 'sub2Page-portrait' });
+    },
+    getBackgroundImage(topic) {
       const defaultImg = require('@/assets/ancient.jpg');
       if (topic.imgDataList && topic.imgDataList.length > 0) {
         const backgroundImage = topic.imgDataList[0].furl || '';
@@ -140,124 +111,19 @@ export default ({
       this.goToTopic()
     },
     async goToTopic() {
-      await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language,})
+      await this.$store.dispatch('getMainDetails', {language: this.language, item: this.mainTopics[0].commonId})
     }
-    }
-})
+  }
+}
 </script>
-<!-- <style scoped>
-.topic-list {
-  
-    height: 100dvh;
-  background-color: #2e2c0f;
-  font-family: Arial, sans-serif;
-  color: #ffffff;
-  padding: 20px;
-  overflow-x: hidden;
-}
-.home-btn {
-    background-color: #FFB4AB;
-    color: #690005;
-}
-
-.card {
-    width: 90%;
-    background-color: transparent;
-    border: none;
-}
-
-.main-card {
-  border-radius: 24px;
-  width:100%;
-  aspect-ratio: 1676 / 800;
-  height: 90dvh;
-  
-  background: url('@/assets/cream.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: #311c07;
-  overflow-x: hidden;
-}
-
-.desc {
-    width: 100%;
-    font-size: 110%;
-    line-height: 180%;
-    height: auto;
-    aspect-ratio: 1107 / 600;
-    white-space: pre-wrap;
-    overflow-x: hidden;
-}
-
-::-webkit-scrollbar,
-:deep(::-webkit-scrollbar) {
-    width: 5px;
-    height: auto;
-}
-
-::-webkit-scrollbar-track,
-:deep(::-webkit-scrollbar-track) {
-    background: #272B25;
-}
-
-::-webkit-scrollbar-thumb,
-:deep(::-webkit-scrollbar-thumb) {
-    background: #8D9387;
-    border-radius: 30px;
-}
-
-::-webkit-scrollbar-thumb:hover,
-:deep(::-webkit-scrollbar-thumb:hover) {
-    background: #f5eded;
-    cursor: pointer;
-}
-
-:deep(pre){
-  text-wrap: wrap;
-  overflow-y: auto;
-  overflow-x: hidden;
-  min-height: auto;
-  max-height: auto;
-  padding-right: 5px;
- 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: justify;
-  font-size: 120%;
-  font-weight: 500;
-}
-
-.main-card li{
-  font-size: 120%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 500;
-
-  text-align: justify;
-}
-.carousel__item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.carousel-image {
-    width: 95%;
-    aspect-ratio: 1;
-}
-.subtopics {
-    text-decoration: underline;
-    cursor: pointer;
-}
-</style> -->
-
 <style scoped>
 .topic-list {
   height: 100dvh;
-  
-  /* background: #213413; */
   background: #e9e1d7;
-    background-image: url('@/assets/cream.jpg');
-    background-size: cover;
-    background-position: center;
-  font-family: Arial, sans-serif;
+  background-image: url('@/assets/cream.jpg');
+  background-size: cover;
+  background-position: center;
+  /* font-family: Arial, sans-serif; */
   color: #1c1405;
   /* padding-inline: 20px; */
   overflow-x: hidden;
@@ -378,7 +244,6 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
   font-size: 110%;
   
 }
-
 .translate-btn{
   border: 2px solid #5D4037;
 }
