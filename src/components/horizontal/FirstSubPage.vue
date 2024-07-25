@@ -88,61 +88,56 @@ export default ({
       path2: this.$store.getters.getPath2
     }
   },
-    computed: {
-        topic() {
-            return this.$store.getters.getFirstSub;
-        },
-        language() {
-            return this.$store.getters.getLanguage;
-      },
+  computed: {
+    topic() {
+      return this.$store.getters.getFirstSub;
     },
-    mounted() {
+    language() {
+      return this.$store.getters.getLanguage;
+    },
+  },
+  mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
-    this.goToTopic();
-      console.log(window.innerHeight)
-      console.log(window.innerWidth)
-    
+    this.goToTopic(); 
   },
   unmounted() {
     document.body.style.backgroundImage = ''
   },
-    methods: {
-      formattedDescription(description) {
-        if (description) {
-          return description.replace(/\n/g, '<br>');
-        }
-        else return '';
-      },
-        goToSub(topic) {
-           
-                this.$store.commit('setSecondSub', topic);
-                this.$router.push({ name: 'sub2Page' });
-            
-        },
-        getBackgroundImage(topic) {
-      const defaultImg = require('@/assets/ancient.jpg');
-      if (topic.imgDataList && topic.imgDataList.length > 0) {
-        const backgroundImage = topic.imgDataList[0].furl || '';
-        return `url(${backgroundImage})`;
+  methods: {
+    formattedDescription(description) {
+      if (description) {
+        return description.replace(/\n/g, '<br>');
       }
-      return `url(${defaultImg})`;
+      else return '';
     },
-    openDialog(imageSrc) {
-      this.selectedImage = imageSrc;
-      this.dialog = true;
+    goToSub(topic) {      
+      this.$store.commit('setSecondSub', topic);
+      this.$router.push({ name: 'sub2Page' });
     },
-    translate() {
-      if (this.language == 1) {
-        this.$store.commit('setLanguage', 2);
-      } else {
-        this.$store.commit('setLanguage', 1);
-      }
-      this.goToTopic()
-    },
-    async goToTopic() {
-      await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language,})
+    getBackgroundImage(topic) {
+    const defaultImg = require('@/assets/ancient.jpg');
+    if (topic.imgDataList && topic.imgDataList.length > 0) {
+      const backgroundImage = topic.imgDataList[0].furl || '';
+      return `url(${backgroundImage})`;
     }
+    return `url(${defaultImg})`;
+  },
+  openDialog(imageSrc) {
+    this.selectedImage = imageSrc;
+    this.dialog = true;
+  },
+  translate() {
+    if (this.language == 1) {
+      this.$store.commit('setLanguage', 2);
+    } else {
+      this.$store.commit('setLanguage', 1);
     }
+    this.goToTopic()
+  },
+  async goToTopic() {
+    await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language,})
+  }
+  }
 })
 </script>
 <!-- <style scoped>
