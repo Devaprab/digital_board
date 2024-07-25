@@ -7,15 +7,18 @@
       </div>
 
       <div class=" card mb-3">
-        <div class="main-card p-4"
-          :style="{ 'background-image': `radial-gradient(circle,rgba(37, 37, 37, 0.253), rgba(22, 18, 18, 0.982)), ${getBackgroundImage(topic)}` }">
+        <div class="main-card p-4" :style="{
+  'background-image': `radial-gradient(circle at 16% 83%, rgba(148, 148, 148,0.06) 0%, rgba(148, 148, 148,0.06) 50%,rgba(63, 63, 63,0.06) 50%, rgba(63, 63, 63,0.06) 100%),radial-gradient(circle at 68% 87%, rgba(66, 66, 66,0.06) 0%, rgba(66, 66, 66,0.06) 50%,rgba(105, 105, 105,0.06) 50%, rgba(105, 105, 105,0.06) 100%),radial-gradient(circle at 38% 50%, rgba(123, 123, 123,0.06) 0%, rgba(123, 123, 123,0.06) 50%,rgba(172, 172, 172,0.06) 50%, rgba(172, 172, 172,0.06) 100%),linear-gradient(90deg, rgba(12,3,3, 0.93),rgba(12,3,3, 0.93)),${getBackgroundImage(topic)}`
+        }">
+
           <div style="" class="mt-4 full-desc">
             <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)">
             </p>
             <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >=1 " class="list">
               <ul v-for="sub in topic.combinedDataSubList" :key="sub.commonId" style="z-index: 2;"
                 class="list-unstyled my-0">
-                <li @click="goToSub(sub)" class="subtopics"><v-icon class="mdi mdi-arrow-right arrow me-2 my-0" size="22"></v-icon>{{
+                <li @click="goToSub(sub)" class="subtopics"><v-icon class="mdi mdi-arrow-right arrow me-2 my-0"
+                    size="22"></v-icon>{{
                   sub.title }}
                   <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >=1" class="ms-5">
                     <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId" class="list-unstyled">
