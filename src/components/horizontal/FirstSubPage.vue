@@ -39,7 +39,7 @@
         <div class="main-card p-4"
           :style="{ 'background-image': `radial-gradient(circle,rgba(37, 37, 37, 0.253), rgba(22, 18, 18, 0.982)), ${getBackgroundImage(topic)}` }">
           <div style="width: 64%; height:90%; overflow-x:hidden" class="mt-4">
-            <p class=" text-wrap text-justify px-5 description" v-html="topic.description">
+            <p class=" text-wrap text-justify px-5 description" v-html="formattedDescription(topic.description)">
             </p>
             <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
               <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId">
@@ -94,20 +94,21 @@ export default ({
         },
         language() {
             return this.$store.getters.getLanguage;
-        }
+      },
     },
     mounted() {
-    document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
-   
-      console.log(window.innerHeight)
-      console.log(window.innerWidth)
-    
+    document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)' 
   },
   unmounted() {
     document.body.style.backgroundImage = ''
   },
     methods: {
-       
+      formattedDescription(description) {
+        if (description) {
+          return description.replace(/\n/g, '<br>');
+        }
+        else return '';
+      },
         goToSub(topic) {
            
                 this.$store.commit('setSecondSub', topic);

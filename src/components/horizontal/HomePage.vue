@@ -22,10 +22,10 @@
         </div>
       </div>
     </div>
-    <footer class="fixed-bottom pb-4 d-flex justify-content-end me-5">
+    <div class="submit-btn d-inline">
       <v-btn color="#1B5E20" variant="tonal" size="x-large" rounded class="submit"> <v-icon size="50"
           @click="submitSelection">mdi-menu-right</v-icon></v-btn>
-    </footer>
+    </div>
   </v-main>
 </template>
 
@@ -85,6 +85,7 @@ export default {
     //   }
     // },
     toggleHighlight(index, topic) {
+      console.log('clicked')
       const idx = this.highlightedDivs.indexOf(index);
       if (idx === -1) {
         if (this.selectedTopics.length < 4) {
@@ -142,6 +143,7 @@ export default {
     background-repeat: repeat;
     height: 100%;
     width: 100%;
+    position: relative;
 }
 .select-topic{
   font-size: 36px;
@@ -197,6 +199,11 @@ fill: #f7f4d3 !important;
   100% {
     transform: scale(1);
   }
+}
+.submit-btn{
+  position: absolute;
+  bottom: 0;
+  right: 5%;
 }
 </style>
 .topic-list {
