@@ -1,8 +1,7 @@
 <template>
-  <v-card v-for="topic in Topics" :key="topic.uId"
-    class="image-container d-flex flex-column" :style="{'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}`
+  <v-card v-for="topic in Topics" :key="topic.uId" class="image-container d-flex flex-column" :style="{'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}`
     }" elevation="24">
-    <div v-if="topic" class="image-details">
+    <div v-if="topic" class="image-details" @click="goToTopic(topic[0].commonId)">
       <h1 class="image-title">{{ topic[0].title }}</h1>
       <div class="description-container text-white">
         <p v-html="topic[0].description"></p>
@@ -11,13 +10,13 @@
     </div>
 
     <div @click="goToTopic(topic[0].commonId)" class="d-flex scrollright-container">
-      <p class="text-white read-more" style="font-size: 18px;" >Read More...</p>
-        <div class="scrollright-btn">
-          <v-icon class="first-arrow" size="40">mdi-chevron-right</v-icon>
-          <v-icon class="second-arrow" size="40">mdi-chevron-right</v-icon>
-          <v-icon class="third-arrow" size="40">mdi-chevron-right</v-icon>
-          <v-icon class="fourth-arrow" size="40">mdi-chevron-right</v-icon>
-        </div>
+      <p class="text-white read-more" style="font-size: 18px;">Read More...</p>
+      <div class="scrollright-btn">
+        <v-icon class="first-arrow" size="40">mdi-chevron-right</v-icon>
+        <v-icon class="second-arrow" size="40">mdi-chevron-right</v-icon>
+        <v-icon class="third-arrow" size="40">mdi-chevron-right</v-icon>
+        <v-icon class="fourth-arrow" size="40">mdi-chevron-right</v-icon>
+      </div>
     </div>
 
   </v-card>
@@ -91,6 +90,7 @@ export default {
   bottom:20%;
   aspect-ratio: 942/277;
   left:7%;
+  cursor:pointer;
 }
 
 .image-title {
