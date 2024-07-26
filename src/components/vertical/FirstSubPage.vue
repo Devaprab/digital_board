@@ -1,45 +1,18 @@
-<!-- <template>
-    <div class="topic-list">
-        <div class="d-flex justify-content-center align-items-start nav mt-2 mb-2 mx-2">
-            <h1 style="color: white; font-size: 260%;" class="text-center text-wrap">{{ topic.title }}</h1>
-        </div>
-        <div class=" card mx-auto">
-            <div class="main-card p-4">
-                <p class="text-wrap  text-justify px-5 mt-5" v-html="topic.description">
-                </p>
-                <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
-                    <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId">
-                        <li class="subtopics" @click="goToSub(sub)">{{ sub.title }}</li>
-                    </ul>
-                </div>
-                <Carousel v-if="topic.imgDataList && topic.imgDataList.length" :items-to-show="2.5" :wrap-around="true"
-                    class="mx-5">
-                    <Slide v-for="image in topic.imgDataList" :key="image.imgID">
-                        <div class="carousel__item">
-                            <img :src="image.furl" :alt="image.fname" class="carousel-image" />
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <Navigation />
-                    </template>
-                </Carousel>
-            </div>
-        </div>
-    </div>
-</template> -->
 <template>
   <div>
-    <div class="topic-list d-flex flex-column justify-content-center">
-      <div class="d-flex justify-content-center align-items-start">
-        <h1 style="color: #1c1405; font-size: 200%; font-weight: 700;" class="text-center text-wrap mb-4">
+    <div class="topic-list">
+      <div class="title">
+        <h1 class="text-center text-wrap mb-4 mx-3 mt-2 title-h1">
           {{topic.title}}</h1>
       </div>
 
-      <div class=" card">
-        <div class="main-card p-4"
-          :style="{ 'background-image': `radial-gradient(circle,rgba(37, 37, 37, 0.253), rgba(22, 18, 18, 0.982)), ${getBackgroundImage(topic)}` }">
-          <div style="width: 64%; height:90%; overflow-x:hidden" class="mt-4">
-            <p class=" text-wrap text-justify px-5 description" v-html="topic.description">
+      <div class=" card mb-3">
+        <div class="main-card p-4" :style="{
+  'background-image': `radial-gradient(circle at 16% 83%, rgba(148, 148, 148,0.06) 0%, rgba(148, 148, 148,0.06) 50%,rgba(63, 63, 63,0.06) 50%, rgba(63, 63, 63,0.06) 100%),radial-gradient(circle at 68% 87%, rgba(66, 66, 66,0.06) 0%, rgba(66, 66, 66,0.06) 50%,rgba(105, 105, 105,0.06) 50%, rgba(105, 105, 105,0.06) 100%),radial-gradient(circle at 38% 50%, rgba(123, 123, 123,0.06) 0%, rgba(123, 123, 123,0.06) 50%,rgba(172, 172, 172,0.06) 50%, rgba(172, 172, 172,0.06) 100%),linear-gradient(90deg, rgba(12,3,3, 0.93),rgba(12,3,3, 0.93)),${getBackgroundImage(topic)}`
+        }">
+
+          <div style="" class="mt-4 full-desc">
+            <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)">
             </p>
             <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
               <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId">
@@ -48,7 +21,9 @@
             </div>
           </div>
         </div>
-        <v-card class="carousel-wrapper" elevation="10">
+
+        <v-card class="carousel-wrapper bg-transparent" elevation="10"
+          v-if="topic.imgDataList && topic.imgDataList.length > 0">
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="3000"
             :touch="true" style="" height="100%">
             <v-carousel-item @click="openDialog(image.furl)" v-for="image in topic.imgDataList" :key="image.furl"
@@ -56,20 +31,20 @@
             </v-carousel-item>
           </v-carousel>
         </v-card>
+
       </div>
-      <div class="d-flex justify-content-between align-items-center nav mx-5 mt-3 pe-3">
+      <div class="nav mx-5 mb-3 pe-3">
         <router-link to="/digitalBoard/detailsPage/portrait">
-          <v-btn icon="mdi-arrow-left" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
+          <v-btn icon="mdi-home" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
-        <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="translate" variant="tonal"
-          elevation="10" color="#5D4037">
+        <v-card class="translate-btn text-capitalize p-2 rounded-5 bg-transparent" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
             <g opacity="1">
               <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
               <path class="svg-path" :d="path2" fill="#5D4037" />
             </g>
-          </svg>Translate</v-btn>
+          </svg></v-card>
       </div>
     </div>
     <v-dialog v-model="dialog" max-width="650">
@@ -77,7 +52,6 @@
     </v-dialog>
   </div>
 </template>
-
 <script>
 export default ({
     data(){
@@ -134,225 +108,192 @@ export default ({
       }
       this.goToTopic()
     },
+    formattedDescription(description) {
+      if (description) {
+        return description.replace(/\n/g, '<br>');
+      }
+      else return '';
+    },
     async goToTopic() {
       await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language,})
     }
     }
 })
 </script>
-<!-- <style scoped>
-.topic-list {
-  
-    height: 100dvh;
-  background-color: #2e2c0f;
-  font-family: Arial, sans-serif;
-  color: #ffffff;
-  padding: 20px;
-  overflow-x: hidden;
-}
-.home-btn {
-    background-color: #FFB4AB;
-    color: #690005;
-}
-
-.card {
-    width: 90%;
-    background-color: transparent;
-    border: none;
-}
-
-.main-card {
-  border-radius: 24px;
-  width:100%;
-  aspect-ratio: 1676 / 800;
-  height: 90dvh;
-  
-  background: url('@/assets/cream.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: #311c07;
-  overflow-x: hidden;
-}
-
-.desc {
-    width: 100%;
-    font-size: 110%;
-    line-height: 180%;
-    height: auto;
-    aspect-ratio: 1107 / 600;
-    white-space: pre-wrap;
-    overflow-x: hidden;
-}
-
-::-webkit-scrollbar,
-:deep(::-webkit-scrollbar) {
-    width: 5px;
-    height: auto;
-}
-
-::-webkit-scrollbar-track,
-:deep(::-webkit-scrollbar-track) {
-    background: #272B25;
-}
-
-::-webkit-scrollbar-thumb,
-:deep(::-webkit-scrollbar-thumb) {
-    background: #8D9387;
-    border-radius: 30px;
-}
-
-::-webkit-scrollbar-thumb:hover,
-:deep(::-webkit-scrollbar-thumb:hover) {
-    background: #f5eded;
-    cursor: pointer;
-}
-
-:deep(pre){
-  text-wrap: wrap;
-  overflow-y: auto;
-  overflow-x: hidden;
-  min-height: auto;
-  max-height: auto;
-  padding-right: 5px;
- 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: justify;
-  font-size: 120%;
-  font-weight: 500;
-}
-
-.main-card li{
-  font-size: 120%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 500;
-
-  text-align: justify;
-}
-.carousel__item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.carousel-image {
-    width: 95%;
-    aspect-ratio: 1;
-}
-.subtopics {
-    text-decoration: underline;
-    cursor: pointer;
-}
-</style> -->
 
 <style scoped>
-.topic-list {
-  height: 100dvh;
-  
-  /* background: #213413; */
-  background: #e9e1d7;
-    background-image: url('@/assets/cream.jpg');
-    background-size: cover;
-    background-position: center;
-  font-family: Arial, sans-serif;
-  color: #1c1405;
-  /* padding-inline: 20px; */
-  overflow-x: hidden;
-}
 
-/* .home-btn{
-  background-color: #FFB4AB;
-  color: #690005;
-} */
+@keyframes scaleUpDown {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+@keyframes slide {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(7px, 0);
+  }
+}
+@keyframes slide2 {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(5px, 0);
+  }
+}
+.topic-list{
+  height: 100dvh;
+  background: #e9e1d7;
+  background-image: url('@/assets/cream.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #1c1405;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title-h1{
+  color: #1c1405;
+  font-size: 200%;
+  font-weight: 700;
+}
 .card{
-  width: 80%;
   background-color: transparent;
   border: none;
-  position: relative;
 }
 .main-card {
-  border-radius: 0 30px 30px 0;
-  width:100%;
-  /* aspect-ratio: 1676 / 800; */
-  height: 80vh;
-  /* background-color: #363A33; */
-  /* background: url('@/assets/cream.jpg'); */
-  /* background: #f1eae1;
-    background-image: url('@/assets/noise.svg');
-  background-size:cover; */
+  border-radius: 0px 30px 30px 0px;
+  width: 100%;
+  height: 60vh;
   border: 2px solid cornsilk;
   border-left: none;
-box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-    background-position: center;
-    background-size: cover;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;
-  /* overflow-x: hidden; */
+}
+.main-card li {
+  font-size: 120%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  text-align: justify;
 }
 .desc {
   width: 100%;
   font-size: 110%;
   line-height: 180%;
   height: auto;
-  aspect-ratio: 1107 / 600;
   white-space: pre-wrap;
   overflow-x: hidden;
-
 }
-.carousel-wrapper {
-  aspect-ratio: 813/650;
-  position: absolute;
-  left: 74%;
-  top: 15%;
-
-  width: 50%;
-  aspect-ratio: 271 / 200;
-
-}
-.image-box{
+.image-box {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   border: 2px solid rgb(247, 236, 194);
-  /* object-position: center; */
 }
-:deep(.carousel-wrapper .v-btn){
+:deep(.carousel-wrapper .v-btn) {
   background-color: transparent;
 }
 .sub-carousel {
   width: 100%;
   height: 100%;
 }
-::-webkit-scrollbar, :deep(::-webkit-scrollbar){
-  width: 5px;
-  height: auto; 
+.translate-btn {
+  border: 1px solid #5D4037;
+  animation: scaleUpDown 2s ease-in-out infinite;
+  animation-delay: 0.8s;
 }
-::-webkit-scrollbar-track, :deep(::-webkit-scrollbar-track) {
+.home-btn {
+  animation: scaleUpDown 2s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+.subtopics {
+  cursor: pointer;
+  font-size: 110%;
+  font-weight: 400;
+}
+.nav{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.arrow{
+  animation: slide 1s ease-in-out infinite;
+    margin-left: 9px;
+}
+.arrow2{
+  animation: slide2 1s ease-in-out infinite;
+  margin-left: 1px;
+}
+::-webkit-scrollbar,
+:deep(::-webkit-scrollbar) {
+  width: 5px;
+  height: auto;
+}
+::-webkit-scrollbar-track,
+:deep(::-webkit-scrollbar-track) {
   background: #272B25;
 }
-::-webkit-scrollbar-thumb, :deep(::-webkit-scrollbar-thumb) {
+::-webkit-scrollbar-thumb,
+:deep(::-webkit-scrollbar-thumb) {
   background: #8D9387;
   border-radius: 30px;
 }
-::-webkit-scrollbar-thumb:hover, :deep(::-webkit-scrollbar-thumb:hover) {
+::-webkit-scrollbar-thumb:hover,
+:deep(::-webkit-scrollbar-thumb:hover) {
   background: #f5eded;
   cursor: pointer;
 }
-:deep(pre){
-  text-wrap: wrap;
-  overflow-y: auto;
-  overflow-x: hidden;
-  min-height: auto;
-  max-height: auto;
-  padding-right: 5px;
-  font-family:Arial, Helvetica, sans-serif;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: justify;
-  font-size: 120%;
-  font-weight: 500;
+@media only screen and (orientation: portrait) {
+  .topic-list {
+    justify-content: center;
+    position: relative;
+  }
+  .title h1{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    position: absolute;
+    top: 5%; 
+  }
+.card{
+  margin-inline: auto;
+  width: 80%;
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.main-card li{
-  font-size: 120%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 500;
-  /* font-family: Arial, Helvetica, sans-serif; */
-  text-align: justify;
+.main-card{
+  height: 70dvh;
+  border-radius: 30px 30px 30px 30px;
+}
+.desc {
+  aspect-ratio: 1107 / 600;
+}
+.carousel-wrapper {
+  aspect-ratio: 813/650;
+  position: absolute;
+  left: 13%;
+  top: -14%;
+  width: 75%;
+  height: 32%;
 }
 .carousel__item {
   display: flex;
@@ -363,31 +304,53 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
   width: 95%;
   aspect-ratio: 1;
 }
-.subtopics{
-  /* text-decoration: underline; */
-  cursor: pointer;
+:deep(.description), .list{
   font-size: 110%;
-  font-weight: 400;
+  padding-left: 25px;
 }
-:deep(.description){
-  font-size: 110%;
-  
+.full-desc{
+  width: 90%;
+  height:90%;
+  overflow-x:hidden;
+  position: absolute;
+  top: 25%;
+}
+}
+@media only screen and (orientation: landscape) {
+.card{
+  width: 80%;
+  position: relative;
+}
+.main-card {
+  height: 80vh;
+ 
+}
+.carousel-wrapper {
+  aspect-ratio: 813/650;
+  position: absolute;
+  left: 84%;
+  top: 15%;
+  width: 40%;
+  height:70%
+}
+.carousel__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.carousel-image {
+  width: 95%;
+  aspect-ratio: 1;
 }
 
-.translate-btn{
-  border: 2px solid #5D4037;
+:deep(.description){
+  font-size: 110%; 
 }
-.home-btn{
-animation: scaleUpDown 1s ease-in-out infinite;
-  animation-delay: 0.8s;
+.full-desc{
+  width: 85%;
+  height:90%;
+  overflow-x:hidden;
+  padding-inline: 10px;
 }
-@keyframes scaleUpDown {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
 }
 </style>
