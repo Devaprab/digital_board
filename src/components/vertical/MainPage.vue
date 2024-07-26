@@ -5,15 +5,15 @@
         <h1 class="text-center text-wrap mb-4 mx-3 mt-2 title-h1">
           {{topic.title}}</h1>
       </div>
-
       <div class=" card mb-3">
-        <div class="main-card p-4" :style="{
-  'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78),rgba(0,0,0, 0.69)),${getBackgroundImage(topic)}`
-        }">
-
-          <div style="" class="mt-4 full-desc">
-            <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)">
-            </p>
+        <div class="main-card p-4"
+          :style="{'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78),rgba(0,0,0, 0.69)),${getBackgroundImage(topic)}`}">
+          <div class="d-flex justify-content-center arrow-up">
+            <v-btn icon="mdi-chevron-double-up" color="white" style="z-index: 100;" variant="plain" elevation="10"
+              @click="scrollUp"></v-btn>
+          </div>
+          <div class=" full-desc" ref="scrollableContent">
+            <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
             <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >=1 " class="list">
               <ul v-for="sub in topic.combinedDataSubList" :key="sub.commonId" style="z-index: 2;"
                 class="list-unstyled my-0">
@@ -30,8 +30,11 @@
               </ul>
             </div>
           </div>
+          <div class="d-flex justify-content-center arrow-down">
+            <v-btn icon="mdi-chevron-double-down" color="white" style="z-index: 100;" variant="plain"
+              class="bg-transparent" elevation="10" @click="scrollDown"></v-btn>
+          </div>
         </div>
-
         <v-card class="carousel-wrapper bg-transparent" elevation="10"
           v-if="topic.imgDataList && topic.imgDataList.length > 0">
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="3000"
@@ -41,13 +44,12 @@
             </v-carousel-item>
           </v-carousel>
         </v-card>
-
       </div>
-      <div class="nav mx-5 mb-3 pe-3">
+      <div class="nav mb-3">
         <router-link to="/digitalBoard/selectedTopics/portrait">
-          <v-btn icon="mdi-home" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
+          <v-btn icon="mdi-home" variant="outlined" elevation="10" class="home-btn"></v-btn>
         </router-link>
-        <v-card class="translate-btn text-capitalize p-2 rounded-5 bg-transparent" elevation="10" @click="translate">
+        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
             <g opacity="1">
@@ -130,8 +132,8 @@ export default {
   }
 }
 </script>
-<style scoped>
 
+<style scoped>
 @keyframes scaleUpDown {
   0%,
   100% {
@@ -205,14 +207,6 @@ export default {
   font-weight: 500;
   text-align: justify;
 }
-.desc {
-  width: 100%;
-  font-size: 110%;
-  line-height: 180%;
-  height: auto;
-  white-space: pre-wrap;
-  overflow-x: hidden;
-}
 .image-box {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   border: 2px solid rgb(247, 236, 194);
@@ -228,10 +222,13 @@ export default {
   border: 1px solid #5D4037;
   animation: scaleUpDown 2s ease-in-out infinite;
   animation-delay: 0.8s;
+  background-color: transparent;
 }
 .home-btn {
   animation: scaleUpDown 2s ease-in-out infinite;
   animation-delay: 0.8s;
+  background-color: transparent;
+  color: #5D4037;
 }
 .subtopics {
   cursor: pointer;
@@ -242,6 +239,7 @@ export default {
   display: flex;
   justify-content:space-between;
   align-items:center;
+  margin-inline: 5px;
 }
 .arrow{
   animation: slide 1s ease-in-out infinite;
@@ -251,24 +249,8 @@ export default {
   animation: slide2 1s ease-in-out infinite;
   margin-left: 1px;
 }
-::-webkit-scrollbar,
-:deep(::-webkit-scrollbar) {
-  width: 5px;
-  height: auto;
-}
-::-webkit-scrollbar-track,
-:deep(::-webkit-scrollbar-track) {
-  background: #272B25;
-}
-::-webkit-scrollbar-thumb,
-:deep(::-webkit-scrollbar-thumb) {
-  background: #8D9387;
-  border-radius: 30px;
-}
-::-webkit-scrollbar-thumb:hover,
-:deep(::-webkit-scrollbar-thumb:hover) {
-  background: #f5eded;
-  cursor: pointer;
+::-webkit-scrollbar {
+  display: none;
 }
 @media only screen and (orientation: portrait) {
   .topic-list {
@@ -279,7 +261,7 @@ export default {
     margin-top: 2%;
     margin-bottom: 2%;
     position: absolute;
-    top: 5%; 
+    top: 2%; 
   }
 .card{
   margin-inline: auto;
@@ -319,10 +301,23 @@ export default {
 }
 .full-desc{
   width: 90%;
-  height:90%;
+  height:43vh;
   overflow-x:hidden;
   position: absolute;
+  overflow-y: scroll;
   top: 25%;
+}
+.arrow-down{
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.arrow-up {
+  position: absolute;
+  top: 17%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 }
 @media only screen and (orientation: landscape) {
@@ -357,9 +352,14 @@ export default {
 }
 .full-desc{
   width: 85%;
-  height:90%;
+  height:85%;
   overflow-x:hidden;
   padding-inline: 10px;
+  overflow-y: scroll;
+}
+.nav{
+  margin-inline: 45px; 
+  padding-right: 10px;
 }
 }
 </style>
