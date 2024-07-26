@@ -42,8 +42,14 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/qrcode/getScanDetails?dtId=${payload.language}&commonId=${payload.item}`);
         if (response.status >= 200 || response.status < 300) {
-          // console.log(response.data);
+          console.log(response.data);
           commit('setMainData', response.data);
+          const subTopics = response.data[0].combinedDataSubList.map(subItem => ({
+            title: subItem.title,
+            fsCommonId: subItem.fsCommonId
+          }));
+          commit('setSubFirstTitle', subTopics)
+          console.log(subTopics)
           return true;
         }
       } catch (error) {
