@@ -9,4 +9,5 @@ export default {
     getSecondSub: (state) => state.secondSub,
     getPath1: (state) => state.path1,
     getPath2: (state) => state.path2,
+    getFirstSubTitle: (state) => state.subFirstTitle,
 }

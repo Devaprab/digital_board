@@ -30,4 +30,8 @@ export default {
     state.secondSub = payload;
     sessionStorage.setItem('secondSub', JSON.stringify(payload));
   },
+  setSubFirstTitle(state, payload){
+    state.subFirstTitle = payload;
+    sessionStorage.setItem('subFirstTitle', JSON.stringify(payload));
+  }
 }

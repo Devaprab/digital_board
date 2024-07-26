@@ -37,6 +37,14 @@
         <router-link to="/digitalBoard/detailsPage/portrait">
           <v-btn icon="mdi-home" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
+        <div class="subTitle">
+        <router-link to="/digitalBoard/detailsPage/portrait">
+          <v-btn prepend-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037" >{{ topic.title }}</v-btn>
+        </router-link>
+        <router-link to="/digitalBoard/detailsPage/portrait">
+          <v-btn append-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037">{{ topic.title }}</v-btn>
+        </router-link>
+      </div>
         <v-card class="translate-btn text-capitalize p-2 rounded-5 bg-transparent" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
@@ -68,13 +76,17 @@ export default ({
         },
         language() {
             return this.$store.getters.getLanguage;
-        }
+        },
+        subTitle() {
+            return this.$store.getters.getFirstSubTitle;
+        },
     },
     mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
       console.log(window.innerHeight)
       console.log(window.innerWidth)
+      console.log(this.subTitle)
     
   },
   unmounted() {
@@ -229,11 +241,6 @@ export default ({
   font-size: 110%;
   font-weight: 400;
 }
-.nav{
-  display: flex;
-  justify-content:space-between;
-  align-items:center;
-}
 .arrow{
   animation: slide 1s ease-in-out infinite;
     margin-left: 9px;
@@ -315,6 +322,11 @@ export default ({
   position: absolute;
   top: 25%;
 }
+.nav{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+}
 }
 @media only screen and (orientation: landscape) {
 .card{
@@ -351,6 +363,16 @@ export default ({
   height:90%;
   overflow-x:hidden;
   padding-inline: 10px;
+}
+.nav{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.subTitle{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
 }
 }
 </style>
