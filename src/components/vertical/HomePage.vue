@@ -1,31 +1,32 @@
 <template>
   <v-main class="main">
-    <header class=" py-3 d-flex justify-content-between my-2 mx-5">
+    <header class=" pt-3 d-flex justify-content-between mx-5">
       <h3 class=" select-topic text-uppercase">Select Topics</h3>
-      <v-btn class="translate-btn text-capitalize px-3" size="large" rounded @click="toggleDtId" variant="outlined"
-        elevation="10" >
-        <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
-          <g opacity="1">
-            <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#216D17" />
-            <path class="svg-path" :d="path2" fill="#216D17" />
-          </g>
-        </svg>Translate</v-btn>
     </header>
 
-    <div class="d-flex gap-4 ms-5 flex-column flex-wrap">
-      <div class="d-flex gap-2 align-items-center py-1" v-for="(topic, index) in topics" :key="index"
+    <div class="topic-list-display">
+      <div class="d-flex align-items-center py-1" v-for="(topic, index) in topics" :key="index"
         style="width: fit-content;">
-        <h5>{{ index + 1 }}.</h5>
+        <h5 class="me-2">{{ index + 1 }}.</h5>
         <div class="new-arrow d-flex align-items-center justify-content-center elevation-{5}"
           @click="toggleHighlight(index, topic)" :class="{ 'highlighted': isHighlighted(index) }">
-          <p class="text-center my-3 topics">{{ topic.title }}</p>
+          <p class="text-center my-3 topics text-wrap p-2">{{ topic.title }}</p>
         </div>
       </div>
     </div>
-    <footer class="fixed-bottom pb-4 d-flex justify-content-end me-5">
+
+    <div class="submit-btn w-100">
+      <v-card class="translate-btn text-capitalize p-2 rounded-5" width="50" height="50"
+        @click="toggleDtId">
+        <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
+          <g opacity="1">
+            <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
+            <path class="svg-path" :d="path2" fill="#5D4037" />
+          </g>
+        </svg></v-card>
       <v-btn color="#1B5E20" variant="tonal" size="x-large" rounded class="submit"> <v-icon size="50"
           @click="submitSelection">mdi-menu-right</v-icon></v-btn>
-    </footer>
+    </div>
   </v-main>
 </template>
 
@@ -72,36 +73,22 @@ export default {
         console.error(error)
       }
     },
-    // handleCheckboxChange(topic) {
-    //   if (this.selectedTopics.includes(topic)) {
-    //     this.selectedTopics = this.selectedTopics.filter(t => t !== topic);
-    //   } else {
-    //     if (this.selectedTopics.length < 4) {
-    //       this.selectedTopics.push(topic);
-    //     } else {
-    //       this.selectedTopics.shift();
-    //       this.selectedTopics.push(topic);
-    //     }
-    //   }
-    // },
     toggleHighlight(index, topic) {
       const idx = this.highlightedDivs.indexOf(index);
       if (idx === -1) {
         if (this.selectedTopics.length < 4) {
-        this.highlightedDivs.push(index);
-        this.selectedTopics.push(topic.commonId)    
+          this.highlightedDivs.push(index);
+          this.selectedTopics.push(topic.commonId)
         } else {
           this.selectedTopics.shift();
           this.highlightedDivs.shift();
           this.highlightedDivs.push(index);
           this.selectedTopics.push(topic.commonId);
         }
-        
       } else {
         this.highlightedDivs.splice(idx, 1);
         this.selectedTopics.shift();
       }
-      console.log(this.selectedTopics)
     },
     isHighlighted(index) {
       return this.highlightedDivs.includes(index);
@@ -122,7 +109,7 @@ export default {
           selectedTopics: this.selectedTopics,
         });
         if (res) {
-          this.$router.push('/digitalBoard/selectedTopics/portrait')
+          this.$router.push('/digitalBoard/selectedTopics')
         }
       }
       catch (error) {
@@ -134,25 +121,38 @@ export default {
 </script>
 
 <style scoped>
-.main{
+.main {
   background: #FDFAF6;
-    background-image: url('@/assets/noise.svg');
-    background-size: contain;
-    background-position: center;
-    background-repeat: repeat;
-    height: 100%;
-    width: 100%;
+  background-image: url('@/assets/noise.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: repeat;
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
-.select-topic{
+.topic-list-display{
+  display: flex;
+  margin-left: 45px;
+  flex-direction: column; 
+  justify-content: start;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 20px;
+  height: 80vh;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+.select-topic {
   font-size: 36px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #1B5E20;
 }
 .new-arrow {
-  width: 50rem;
-  height: 3.5rem;
-  /* background-color: #1B5E20; */
-  /* background-image: linear-gradient(to bottom right, #2e1e0a, #3e7132); */
+  width: 28rem;
+  height: 4.5rem;
   background: url('@/assets/green.png');
   background-size: contain;
   color: rgb(251, 247, 242);
@@ -160,88 +160,62 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.571);
   border-radius: 0 0px 40px 0;
 }
+
 .highlighted {
   transform: scale(1.1);
-  margin-left: 48px;
-  /* background-image: linear-gradient(to top left, #110b03, #3e7132); */
+  margin-left: 32px;
   border-radius: 0 40px 0px 0;
-  border: 3px solid rgb(166, 139, 18);
+  border: 2px solid rgb(166, 139, 18);
   box-shadow: 0 4px 8px rgba(58, 10, 10, 0.362);
 }
-.topics{
-  font-size: 18px;
+.topics {
+  font-size: 16px;
   font-weight: 400;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.translate-btn{
-  background-color: #043e04;
+.translate-btn {
+  background-color: #1b5e1f2f;
   color: #f7f4d3 !important;
-  
+  border: 2px solid #40584284;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  /* margin-top: 15px; */
 }
-.svg-path{
-fill: #f7f4d3 !important;
+.svg-path {
+  fill: #1B5E20 !important;
 }
-.submit{
+.submit {
   margin-bottom: 30px;
-  animation: scale-up 1.5s infinite;
+  animation: scale-up 2s ease-in-out infinite;
+  animation-delay: .5s;
+  border: 2px solid #40584284;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 @keyframes scale-up {
   0% {
-    transform: scale(1);
+    transform: scale(0.9);
   }
-
   50% {
-    transform: scale(1.1);
-  }
-
-  100% {
     transform: scale(1);
   }
+  100% {
+    transform: scale(0.9);
+  }
+}
+.submit-btn {
+  display: flex;
+  justify-content: end;
+  gap: 15px;
+  position: absolute;
+  bottom: 0;
+  top: 90%;
+  padding-top: 5px;
+  /* right: 5%; */
+}
+@media only screen and (orientation: portrait){
+.topic-list-display{
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 }
 </style>
-.topic-list {
-height: 100vh;
-/* background-image: linear-gradient(to bottom, rgb(1, 39, 3), #74a965aa); */
-background-image: linear-gradient(to bottom right, #110b03, #3e7132);
-
-font-family: Arial, sans-serif;
-color: #ffffff;
-padding: 20px;
-}
-
-.topic-list h1 {
-font-family: "Prata", serif;
-font-weight: 600;
-font-style: normal;
-letter-spacing: 2px;
-font-size: 4em;
-margin-bottom: 20px;
-color: #ffffff;
-text-align: center;
-}
-label {
-font-size: 2rem;
-font-family: "Prata", serif;
-}
-input[type="checkbox"] {
-margin-right: 10px;
-transform: scale(2.5);
-}
-.topics {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-grid-auto-rows: auto;
-gap: 24px;
-}
-
-.two {
-
-}
-.new-arrow {
-
-}
-
-.highlighted {
-transform: scale(1.2);
-background-color: yellow;
-}

@@ -72,18 +72,6 @@ export default {
         console.error(error)
       }
     },
-    // handleCheckboxChange(topic) {
-    //   if (this.selectedTopics.includes(topic)) {
-    //     this.selectedTopics = this.selectedTopics.filter(t => t !== topic);
-    //   } else {
-    //     if (this.selectedTopics.length < 4) {
-    //       this.selectedTopics.push(topic);
-    //     } else {
-    //       this.selectedTopics.shift();
-    //       this.selectedTopics.push(topic);
-    //     }
-    //   }
-    // },
     toggleHighlight(index, topic) {
       console.log('clicked')
       const idx = this.highlightedDivs.indexOf(index);
@@ -96,8 +84,7 @@ export default {
           this.highlightedDivs.shift();
           this.highlightedDivs.push(index);
           this.selectedTopics.push(topic.commonId);
-        }
-        
+        }   
       } else {
         this.highlightedDivs.splice(idx, 1);
         this.selectedTopics.shift();
