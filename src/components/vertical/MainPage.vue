@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-main>
     <div class="topic-list" v-for="topic in mainTopics" :key="topic.uId">
       <div class="title">
         <h1 class="text-center text-wrap title-h1">
@@ -32,7 +32,7 @@
           </div>
           <div class="d-flex justify-content-center arrow-down py-3">
             <v-icon color="darkgray" style="z-index: 100;" class="mdi mdi-chevron-double-down"
-              v-if="isScrolledToTop || !isScrolledToBottom" @click="scrollToBottom"></v-icon>
+              v-if="(isScrolledToTop || !isScrolledToBottom) && hasScroll()" @click="scrollToBottom"></v-icon>
           </div>
         </div>
         <v-card class="carousel-wrapper bg-transparent" elevation="10"
@@ -62,7 +62,7 @@
     <v-dialog v-model="dialog" max-width="650">
       <v-img :src="selectedImage" contain></v-img>
     </v-dialog>
-  </div>
+  </v-main>
 </template>
 
 <script>
@@ -85,15 +85,26 @@ export default {
       return this.$store.getters.getLanguage;
     }
   },
+  // created() {
+  //   this.checkScrollPosition();  
+  // },
   mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
-    this.checkScrollPosition();
+  
   },
   unmounted() {
     document.body.style.backgroundImage = ''
   },
   methods: {
+    hasScroll() {
+      const fullDescElement = document.querySelector('.full-desc');
+      if (fullDescElement) {
+        return fullDescElement.scrollHeight > fullDescElement.clientHeight;
+      } else {
+        return false; // Handle case where element not found
+      }
+    },
     goToSub(topic) { 
         this.$store.commit('setFirstSub', topic);
         this.$router.push({name:'subPage-portrait'});
@@ -132,10 +143,14 @@ export default {
     async goToTopic() {
       await this.$store.dispatch('getMainDetails', {language: this.language, item: this.mainTopics[0].commonId})
     },
-    checkScrollPosition() {
-      const fullDescElement = document.querySelector('.full-desc');
-      this.isScrolledToBottom = fullDescElement.scrollHeight <= fullDescElement.clientHeight + fullDescElement.scrollTop;
-    },
+    // checkScrollPosition() {
+    //   const fullDescElement = document.querySelector('.full-desc');
+    //   if (fullDescElement) {
+    //     this.isScrolledToBottom = fullDescElement.scrollHeight <= fullDescElement.clientHeight + fullDescElement.scrollTop;
+    //   } else {
+    //     console.error('Element with class "full-desc" not found');
+    //   }
+    // },
     scrollToBottom() {
       const fullDescElement = document.querySelector('.full-desc');
       this.smoothScrollToBottom(fullDescElement);

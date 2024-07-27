@@ -78,19 +78,21 @@ export default {
     height: 100%;
     /* margin: 0; */
 }
-
-.topic-card, .translate-card{
+.translate-card{
+  margin-right: 5%;
+}
+.topic-card{
   margin-inline: 4%;
   display: flex;                  
   flex-direction: column;      
   justify-content: center;
 }
-.topic-card{
+/* .topic-card{
   height: 90%;
-}
-.logo{
+} */
+/* .logo{
 margin-bottom: 8%;
-}
+} */
 }
 
 @media only screen and (orientation: landscape) {
@@ -109,13 +111,14 @@ margin-bottom: 8%;
   flex-direction: row;        
   justify-content: center;
   gap: 1.5rem;
+  overflow-x: auto;
 }
-.topic-card{
+/* .topic-card{
   height: 90%;
-}
-.logo{
+} */
+/* .logo{
 margin-bottom: 8%;
-}
+} */
 }
 
 </style>

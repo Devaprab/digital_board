@@ -16,16 +16,15 @@
     </div>
 
     <div class="submit-btn w-100">
-      <v-card class="translate-btn text-capitalize p-2 rounded-5" width="50" height="50"
-        @click="toggleDtId">
+      <v-card class="translate-btn text-capitalize p-2 rounded-5" width="50" height="50" @click="toggleDtId">
         <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
           <g opacity="1">
             <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
             <path class="svg-path" :d="path2" fill="#5D4037" />
           </g>
         </svg></v-card>
-      <v-btn color="#1B5E20" variant="tonal" size="x-large" rounded class="submit"> <v-icon size="50"
-          @click="submitSelection">mdi-menu-right</v-icon></v-btn>
+      <v-card color="#004D40" width="50" height="50" class="submit rounded-5" :disabled="selectedTopics.length===0"> <v-icon size="50"
+          @click="submitSelection">mdi-menu-right</v-icon></v-card>
     </div>
   </v-main>
 </template>
@@ -76,7 +75,7 @@ export default {
     toggleHighlight(index, topic) {
       const idx = this.highlightedDivs.indexOf(index);
       if (idx === -1) {
-        if (this.selectedTopics.length < 4) {
+        if (this.selectedTopics.length < 5) {
           this.highlightedDivs.push(index);
           this.selectedTopics.push(topic.commonId)
         } else {
@@ -98,7 +97,7 @@ export default {
         alert('Please select at least one topic.');
         return;
       }
-      if (this.selectedTopics.length >= 5) {
+      if (this.selectedTopics.length >= 6) {
         alert('You can select a maximum of 4 topics.');
         return;
       }
@@ -163,10 +162,12 @@ export default {
 
 .highlighted {
   transform: scale(1.1);
-  margin-left: 32px;
+  margin-left: 5%;
   border-radius: 0 40px 0px 0;
-  border: 2px solid rgb(166, 139, 18);
+  border: 3px solid rgb(232, 229, 187);
   box-shadow: 0 4px 8px rgba(58, 10, 10, 0.362);
+  background-image: linear-gradient(to bottom, rgba(33, 31, 7, 0.889), rgba(96, 82, 4, 0.668)),
+    url('@/assets/green.png');
 }
 .topics {
   font-size: 16px;
@@ -185,8 +186,8 @@ export default {
 }
 .submit {
   margin-bottom: 30px;
-  animation: scale-up 2s ease-in-out infinite;
-  animation-delay: .5s;
+  /* animation: scale-up 2s ease-in-out infinite;
+  animation-delay: .5s; */
   border: 2px solid #40584284;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
@@ -208,6 +209,7 @@ export default {
   position: absolute;
   bottom: 0;
   top: 90%;
+  right: 1%;
   padding-top: 5px;
   /* right: 5%; */
 }
@@ -216,6 +218,10 @@ export default {
   flex-wrap: nowrap;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-left: 2%;
+}
+.submit-btn{
+  right: 2%;
 }
 }
 </style>

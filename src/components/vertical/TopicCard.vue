@@ -1,23 +1,22 @@
 <template>
-  <v-card v-for="topic in Topics" :key="topic.uId"
-    class="image-container d-flex flex-column" :style="{'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0.982), rgba(37, 37, 37, 0.253)), ${getBackgroundImage(topic)}`
-    }" elevation="24">
-    <div v-if="topic" class="image-details">
+  <v-card v-for="topic in Topics" :key="topic.uId" class="image-container" :style="{
+    'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78),rgba(0,0,0, 0.69)), ${getBackgroundImage(topic)}`
+    }">
+    <div v-if="topic" class="image-details" @click="goToTopic(topic[0].commonId)">
       <h1 class="image-title">{{ topic[0].title }}</h1>
-      <div class="description-container text-white">
+      <v-divider class="divider"></v-divider>
+      <div class="description-container">
         <p v-html="topic[0].description"></p>
       </div>
-
     </div>
-
-    <div @click="goToTopic(topic[0].commonId)" class="d-flex scrollright-container">
-      <p class="text-white read-more" style="font-size: 18px;" >Read More...</p>
-        <div class="scrollright-btn">
-          <v-icon class="first-arrow" size="40">mdi-chevron-right</v-icon>
-          <v-icon class="second-arrow" size="40">mdi-chevron-right</v-icon>
-          <v-icon class="third-arrow" size="40">mdi-chevron-right</v-icon>
-          <v-icon class="fourth-arrow" size="40">mdi-chevron-right</v-icon>
-        </div>
+    <div @click="goToTopic(topic[0].commonId)" class="d-flex scrollright-container justify-content-end ">
+      <p class="read-more mt-3 me-4" style="font-size: 18px;">Read More...</p>
+      <div class="scrollright-btn1">
+        <v-icon class="first-arrow" size="40">mdi-chevron-right</v-icon>
+        <v-icon class="second-arrow" size="40">mdi-chevron-right</v-icon>
+        <v-icon class="third-arrow" size="40">mdi-chevron-right</v-icon>
+        <v-icon class="fourth-arrow" size="40">mdi-chevron-right</v-icon>
+      </div>
     </div>
 
   </v-card>
@@ -76,43 +75,42 @@ export default {
 
 .image-container {
   background-size: cover;
-  width: 100%;
-  /* aspect-ratio: 1948 / 800; */
-  aspect-ratio: 1948 / 500;
+  /* width: 100%; */
+  /* aspect-ratio: 1948 / 500; */
   border-radius: 20px;
   margin-bottom: 5%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 .image-details {
   font-weight: 400;
-  width: 85%;
-  height: 150px;
-  position:absolute;
-  bottom:20%;
-  aspect-ratio: 942/277;
-  left:7%;
+  cursor: pointer;
+  /* width: 85%; */
+  /* height: 150px; */
 }
-
 .image-title {
   font-size: 120%;
   font-weight: 600;
-  /* line-height: 48px; */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
+  color: #f5f1e9;
 }
-
+.divider{
+  color: #f5f1e9;
+}
 .description-container {
   overflow: hidden;
   height: 100px;
   width:80%;
-  
+  color: #f8f8f0;
 }
 .description-container p{
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
-  /* font-size: 20px; */
-  line-height: 32px;
+  line-height: 26px;
 }
 .image-description {
   font-size: 50%;
@@ -120,26 +118,16 @@ export default {
   color: white;
   width: 500px;
 }
-
-/* :deep(pre) {
-  text-wrap: wrap;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  min-height: auto;
-  max-height: 180px;
-  padding-right: 5px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: justify;
-  font-size: 18px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-} */
+.read-more{
+  color: white ;
+}
 .scrollright-container {
+  
   background: transparent;
   position: absolute;
-  left:7.5%;
-  bottom: 8%;
+  bottom: 5%;
+  right: 0;
+  transform: translateX(-50%);
   cursor: pointer;
 }
 .scrollright-btn {
@@ -184,12 +172,10 @@ export default {
   }
 }
 @keyframes scaleUpDown {
-
   0%,
   100% {
     transform: scale(1);
   }
-
   50% {
     transform: scale(1.1);
   }
@@ -199,7 +185,62 @@ export default {
      background-position: 200% center;
    }
  }
-/* .read-more {
-  animation: scaleUpDown 1.5s infinite;
-} */
+ @media only screen and (orientation: landscape) {
+   .image-container {
+     height: 500px;
+     width: 100%;
+     position: relative;
+     padding: 20px;
+     padding-top: 0;
+   }
+   .image-details {
+    /* position: absolute;
+    left: 7%;
+    top: 5%; */
+    height: 70%;
+    padding-inline: 2%;
+   }
+   .description-container {
+     height: 82%;
+     width: 100%;
+   }
+   .description-container p {
+     margin-top: 10px;
+   }
+   .image-title {
+     text-align: center;
+   }
+ }
+ @media only screen and (orientation: portrait) {
+  .image-container {
+      height: 300px;
+      width: 100%;
+      padding: 10px;
+      padding-top: 0;
+    }
+    .image-title{
+      text-align: center;
+    }
+         .image-details {
+           /* position: absolute;
+        left: 7%;
+        top: 5%; */
+           height: 70%;
+           padding-inline: 2%;
+           
+         }
+  .description-container {
+      height:70%;
+      width: 90%;
+      
+    }
+    :deep(.description-container p){
+      display: -webkit-box;
+        -webkit-line-clamp: 5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+    }
+       
+ }
 </style>
