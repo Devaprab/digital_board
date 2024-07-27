@@ -11,7 +11,7 @@
   'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78),rgba(0,0,0, 0.69)),${getBackgroundImage(topic)}`
         }">
 
-          <div style="" class="mt-4 full-desc">
+          <div style="" class="mt-4 full-desc" ref="scrollableContent">
             <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)">
             </p>
             <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="px-5">
@@ -317,9 +317,10 @@ export default ({
 }
 .full-desc{
   width: 90%;
-  height:90%;
+  height:43vh;
   overflow-x:hidden;
   position: absolute;
+  overflow-y: scroll;
   top: 25%;
 }
 .nav{
@@ -360,9 +361,10 @@ export default ({
 }
 .full-desc{
   width: 85%;
-  height:90%;
+  height:85%;
   overflow-x:hidden;
   padding-inline: 10px;
+  overflow-y: scroll;
 }
 .nav{
   display: flex;
