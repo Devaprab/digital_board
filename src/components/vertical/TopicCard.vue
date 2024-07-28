@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import defaultImg from '@/assets/ancient.jpg';
 export default {
   data() {
     return {
@@ -44,9 +45,10 @@ export default {
   
   methods: {
     getBackgroundImage(topic) {
-      const defaultImg = require('@/assets/ancient.jpg');
-      if (topic.imgDataList && topic.imgDataList.length > 0) {
-        const backgroundImage = topic.imgDataList[0].furl || '';
+      console.log('gfgfg', topic[0].backgroundImgList)
+      // const defaultImg = require('@/assets/ancient.jpg');
+      if (topic[0].backgroundImgList && topic[0].backgroundImgList.length > 0) {
+        const backgroundImage = topic[0].backgroundImgList[0].bgUrl || '';
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;

@@ -16,10 +16,9 @@
             <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
             <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >=1 " class="list">
               <ul v-for="sub in topic.combinedDataSubList" :key="sub.commonId" style="z-index: 2;"
-                class="list-unstyled my-0">
-                <li @click="goToSub(sub)" class="subtopics" style="font-size: 100%;"><v-icon
-                    class="mdi mdi-arrow-right arrow me-2 my-0" size="22"></v-icon>{{
-                  sub.title }}
+                class="list-unstyled my-0 ">
+                <li @click="goToSub(sub)" class="subtopics " style="font-size: 100%;"><v-icon
+                    class="mdi mdi-arrow-right arrow me-2 my-0" size="22"></v-icon>{{sub.title }}
                   <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >=1" class="ms-5">
                     <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId" class="list-unstyled">
                       <li style="font-size: 90%;" class="my-0" @click="goToSub2(top,$event)"><v-icon
@@ -39,16 +38,33 @@
           v-if="topic.imgDataList && topic.imgDataList.length > 0">
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="3000"
             :touch="true" style="" height="100%">
-            <v-carousel-item @click="openDialog(image.furl)" v-for="image in topic.imgDataList" :key="image.furl"
+            <v-carousel-item @click="openDialog(index)" v-for="(image,index) in topic.imgDataList" :key="image.furl"
               class="sub-carousel image-box " cover :src="image.furl">
             </v-carousel-item>
           </v-carousel>
+          <v-dialog v-model="dialog" max-width="850" class="bg-grey-darken-4">
+            <v-card-text class="d-flex justify-content-end">
+              <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;"></v-icon>
+            </v-card-text>
+            <v-container class="d-flex justify-content-center align-items-center flex-column">
+              <!-- <v-card-text class="text-center my-2 fs-6">{{ selectedImage.description ?? '' }}</v-card-text>
+              <v-img :src="selectedImage.src" contain height="450" width="550"></v-img> -->
+              <v-carousel hide-delimiters class="carousel">
+                <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
+                  <v-container class="d-flex justify-content-center align-items-center flex-column">
+                    <v-card-text class="text-center my-2 fs-6">{{ image.description ?? '' }}</v-card-text>
+                    <v-img :src="image.furl" :alt="image.description??'no image'" contain height="450"
+                      width="550"></v-img>
+                  </v-container>
+                </v-carousel-item>
+              </v-carousel>
+            </v-container>
+          </v-dialog>
         </v-card>
       </div>
       <div class="nav mb-3">
-        <router-link to="/digitalBoard/selectedTopics">
-          <v-btn icon="mdi-home" variant="outlined" elevation="10" class="home-btn"></v-btn>
-        </router-link>
+        <v-btn icon="mdi-home" variant="outlined" elevation="10" class="home-btn"
+          @click="$router.push('/digitalBoard/selectedTopics'); "></v-btn>
         <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
@@ -59,18 +75,17 @@
           </svg></v-card>
       </div>
     </div>
-    <v-dialog v-model="dialog" max-width="650">
-      <v-img :src="selectedImage" contain></v-img>
-    </v-dialog>
+
   </v-main>
 </template>
 
 <script>
+import defaultImg from '@/assets/ancient.jpg';
 export default {
   data(){
     return {
       dialog: false,
-      selectedImage: null,
+      reorderedImages: [],
       path1: this.$store.getters.getPath1,
       path2: this.$store.getters.getPath2,
       isScrolledToBottom: false,
@@ -85,9 +100,6 @@ export default {
       return this.$store.getters.getLanguage;
     }
   },
-  // created() {
-  //   this.checkScrollPosition();  
-  // },
   mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
@@ -102,7 +114,7 @@ export default {
       if (fullDescElement) {
         return fullDescElement.scrollHeight > fullDescElement.clientHeight;
       } else {
-        return false; // Handle case where element not found
+        return false; 
       }
     },
     goToSub(topic) { 
@@ -115,16 +127,28 @@ export default {
       this.$router.push({ name: 'sub2Page-portrait' });
     },
     getBackgroundImage(topic) {
-      const defaultImg = require('@/assets/ancient.jpg');
-      if (topic.imgDataList && topic.imgDataList.length > 0) {
-        const backgroundImage = topic.imgDataList[0].furl || '';
+      if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
+        const backgroundImage = topic.backgroundImgList[0].bgUrl || '';
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
     },
-    openDialog(imageSrc) {
-      this.selectedImage = imageSrc;
+    openDialog(index) {
+      
+      console.log(index)
+      console.log('grgr', Array.isArray(this.mainTopics[0].imgDataList))
+      const imgDataList = this.mainTopics[0].imgDataList
+      this.reorderedImages = [
+        ...imgDataList.slice(index),
+        ...imgDataList.slice(0, index)
+      ];
       this.dialog = true;
+      // this.selectedImage = {
+      //   src: src,
+      //   description: description
+      // };
+      // console.log(index)
+      // this.dialog = true;
     },
     translate() {
       if (this.language == 1) {
@@ -275,6 +299,7 @@ export default {
   background-repeat: no-repeat;
   color: #ffffff;
 }
+
 .main-card li {
   font-size: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -330,6 +355,9 @@ export default {
 ::-webkit-scrollbar {
   display: none;
 }
+:deep(.carousel .v-btn){
+  background-color: rgba(245, 245, 245, 0.447);
+}
 @media only screen and (orientation: portrait) {
   .topic-list {
     justify-content: center;
@@ -349,6 +377,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
 }
+
 .main-card{
   height: 75vh;
   border-radius: 30px 30px 30px 30px;
