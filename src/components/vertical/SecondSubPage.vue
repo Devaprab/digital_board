@@ -29,7 +29,7 @@
 
       </div>
       <div class="nav mx-5 mb-3 pe-3">
-        <router-link to="/digitalBoard/detailsPage/portrait">
+        <router-link to="/digitalBoard/detailsPage">
           <v-btn icon="mdi-home" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
         <v-card class="translate-btn text-capitalize p-2 rounded-5 bg-transparent" elevation="10" @click="translate">

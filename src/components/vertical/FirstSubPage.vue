@@ -34,14 +34,14 @@
 
       </div>
       <div class="nav mx-5 mb-3 pe-3">
-        <router-link to="/digitalBoard/detailsPage/portrait">
+        <router-link to="/digitalBoard/detailsPage">
           <v-btn icon="mdi-home" variant="outlined" elevation="10" color="#5D4037" class="home-btn"></v-btn>
         </router-link>
         <div class="subTitle">
-        <router-link to="/digitalBoard/detailsPage/portrait">
+        <router-link to="/digitalBoard/detailsPage">
           <v-btn prepend-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037" >{{ topic.title }}</v-btn>
         </router-link>
-        <router-link to="/digitalBoard/detailsPage/portrait">
+        <router-link to="/digitalBoard/detailsPage">
           <v-btn append-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037">{{ topic.title }}</v-btn>
         </router-link>
       </div>
