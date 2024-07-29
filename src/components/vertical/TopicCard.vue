@@ -124,7 +124,6 @@ export default {
   color: white ;
 }
 .scrollright-container {
-  
   background: transparent;
   position: absolute;
   bottom: 5%;
@@ -194,21 +193,21 @@ export default {
      position: relative;
      padding: 20px;
      padding-top: 0;
+     margin-bottom: 0;
    }
    .image-details {
-    /* position: absolute;
-    left: 7%;
-    top: 5%; */
+    /* position: absolute; */
+    /* left: 7%; */
     height: 70%;
     padding-inline: 2%;
    }
    .description-container {
-     height: 82%;
+     height: 78%;
      width: 100%;
    }
-   .description-container p {
-     margin-top: 10px;
-   }
+   /* .description-container p {
+     margin-top: 5px;
+   } */
    .image-title {
      text-align: center;
    }
@@ -236,13 +235,15 @@ export default {
       width: 90%;
       
     }
-    :deep(.description-container p){
+    /* :deep(.description-container p){
       display: -webkit-box;
         -webkit-line-clamp: 5;
         overflow: hidden;
         text-overflow: ellipsis;
         -webkit-box-orient: vertical;
-    }
-       
+    } */
+     .translate-card{
+      margin-bottom: 20px;
+     }  
  }
 </style>

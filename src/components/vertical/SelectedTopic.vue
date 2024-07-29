@@ -1,15 +1,11 @@
 <template>
   <v-main class="main">
-
-
-    <div class="topic-card  ">
-      <!-- <v-img src="@/assets/AksharamLogo.png" height="700" class="logo" alt="logo" max-height="700"></v-img> -->
-
+    <div class="topic-card ">
       <topic-card :Topics="Topics"></topic-card>
     </div>
     <div class="d-flex justify-content-end translate-card w-100">
-      <v-btn class="text-capitalize" @click="toggleDtId" size="x-large" variant="outlined">
-        <svg width="50" height="50" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <v-btn class="text-capitalize btn-style" @click="toggleDtId" size="large" variant="tonal" elevation="10" rounded>
+        <svg width="40" height="40" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g opacity="0.8">
             <path fill-rule="evenodd" clip-rule="evenodd" :d="path1" fill="#216D17" />
             <path :d="path2" fill="#216D17" />
@@ -68,32 +64,34 @@ export default {
 </script>
 <style scoped>
 
-
+.translate-card .btn-style{
+  border: 2px solid green;
+}
 @media only screen and (orientation: portrait) {
   .main{
   background: #FDFAF6;
   background-image: url('@/assets/noise.svg');
-    background-size: cover;
-   background-position: center;
-    height: 100vh;
-    padding-block:48px;
-    /* margin: 0; */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  padding-block:48px;
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
 }
 .translate-card{
-  margin-right: 5%;
+ padding-bottom: 50px;
+
 }
 .topic-card{
   margin-inline: 4%;
   display: flex;                  
   flex-direction: column;      
   justify-content: center;
+  align-items: center;
 }
-/* .topic-card{
-  height: 90%;
-} */
-/* .logo{
-margin-bottom: 8%;
-} */
 }
 
 @media only screen and (orientation: landscape) {
@@ -108,6 +106,7 @@ margin-bottom: 8%;
     align-items: center;
     justify-content: center;
     padding: 48px;
+    position: relative;
     /* margin: 0; */
 }
 
@@ -118,7 +117,15 @@ margin-bottom: 8%;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+  width: 95vw;
   overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 55px ;
+}
+.translate-card{
+  position: absolute;
+  bottom: 3%;
+  right: 3%;
 }
 /* .topic-card{
   height: 90%;

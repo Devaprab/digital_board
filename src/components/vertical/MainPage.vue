@@ -12,9 +12,7 @@
             <v-icon color="darkgray" style="z-index: 100;" v-if="!isScrolledToTop || isScrolledToBottom"
               class="mdi mdi-chevron-double-up scroll-up" @click="scrollToTop"></v-icon>
           </div>
-
           <div class="empty-image" :style="dynamicStyle"></div>
-
           <div class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
             <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
             <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >=1 " class="list">
@@ -22,11 +20,10 @@
                 class="list-unstyled my-0 ">
                 <li @click="goToSub(sub)" class="subtopics mb-2" style="font-size: 100%;">
                   <v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>
-
                   {{sub.title }}
                   <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >=1" class="ms-5">
                     <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId" class="list-unstyled">
-                      <li style="font-size: 100%;" class="my-0" @click="goToSub2(top,$event)">
+                      <li style="font-size: 100%;" class="mb-0 mt-1" @click="goToSub2(top,$event)">
                         <v-icon
                           class="mdi mdi-circle-small" size="20"></v-icon>
                           {{ top.title }}</li>
@@ -119,7 +116,9 @@ export default {
           height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '58vh' : '76vh'
         };
       }
-      return {};
+      return {
+        width: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '85%' : '100%'
+      };
     },
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
@@ -127,7 +126,10 @@ export default {
           bottom: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '2%' : '5%'
         };
       }
-      return {};
+      return {
+        width: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '80%' : '90%',
+        marginInline: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '0' : 'auto'
+      };
     },
     backgroundImageStyle() {
       return {
@@ -140,7 +142,9 @@ export default {
           height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '75vh' : '85vh'
         };
       }
-      return {};
+      return {
+        borderRadius: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '0px 30px 30px 0px' : '30px',
+      };
     }
   },
   mounted() {
