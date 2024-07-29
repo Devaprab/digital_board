@@ -75,7 +75,7 @@ export default {
   background-image: url('@/assets/noise.svg');
     background-size: cover;
    background-position: center;
-    height: 100%;
+    height: 100vh;
     padding-block:48px;
     /* margin: 0; */
 }
@@ -102,16 +102,17 @@ margin-bottom: 8%;
   background-image: url('@/assets/noise.svg');
     background-size: cover;
    background-position: center;
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 48px;
     /* margin: 0; */
 }
 
 .topic-card{
-  margin-inline: 4%;
+  /* margin-inline: 4%; */
   display: flex;                  
   flex-direction: row;        
   justify-content: center;
