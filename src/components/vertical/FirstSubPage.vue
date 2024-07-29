@@ -163,7 +163,7 @@
             <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="list">
               <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId" style="z-index: 2;"
                 class="list-unstyled my-0 ">
-                <li @click="goToSub(sub)" class="subtopics " style="font-size: 100%;"><v-icon
+                <li @click="goToSub(sub)" class="subtopics mb-2" style="font-size: 100%;"><v-icon
                     class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{sub.title }}
                 </li>
               </ul>
@@ -271,7 +271,10 @@ export default ({
           bottom: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '2%' : '5%'
         };
       }
-      return {};
+      return {
+        width: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '80%' : '90%',
+        marginInline: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '0' : 'auto'
+      };
     },
     backgroundImageStyle() {
       return {
@@ -284,7 +287,9 @@ export default ({
           height: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '75vh' : '85vh'
         };
       }
-      return {};
+      return {
+        borderRadius: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '0px 30px 30px 0px' : '30px',
+      };
     }
     },
     mounted() {

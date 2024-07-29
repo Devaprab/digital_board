@@ -242,7 +242,10 @@ export default ({
           bottom: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '2%' : '5%'
         };
       }
-      return {};
+      return {
+        width: this.topic.imgDataList && this.topic.imgData2List.length > 0 ? '80%' : '90%',
+        marginInline: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '0' : 'auto'
+      };
     },
     backgroundImageStyle() {
       return {
@@ -255,7 +258,9 @@ export default ({
           height: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '75vh' : '85vh'
         };
       }
-      return {};
+      return {
+        borderRadius: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '0px 30px 30px 0px' : '30px',
+      };
     }
     },
     mounted() {
