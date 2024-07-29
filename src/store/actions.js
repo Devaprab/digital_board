@@ -74,6 +74,19 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry2/getAllByCommonId/${payload.id}?dtId=${payload.language}`);
         if (response.status >= 200 && response.status < 300) {
+          const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
+            const [key, description] = name.split('#');
+            map[key] = description;
+            return map;
+          }, {});
+          response.data[0].imgDataList = response.data[0].imgDataList.map(image => {
+            const imageName = image.fname.replace(/^[^_]*_|(.jpg|.jpeg|.png|.gif|.bmp|.tiff|.svg|.webp|.heif|.heic)$/gi, '');
+            return {
+            ...image,
+            description: description[imageName]
+            };
+          });
+          console.log(response.data)
           commit('setFirstSub', response.data[0])
           return true;
         }
@@ -87,6 +100,18 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry3/getSecondSub?dtId=${payload.language}&ssCommonId=${payload.id}`);
         if (response.status >= 200 && response.status < 300) {
+          const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
+            const [key, description] = name.split('#');
+            map[key] = description;
+            return map;
+          }, {});
+          response.data[0].imgData2List = response.data[0].imgData2List.map(image => {
+            const imageName = image.fname.replace(/^[^_]*_|(.jpg|.jpeg|.png|.gif|.bmp|.tiff|.svg|.webp|.heif|.heic)$/gi, '');
+            return {
+            ...image,
+            description: description[imageName]
+            };
+          });
           commit('setSecondSub', response.data[0])
           return true;
         }
