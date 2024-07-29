@@ -60,7 +60,7 @@
     </v-dialog>
   </div>
 </template> -->
-<template>
+<!-- <template>
   <v-main>
     <div class="topic-list">
       <div class="title">
@@ -103,8 +103,7 @@
               <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;"></v-icon>
             </v-card-text>
             <v-container class="d-flex justify-content-center align-items-center flex-column">
-              <!-- <v-card-text class="text-center my-2 fs-6">{{ selectedImage.description ?? '' }}</v-card-text>
-              <v-img :src="selectedImage.src" contain height="450" width="550"></v-img> -->
+              
               <v-carousel hide-delimiters class="carousel">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
                   <v-container class="d-flex justify-content-center align-items-center flex-column">
@@ -129,6 +128,91 @@
           <v-btn append-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037">{{ topic.title }}</v-btn>
         </router-link>
       </div>
+        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
+          <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+            class="svg-icon">
+            <g opacity="1">
+              <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
+              <path class="svg-path" :d="path2" fill="#5D4037" />
+            </g>
+          </svg></v-card>
+      </div>
+    </div>
+
+  </v-main>
+</template> -->
+<template>
+  <v-main>
+    <div class="topic-list">
+      <div class="title">
+        <h1 class="text-center text-wrap title-h1">
+          {{topic.title}}</h1>
+      </div>
+      <div class=" card mb-3" :style="cardPortrait">
+        <div class="main-card ps-1 py-1" 
+          :style="[backgroundImageStyle, mainCardHeight]">
+          <div class="d-flex justify-content-center arrow-up py-3">
+            <v-icon color="darkgray" style="z-index: 100;" v-if="!isScrolledToTop || isScrolledToBottom"
+              class="mdi mdi-chevron-double-up scroll-up" @click="scrollToTop"></v-icon>
+          </div>
+
+          <div class="empty-image" :style="dynamicStyle"></div>
+
+          <div class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
+            <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
+            <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="list">
+              <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId" style="z-index: 2;"
+                class="list-unstyled my-0 ">
+                <li @click="goToSub(sub)" class="subtopics " style="font-size: 100%;"><v-icon
+                    class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{sub.title }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center arrow-down py-3">
+            <v-icon color="darkgray" style="z-index: 100;" class="mdi mdi-chevron-double-down scroll-down"
+              v-if="(isScrolledToTop || !isScrolledToBottom) && hasScroll()" @click="scrollToBottom"></v-icon>
+          </div>
+        </div>
+        <v-card class="carousel-wrapper bg-transparent" elevation="10"
+          v-if="topic.imgDataList && topic.imgDataList.length > 0">
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+            :touch="true" style="" height="100%">
+            <v-carousel-item @click="openDialog(index)" v-for="(image,index) in topic.imgDataList" :key="image.furl"
+              class="sub-carousel image-box " cover :src="image.furl">
+            </v-carousel-item>
+          </v-carousel>
+          <v-dialog v-model="dialog" max-width="850" class="bg-grey-darken-4">
+            <v-card-text class="d-flex justify-content-end">
+              <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;"></v-icon>
+            </v-card-text>
+            <v-container class="d-flex justify-content-center align-items-center flex-column">
+              <!-- <v-card-text class="text-center my-2 fs-6">{{ selectedImage.description ?? '' }}</v-card-text>
+              <v-img :src="selectedImage.src" contain height="450" width="550"></v-img> -->
+              <v-carousel hide-delimiters class="carousel">
+                <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
+                  <v-container class="d-flex justify-content-center align-items-center flex-column">
+                    <v-card-text class="text-center my-2 fs-6">{{ image.description ?? '' }}</v-card-text>
+                    <v-img :src="image.furl" :alt="image.description??'no image'" contain height="450"
+                      width="550"></v-img>
+                  </v-container>
+                </v-carousel-item>
+              </v-carousel>
+            </v-container>
+          </v-dialog>
+        </v-card>
+      </div>
+      <div class="nav mb-3">
+        <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
+          @click="$router.push('/digitalBoard/detailsPage'); "></v-btn>
+          <!-- <div class="subTitle">
+        <router-link to="/digitalBoard/detailsPage">
+          <v-btn prepend-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037" >{{ topic.title }}</v-btn>
+        </router-link>
+        <router-link to="/digitalBoard/detailsPage">
+          <v-btn append-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037">{{ topic.title }}</v-btn>
+        </router-link>
+      </div> -->
         <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
@@ -169,14 +253,14 @@ export default ({
         dynamicStyle() {
       if(window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '200px' : '50px'
+          height: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '200px' : '50px'
         }
       } return {};
     },
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '58vh' : '76vh'
+          height: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '58vh' : '76vh'
         };
       }
       return {};
@@ -184,20 +268,20 @@ export default ({
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          bottom: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '2%' : '5%'
+          bottom: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '2%' : '5%'
         };
       }
       return {};
     },
     backgroundImageStyle() {
       return {
-        'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78), rgba(0,0,0, 0.69)), ${this.getBackgroundImage(this.mainTopics[0])}`
+        'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78), rgba(0,0,0, 0.69)), ${this.getBackgroundImage(this.topic)}`
       };
     },
     mainCardHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '75vh' : '85vh'
+          height: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '75vh' : '85vh'
         };
       }
       return {};
