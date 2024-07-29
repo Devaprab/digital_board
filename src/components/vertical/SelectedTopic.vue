@@ -1,6 +1,13 @@
 <template>
   <v-main class="main">
-    <div class="d-flex justify-content-end translate-card py-5">
+
+
+    <div class="topic-card  ">
+      <!-- <v-img src="@/assets/AksharamLogo.png" height="700" class="logo" alt="logo" max-height="700"></v-img> -->
+
+      <topic-card :Topics="Topics"></topic-card>
+    </div>
+    <div class="d-flex justify-content-end translate-card w-100">
       <v-btn class="text-capitalize" @click="toggleDtId" size="x-large" variant="outlined">
         <svg width="50" height="50" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g opacity="0.8">
@@ -10,13 +17,6 @@
         </svg>
         Translate</v-btn>
     </div>
-
-    <div class="topic-card  ">
-      <!-- <v-img src="@/assets/AksharamLogo.png" height="700" class="logo" alt="logo" max-height="700"></v-img> -->
-
-      <topic-card :Topics="Topics"></topic-card>
-    </div>
-
   </v-main>
 </template>
 
@@ -76,6 +76,7 @@ export default {
     background-size: cover;
    background-position: center;
     height: 100%;
+    padding-block:48px;
     /* margin: 0; */
 }
 .translate-card{
@@ -102,14 +103,19 @@ margin-bottom: 8%;
     background-size: cover;
    background-position: center;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     /* margin: 0; */
 }
 
-.topic-card, .translate-card{
+.topic-card{
   margin-inline: 4%;
   display: flex;                  
   flex-direction: row;        
   justify-content: center;
+  align-items: center;
   gap: 1.5rem;
   overflow-x: auto;
 }

@@ -5,24 +5,31 @@
         <h1 class="text-center text-wrap title-h1">
           {{topic.title}}</h1>
       </div>
-      <div class=" card mb-3">
-        <div class="main-card ps-1 py-1"
-          :style="{'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78),rgba(0,0,0, 0.69)),${getBackgroundImage(topic)}`}">
+      <div class=" card mb-3" :style="cardPortrait">
+        <div class="main-card ps-1 py-1" 
+          :style="[backgroundImageStyle, mainCardHeight]">
           <div class="d-flex justify-content-center arrow-up py-3">
             <v-icon color="darkgray" style="z-index: 100;" v-if="!isScrolledToTop || isScrolledToBottom"
-              class="mdi mdi-chevron-double-up" @click="scrollToTop"></v-icon>
+              class="mdi mdi-chevron-double-up scroll-up" @click="scrollToTop"></v-icon>
           </div>
-          <div class=" full-desc" @scroll="handleScroll">
+
+          <div class="empty-image" :style="dynamicStyle"></div>
+
+          <div class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
             <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
             <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >=1 " class="list">
               <ul v-for="sub in topic.combinedDataSubList" :key="sub.commonId" style="z-index: 2;"
                 class="list-unstyled my-0 ">
-                <li @click="goToSub(sub)" class="subtopics " style="font-size: 100%;"><v-icon
-                    class="mdi mdi-arrow-right arrow me-2 my-0" size="22"></v-icon>{{sub.title }}
+                <li @click="goToSub(sub)" class="subtopics mb-2" style="font-size: 100%;">
+                  <v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>
+
+                  {{sub.title }}
                   <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >=1" class="ms-5">
                     <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId" class="list-unstyled">
-                      <li style="font-size: 90%;" class="my-0" @click="goToSub2(top,$event)"><v-icon
-                          class="mdi mdi-arrow-right arrow2 me-2" size="18"></v-icon>{{ top.title }}</li>
+                      <li style="font-size: 100%;" class="my-0" @click="goToSub2(top,$event)">
+                        <v-icon
+                          class="mdi mdi-circle-small" size="20"></v-icon>
+                          {{ top.title }}</li>
                     </ul>
                   </div>
                 </li>
@@ -30,13 +37,13 @@
             </div>
           </div>
           <div class="d-flex justify-content-center arrow-down py-3">
-            <v-icon color="darkgray" style="z-index: 100;" class="mdi mdi-chevron-double-down"
+            <v-icon color="darkgray" style="z-index: 100;" class="mdi mdi-chevron-double-down scroll-down"
               v-if="(isScrolledToTop || !isScrolledToBottom) && hasScroll()" @click="scrollToBottom"></v-icon>
           </div>
         </div>
         <v-card class="carousel-wrapper bg-transparent" elevation="10"
           v-if="topic.imgDataList && topic.imgDataList.length > 0">
-          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="3000"
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
             :touch="true" style="" height="100%">
             <v-carousel-item @click="openDialog(index)" v-for="(image,index) in topic.imgDataList" :key="image.furl"
               class="sub-carousel image-box " cover :src="image.furl">
@@ -98,6 +105,42 @@ export default {
     },
     language() {
       return this.$store.getters.getLanguage;
+    },
+    dynamicStyle() {
+      if(window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '200px' : '50px'
+        }
+      } return {};
+    },
+    portraitHeight() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '58vh' : '76vh'
+        };
+      }
+      return {};
+    },
+    cardPortrait() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          bottom: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '2%' : '5%'
+        };
+      }
+      return {};
+    },
+    backgroundImageStyle() {
+      return {
+        'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78), rgba(0,0,0, 0.69)), ${this.getBackgroundImage(this.mainTopics[0])}`
+      };
+    },
+    mainCardHeight() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '75vh' : '85vh'
+        };
+      }
+      return {};
     }
   },
   mounted() {
@@ -167,14 +210,6 @@ export default {
     async goToTopic() {
       await this.$store.dispatch('getMainDetails', {language: this.language, item: this.mainTopics[0].commonId})
     },
-    // checkScrollPosition() {
-    //   const fullDescElement = document.querySelector('.full-desc');
-    //   if (fullDescElement) {
-    //     this.isScrolledToBottom = fullDescElement.scrollHeight <= fullDescElement.clientHeight + fullDescElement.scrollTop;
-    //   } else {
-    //     console.error('Element with class "full-desc" not found');
-    //   }
-    // },
     scrollToBottom() {
       const fullDescElement = document.querySelector('.full-desc');
       this.smoothScrollToBottom(fullDescElement);
@@ -358,6 +393,7 @@ export default {
 :deep(.carousel .v-btn){
   background-color: rgba(245, 245, 245, 0.447);
 }
+
 @media only screen and (orientation: portrait) {
   .topic-list {
     justify-content: center;
@@ -373,13 +409,19 @@ export default {
   margin-inline: auto;
   width: 80%;
   position: absolute;
-  bottom: 2%;
+  /* bottom: 2%; */
   left: 50%;
   transform: translateX(-50%);
 }
-
+.scroll-up{
+  position: absolute;
+  bottom: 500%;
+}
+/* .empty-image{
+  height: 200px;
+} */
 .main-card{
-  height: 75vh;
+  /* height: 75vh; */
   border-radius: 30px 30px 30px 30px;
 }
 .desc {
@@ -408,11 +450,12 @@ export default {
 }
 .full-desc{
   width: 90%;
-  height:43vh;
+  /* height:62vh; */
+  /* height: 58vh; */
   overflow-x:hidden;
-  position: absolute;
+  /* position: absolute; */
   overflow-y: scroll;
-  top: 25%;
+  /* top:25%; */
 }
 .arrow-down{
   position: absolute;
