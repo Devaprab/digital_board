@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <div class="topic-list">
       <div class="title">
@@ -46,9 +46,85 @@
       <v-img :src="selectedImage" contain></v-img>
     </v-dialog>
   </div>
+</template> -->
+
+<template>
+  <v-main>
+    <div class="topic-list">
+      <div class="title">
+        <h1 class="text-center text-wrap title-h1">
+          {{topic.title}}</h1>
+      </div>
+      <div class=" card mb-3">
+        <div class="main-card ps-1 py-1"
+          :style="{'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78),rgba(0,0,0, 0.69)),${getBackgroundImage(topic)}`}">
+          <div class="d-flex justify-content-center arrow-up py-3">
+            <v-icon color="darkgray" style="z-index: 100;" v-if="!isScrolledToTop || isScrolledToBottom"
+              class="mdi mdi-chevron-double-up" @click="scrollToTop"></v-icon>
+          </div>
+          <div class=" full-desc" @scroll="handleScroll">
+            <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
+          </div>
+          <div class="d-flex justify-content-center arrow-down py-3">
+            <v-icon color="darkgray" style="z-index: 100;" class="mdi mdi-chevron-double-down"
+              v-if="(isScrolledToTop || !isScrolledToBottom) && hasScroll()" @click="scrollToBottom"></v-icon>
+          </div>
+        </div>
+        <v-card class="carousel-wrapper bg-transparent" elevation="10"
+          v-if="topic.imgData2List && topic.imgData2List.length > 0">
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="3000"
+            :touch="true" style="" height="100%">
+            <v-carousel-item @click="openDialog(index)" v-for="(image,index) in topic.imgData2List" :key="image.furl"
+              class="sub-carousel image-box " cover :src="image.furl">
+            </v-carousel-item>
+          </v-carousel>
+          <v-dialog v-model="dialog" max-width="850" class="bg-grey-darken-4">
+            <v-card-text class="d-flex justify-content-end">
+              <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;"></v-icon>
+            </v-card-text>
+            <v-container class="d-flex justify-content-center align-items-center flex-column">
+              <!-- <v-card-text class="text-center my-2 fs-6">{{ selectedImage.description ?? '' }}</v-card-text>
+              <v-img :src="selectedImage.src" contain height="450" width="550"></v-img> -->
+              <v-carousel hide-delimiters class="carousel">
+                <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
+                  <v-container class="d-flex justify-content-center align-items-center flex-column">
+                    <v-card-text class="text-center my-2 fs-6">{{ image.description ?? '' }}</v-card-text>
+                    <v-img :src="image.furl" :alt="image.description??'no image'" contain height="450"
+                      width="550"></v-img>
+                  </v-container>
+                </v-carousel-item>
+              </v-carousel>
+            </v-container>
+          </v-dialog>
+        </v-card>
+      </div>
+      <div class="nav mb-3">
+        <v-btn icon="mdi-home" variant="outlined" elevation="10" class="home-btn"
+          @click="$router.push('/digitalBoard/detailsPage/firstSub'); "></v-btn>
+          <div class="subTitle">
+        <router-link to="/digitalBoard/detailsPage">
+          <v-btn prepend-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037" >{{ topic.title }}</v-btn>
+        </router-link>
+        <router-link to="/digitalBoard/detailsPage">
+          <v-btn append-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037">{{ topic.title }}</v-btn>
+        </router-link>
+      </div>
+        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
+          <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+            class="svg-icon">
+            <g opacity="1">
+              <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
+              <path class="svg-path" :d="path2" fill="#5D4037" />
+            </g>
+          </svg></v-card>
+      </div>
+    </div>
+
+  </v-main>
 </template>
 
 <script>
+import defaultImg from '@/assets/ancient.jpg';
 export default ({
     data() {
         return{
@@ -57,7 +133,9 @@ export default ({
             selImgArray : [],
             selectedImage: null,
       path1: this.$store.getters.getPath1,
-      path2: this.$store.getters.getPath2
+      path2: this.$store.getters.getPath2,
+      isScrolledToBottom: false,
+      isScrolledToTop: true
         }
     },
     computed: {
@@ -79,29 +157,31 @@ export default ({
     document.body.style.backgroundImage = ''
   },
     methods: {
-        getBackgroundImage(topic) {
-      const defaultImg = require('@/assets/ancient.jpg');
-      if (topic.imgData2List && topic.imgData2List.length > 0) {
-        const backgroundImage = topic.imgData2List[0].furl || '';
+      getBackgroundImage(topic) {
+      if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
+        const backgroundImage = topic.backgroundImgList[0].bgUrl || '';
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
     },
-    openDialog(imageSrc) {
-      this.selectedImage = imageSrc;
+    openDialog(index) {
+      
+      console.log(index)
+      console.log('grgr', Array.isArray(this.topic.imgData2List))
+      const imgData2List = this.topic.imgData2List
+      this.reorderedImages = [
+        ...imgData2List.slice(index),
+        ...imgData2List.slice(0, index)
+      ];
       this.dialog = true;
+      // this.selectedImage = {
+      //   src: src,
+      //   description: description
+      // };
+      // console.log(index)
+      // this.dialog = true;
     },
     
-    //     openDialog(imageSrc,imgArray) {
-    //   this.selectedImage = imageSrc;
-    //   this.selImgArray = imgArray;
-    //   console.log(this.selImgArray)
-    //   this.dialog = true;
-    // },
-    // slideTo(val) {
-    //   this.currentSlide = val
-    //   console.log('currenteSlide',this.selImgArray[this.currentSlide] )
-    // },
     extractName(fname) {
       const nameParts = fname.split('_').slice(1);
       
@@ -123,12 +203,61 @@ export default ({
     },
     async goToTopic() {
       await this.$store.dispatch('getSub2Details', { language: this.language, id: this.topic.ssCommonId })
-    }
+    },
+    scrollToBottom() {
+      const fullDescElement = document.querySelector('.full-desc');
+      this.smoothScrollToBottom(fullDescElement);
+    },
+    scrollToTop() {
+      const fullDescElement = document.querySelector('.full-desc');
+      this.smoothScrollToTop(fullDescElement);
+    },
+    smoothScrollToBottom(element) {
+      let scrollTop = element.scrollTop;
+      const targetScrollTop = element.scrollHeight;
+      const step = targetScrollTop / 55; 
+      const scrollInterval = setInterval(() => {
+        if (scrollTop < targetScrollTop) {
+          scrollTop += step;
+          element.scrollTop = scrollTop;
+        } else {
+          clearInterval(scrollInterval);
+        }
+      }, 10);
+      this.isScrolledToBottom = true;
+      
+    },
+    smoothScrollToTop(element) {
+      let scrollTop = element.scrollTop;
+      const targetScrollTop = 0; 
+      const step = scrollTop / 55; 
+      const scrollInterval = setInterval(() => {
+        if (scrollTop > targetScrollTop) {
+          scrollTop -= step;
+          element.scrollTop = scrollTop;
+        } else {
+          clearInterval(scrollInterval);
+        }
+      }, 10);
+      this.isScrolledToTop = true;
+    },
+    handleScroll() {
+      const fullDescElement = document.querySelector('.full-desc');
+      this.isScrolledToBottom = fullDescElement.scrollHeight <= fullDescElement.clientHeight + fullDescElement.scrollTop+ 0.9;
+      this.isScrolledToTop = fullDescElement.scrollTop === 0;
+    },
+    hasScroll() {
+      const fullDescElement = document.querySelector('.full-desc');
+      if (fullDescElement) {
+        return fullDescElement.scrollHeight > fullDescElement.clientHeight;
+      } else {
+        return false; 
+      }
+    },
     }
 })
 </script>
 <style scoped>
-
 @keyframes scaleUpDown {
   0%,
   100% {
@@ -148,7 +277,6 @@ export default ({
   }
 }
 @keyframes slide2 {
-
   0%,
   100% {
     transform: translate(0, 0);
@@ -158,8 +286,18 @@ export default ({
     transform: translate(5px, 0);
   }
 }
+@keyframes slideY {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(0, 5px);
+  }
+}
 .topic-list{
-  height: 100dvh;
+  height: 100vh;
   background: #e9e1d7;
   background-image: url('@/assets/cream.jpg');
   background-size: cover;
@@ -196,19 +334,12 @@ export default ({
   background-repeat: no-repeat;
   color: #ffffff;
 }
+
 .main-card li {
-  font-size: 120%;
+  font-size: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 500;
-  text-align: justify;
-}
-.desc {
-  width: 100%;
-  font-size: 110%;
-  line-height: 180%;
-  height: auto;
-  white-space: pre-wrap;
-  overflow-x: hidden;
+  font-weight: 400;
+  text-align: start;
 }
 .image-box {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
@@ -225,20 +356,24 @@ export default ({
   border: 1px solid #5D4037;
   animation: scaleUpDown 2s ease-in-out infinite;
   animation-delay: 0.8s;
+  background-color: transparent;
 }
 .home-btn {
   animation: scaleUpDown 2s ease-in-out infinite;
   animation-delay: 0.8s;
+  background-color: transparent;
+  color: #5D4037;
 }
 .subtopics {
   cursor: pointer;
-  font-size: 110%;
+  font-size: 100%;
   font-weight: 400;
 }
 .nav{
   display: flex;
   justify-content:space-between;
   align-items:center;
+  margin-inline: 5px;
 }
 .arrow{
   animation: slide 1s ease-in-out infinite;
@@ -248,24 +383,15 @@ export default ({
   animation: slide2 1s ease-in-out infinite;
   margin-left: 1px;
 }
-::-webkit-scrollbar,
-:deep(::-webkit-scrollbar) {
-  width: 5px;
-  height: auto;
+.arrow-down, .arrow-up{
+  animation: slideY 2s ease-in-out infinite;
+  animation-delay: .2s;
 }
-::-webkit-scrollbar-track,
-:deep(::-webkit-scrollbar-track) {
-  background: #272B25;
+::-webkit-scrollbar {
+  display: none;
 }
-::-webkit-scrollbar-thumb,
-:deep(::-webkit-scrollbar-thumb) {
-  background: #8D9387;
-  border-radius: 30px;
-}
-::-webkit-scrollbar-thumb:hover,
-:deep(::-webkit-scrollbar-thumb:hover) {
-  background: #f5eded;
-  cursor: pointer;
+:deep(.carousel .v-btn){
+  background-color: rgba(245, 245, 245, 0.447);
 }
 @media only screen and (orientation: portrait) {
   .topic-list {
@@ -276,18 +402,19 @@ export default ({
     margin-top: 2%;
     margin-bottom: 2%;
     position: absolute;
-    top: 5%; 
+    top: 2%; 
   }
 .card{
   margin-inline: auto;
   width: 80%;
   position: absolute;
-  bottom: 8%;
+  bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
 }
+
 .main-card{
-  height: 70dvh;
+  height: 75vh;
   border-radius: 30px 30px 30px 30px;
 }
 .desc {
@@ -316,10 +443,23 @@ export default ({
 }
 .full-desc{
   width: 90%;
-  height:90%;
+  height:43vh;
   overflow-x:hidden;
   position: absolute;
+  overflow-y: scroll;
   top: 25%;
+}
+.arrow-down{
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.arrow-up {
+  position: absolute;
+  top: 17%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 }
 @media only screen and (orientation: landscape) {
@@ -354,9 +494,19 @@ export default ({
 }
 .full-desc{
   width: 85%;
-  height:90%;
+  height:80%;
   overflow-x:hidden;
-  padding-inline: 10px;
+  padding-inline: 50px;
+  overflow-y: scroll;
+}
+.nav{
+  margin-inline: 45px; 
+  padding-right: 10px;
+}
+.subTitle{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
 }
 }
 </style>
