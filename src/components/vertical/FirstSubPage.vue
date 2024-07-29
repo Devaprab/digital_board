@@ -166,6 +166,42 @@ export default ({
         subTitle() {
             return this.$store.getters.getFirstSubTitle;
         },
+        dynamicStyle() {
+      if(window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '200px' : '50px'
+        }
+      } return {};
+    },
+    portraitHeight() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '58vh' : '76vh'
+        };
+      }
+      return {};
+    },
+    cardPortrait() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          bottom: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '2%' : '5%'
+        };
+      }
+      return {};
+    },
+    backgroundImageStyle() {
+      return {
+        'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78), rgba(0,0,0, 0.69)), ${this.getBackgroundImage(this.mainTopics[0])}`
+      };
+    },
+    mainCardHeight() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '75vh' : '85vh'
+        };
+      }
+      return {};
+    }
     },
     mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
@@ -417,6 +453,7 @@ export default ({
 :deep(.carousel .v-btn){
   background-color: rgba(245, 245, 245, 0.447);
 }
+
 @media only screen and (orientation: portrait) {
   .topic-list {
     justify-content: center;
@@ -432,13 +469,19 @@ export default ({
   margin-inline: auto;
   width: 80%;
   position: absolute;
-  bottom: 2%;
+  /* bottom: 2%; */
   left: 50%;
   transform: translateX(-50%);
 }
-
+.scroll-up{
+  position: absolute;
+  bottom: 500%;
+}
+/* .empty-image{
+  height: 200px;
+} */
 .main-card{
-  height: 75vh;
+  /* height: 75vh; */
   border-radius: 30px 30px 30px 30px;
 }
 .desc {
@@ -467,11 +510,12 @@ export default ({
 }
 .full-desc{
   width: 90%;
-  height:43vh;
+  /* height:62vh; */
+  /* height: 58vh; */
   overflow-x:hidden;
-  position: absolute;
+  /* position: absolute; */
   overflow-y: scroll;
-  top: 25%;
+  /* top:25%; */
 }
 .arrow-down{
   position: absolute;
@@ -534,3 +578,4 @@ export default ({
 }
 }
 </style>
+
