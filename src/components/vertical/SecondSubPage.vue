@@ -176,7 +176,7 @@
       </div>
       <div class="nav mb-3">
         <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
-          @click="$router.push('/digitalBoard/detailsPage'); "></v-btn>
+          @click="$router.push('/digitalBoard/detailsPage/firstSub'); "></v-btn>
           <!-- <div class="subTitle">
         <router-link to="/digitalBoard/detailsPage">
           <v-btn prepend-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037" >{{ topic.title }}</v-btn>
