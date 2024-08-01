@@ -36,7 +36,7 @@
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
             :touch="true" style="" height="100%">
             <v-carousel-item @click="openDialog(index)" v-for="(image,index) in topic.imgDataList" :key="image.furl"
-              class="sub-carousel image-box " cover :src="image.furl">
+              class="sub-carousel image-box "  :src="image.furl">
             </v-carousel-item>
           </v-carousel>
           <v-dialog v-model="dialog" max-width="850" class="bg-grey-darken-4">
@@ -46,7 +46,7 @@
             <v-container class="d-flex justify-content-center align-items-center flex-column">
               <!-- <v-card-text class="text-center my-2 fs-6">{{ selectedImage.description ?? '' }}</v-card-text>
               <v-img :src="selectedImage.src" contain height="450" width="550"></v-img> -->
-              <v-carousel hide-delimiters class="carousel">
+              <v-carousel hide-delimiters class="carousel" :show-arrows="topic.imgDataList && topic.imgDataList.length > 1">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
                   <v-container class="d-flex justify-content-center align-items-center flex-column">
                     <v-card-text class="text-center my-2 fs-6">{{ image.description ?? '' }}</v-card-text>

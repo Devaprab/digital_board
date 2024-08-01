@@ -61,7 +61,7 @@ export default {
             fsCommonId: subItem.fsCommonId
           }));
           commit('setSubFirstTitle', subTopics)
-          // console.log(subTopics)
+          console.log("Sub", subTopics)
           return true;
         }
       } catch (error) {
