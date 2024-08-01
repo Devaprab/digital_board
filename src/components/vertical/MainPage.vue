@@ -10,7 +10,7 @@
           :style="[backgroundImageStyle, mainCardHeight]">
           <div class="d-flex justify-content-center arrow-up py-3">
             <v-icon color="darkgray" style="z-index: 100;" v-if="!isScrolledToTop || isScrolledToBottom"
-              class="mdi mdi-chevron-double-up scroll-up" @click="scrollToTop"></v-icon>
+              class="mdi mdi-chevron-double-up scroll-up" @click="scrollToTop" :style="scrollStyle"></v-icon>
           </div>
           <div class="empty-image" :style="dynamicStyle"></div>
           <div class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
@@ -114,7 +114,8 @@ export default {
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '58vh' : '76vh'
+          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '54vh' : '76vh',
+          marginTop: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '8%': '0.5%'
         };
       }
       return {
@@ -146,6 +147,15 @@ export default {
       return {
         borderRadius: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '0px 30px 30px 0px' : '30px',
       };
+    },
+    scrollStyle() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          position: 'absolute',
+          top: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '1' : '-630%'
+        };
+      }
+      return {}
     }
   },
   mounted() {
@@ -418,10 +428,10 @@ export default {
   left: 50%;
   transform: translateX(-50%);
 }
-.scroll-up{
-  position: absolute;
-  bottom: 500%;
-}
+/* .scroll-up{
+ 
+  bottom: 630%;
+} */
 /* .empty-image{
   height: 200px;
 } */
@@ -511,6 +521,7 @@ export default {
   overflow-x:hidden;
   padding-inline: 50px;
   overflow-y: scroll;
+ 
 }
 .nav{
   margin-inline: 45px; 

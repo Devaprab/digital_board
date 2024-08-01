@@ -6,11 +6,10 @@
           {{topic.title}}</h1>
       </div>
       <div class=" card mb-3" :style="cardPortrait">
-        <div class="main-card ps-1 py-1" 
-          :style="[backgroundImageStyle, mainCardHeight]">
+        <div class="main-card ps-1 py-1" :style="[backgroundImageStyle, mainCardHeight]">
           <div class="d-flex justify-content-center arrow-up py-3">
             <v-icon color="darkgray" style="z-index: 100;" v-if="!isScrolledToTop || isScrolledToBottom"
-              class="mdi mdi-chevron-double-up scroll-up" @click="scrollToTop"></v-icon>
+              class="mdi mdi-chevron-double-up scroll-up" @click="scrollToTop" :style="scrollStyle"></v-icon>
           </div>
 
           <div class="empty-image" :style="dynamicStyle"></div>
@@ -36,7 +35,7 @@
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
             :touch="true" style="" height="100%">
             <v-carousel-item @click="openDialog(index)" v-for="(image,index) in topic.imgDataList" :key="image.furl"
-              class="sub-carousel image-box "  :src="image.furl">
+              class="sub-carousel image-box " :src="image.furl">
             </v-carousel-item>
           </v-carousel>
           <v-dialog v-model="dialog" max-width="100%" class="bg-grey-darken-4">
@@ -46,13 +45,14 @@
             <v-container class="d-flex justify-content-center align-items-center flex-column">
               <!-- <v-card-text class="text-center my-2 fs-6">{{ selectedImage.description ?? '' }}</v-card-text>
               <v-img :src="selectedImage.src" contain height="450" width="550"></v-img> -->
-              <v-carousel hide-delimiters class="carousel" :show-arrows="topic.imgDataList && topic.imgDataList.length > 1">
+              <v-carousel hide-delimiters class="carousel"
+                :show-arrows="topic.imgDataList && topic.imgDataList.length > 1">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
                   <v-container class="d-flex justify-content-center align-items-center flex-column">
-                    
+
                     <v-img :src="image.furl" :alt="image.description??'no image'" contain height="350"
                       width="100%"></v-img>
-                      <v-card-text class="text-center my-2 fs-6">{{ image.description ?? '' }}</v-card-text>
+                    <v-card-text class="text-center my-2 fs-6">{{ image.description ?? '' }}</v-card-text>
                   </v-container>
                 </v-carousel-item>
               </v-carousel>
@@ -63,8 +63,8 @@
       <div class="nav mb-3">
         <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
           @click="$router.push('/digitalBoard/detailsPage'); "></v-btn>
-          <div class="subTitle" v-for="sub in subTitle" :key="sub.commonId">
-            <!-- <v-speed-dial
+        <div class="subTitle" v-for="sub in subTitle" :key="sub.commonId">
+          <!-- <v-speed-dial
   location="bottom center"
   transition="fade-transition"
 >
@@ -80,13 +80,13 @@
   </div>
   
 </v-speed-dial> -->
-        <router-link to="/digitalBoard/detailsPage">
-          <v-btn  variant="outlined" elevation="10" color="#5D4037" >{{ sub.title }}</v-btn>
-        </router-link>
-        <!-- <router-link to="/digitalBoard/detailsPage">
+          <router-link to="/digitalBoard/detailsPage">
+            <v-btn variant="outlined" elevation="10" color="#5D4037">{{ sub.title }}</v-btn>
+          </router-link>
+          <!-- <router-link to="/digitalBoard/detailsPage">
           <v-btn append-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037">{{ topic.title }}</v-btn>
         </router-link> -->
-      </div> 
+        </div>
         <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
@@ -134,7 +134,8 @@ export default ({
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '58vh' : '76vh'
+          height: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '54vh' : '76vh',
+          marginTop: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '8%' : '0.5%'
         };
       }
       return {};
@@ -149,6 +150,15 @@ export default ({
         width: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '80%' : '90%',
         marginInline: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '0' : 'auto'
       };
+      },
+    scrollStyle() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return {
+          position: 'absolute',
+          top: this.topic.imgDataList && this.topic.imgDataList.length > 0 ? '1' : '-630%'
+        };
+      }
+      return {}
     },
     backgroundImageStyle() {
       return {
@@ -280,24 +290,31 @@ export default ({
 
 <style scoped>
 @keyframes scaleUpDown {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
 }
+
 @keyframes slide {
+
   0%,
   100% {
     transform: translate(0, 0);
   }
+
   50% {
     transform: translate(7px, 0);
   }
 }
+
 @keyframes slide2 {
+
   0%,
   100% {
     transform: translate(0, 0);
@@ -307,7 +324,9 @@ export default ({
     transform: translate(5px, 0);
   }
 }
+
 @keyframes slideY {
+
   0%,
   100% {
     transform: translate(0, 0);
@@ -317,7 +336,8 @@ export default ({
     transform: translate(0, 5px);
   }
 }
-.topic-list{
+
+.topic-list {
   height: 100vh;
   background: #e9e1d7;
   background-image: url('@/assets/cream.jpg');
@@ -329,20 +349,24 @@ export default ({
   flex-direction: column;
   justify-content: center;
 }
-.title{
+
+.title {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.title-h1{
+
+.title-h1 {
   color: #1c1405;
   font-size: 200%;
   font-weight: 700;
 }
-.card{
+
+.card {
   background-color: transparent;
   border: none;
 }
+
 .main-card {
   border-radius: 0px 30px 30px 0px;
   width: 100%;
@@ -362,56 +386,69 @@ export default ({
   font-weight: 400;
   text-align: start;
 }
+
 .image-box {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   border: 2px solid rgb(247, 236, 194);
 }
+
 :deep(.carousel-wrapper .v-btn) {
   background-color: transparent;
 }
+
 .sub-carousel {
   width: 100%;
   height: 100%;
 }
+
 .translate-btn {
   border: 1px solid #5D4037;
   animation: scaleUpDown 2s ease-in-out infinite;
   animation-delay: 0.8s;
   background-color: transparent;
 }
+
 .home-btn {
   animation: scaleUpDown 2s ease-in-out infinite;
   animation-delay: 0.8s;
   background-color: transparent;
   color: #5D4037;
 }
+
 .subtopics {
   cursor: pointer;
   font-size: 100%;
   font-weight: 400;
 }
-.nav{
+
+.nav {
   display: flex;
-  justify-content:space-between;
-  align-items:center;
+  justify-content: space-between;
+  align-items: center;
   margin-inline: 5px;
 }
-.arrow{
+
+.arrow {
   animation: slide 1s ease-in-out infinite;
-    margin-left: 9px;
+  margin-left: 9px;
 }
-.arrow2{
+
+.arrow2 {
   animation: slide2 1s ease-in-out infinite;
   margin-left: 1px;
 }
-.arrow-down, .arrow-up{
+
+.arrow-down,
+.arrow-up {
   animation: slideY 2s ease-in-out infinite;
   animation-delay: .2s;
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
-:deep(.carousel .v-btn){
+
+:deep(.carousel .v-btn) {
   background-color: rgba(245, 245, 245, 0.447);
 }
 
@@ -420,125 +457,137 @@ export default ({
     justify-content: center;
     position: relative;
   }
-  .title h1{
+
+  .title h1 {
     margin-top: 2%;
     margin-bottom: 2%;
     position: absolute;
-    top: 2%; 
+    top: 2%;
   }
-.card{
-  margin-inline: auto;
-  width: 80%;
-  position: absolute;
-  /* bottom: 2%; */
-  left: 50%;
-  transform: translateX(-50%);
-}
-.scroll-up{
-  position: absolute;
-  bottom: 500%;
-}
-/* .empty-image{
+
+  .card {
+    margin-inline: auto;
+    width: 80%;
+    position: absolute;
+    /* bottom: 2%; */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* .scroll-up{
+ 
+  bottom: 630%;
+} */
+  /* .empty-image{
   height: 200px;
 } */
-.main-card{
-  /* height: 75vh; */
-  border-radius: 30px 30px 30px 30px;
-}
-.desc {
-  aspect-ratio: 1107 / 600;
-}
-.carousel-wrapper {
-  aspect-ratio: 813/650;
-  position: absolute;
-  left: 13%;
-  top: -14%;
-  width: 75%;
-  height: 32%;
-}
-.carousel__item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.carousel-image {
-  width: 95%;
-  aspect-ratio: 1;
-}
-:deep(.description), .list{
-  font-size: 110%;
-  padding-left: 25px;
-}
-.full-desc{
-  width: 90%;
-  /* height:62vh; */
-  /* height: 58vh; */
-  overflow-x:hidden;
-  /* position: absolute; */
-  overflow-y: scroll;
-  /* top:25%; */
-}
-.arrow-down{
-  position: absolute;
-  bottom: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.arrow-up {
-  position: absolute;
-  top: 17%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-}
-@media only screen and (orientation: landscape) {
-.card{
-  width: 80%;
-  position: relative;
-}
-.main-card {
-  height: 80vh;
- 
-}
-.carousel-wrapper {
-  aspect-ratio: 813/650;
-  position: absolute;
-  left: 84%;
-  top: 15%;
-  width: 40%;
-  height:70%
-}
-.carousel__item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.carousel-image {
-  width: 95%;
-  aspect-ratio: 1;
+  .main-card {
+    /* height: 75vh; */
+    border-radius: 30px 30px 30px 30px;
+  }
+
+  .desc {
+    aspect-ratio: 1107 / 600;
+  }
+
+  .carousel-wrapper {
+    aspect-ratio: 813/650;
+    position: absolute;
+    left: 13%;
+    top: -14%;
+    width: 75%;
+    height: 32%;
+  }
+
+  .carousel__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carousel-image {
+    width: 95%;
+    aspect-ratio: 1;
+  }
+
+  :deep(.description),
+  .list {
+    font-size: 110%;
+    padding-left: 25px;
+  }
+
+  .full-desc {
+    width: 90%;
+    /* height:62vh; */
+    /* height: 58vh; */
+    overflow-x: hidden;
+    /* position: absolute; */
+    overflow-y: scroll;
+    /* top:25%; */
+  }
+
+  .arrow-down {
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .arrow-up {
+    position: absolute;
+    top: 17%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
-:deep(.description){
-  font-size: 110%; 
-}
-.full-desc{
-  width: 85%;
-  height:80%;
-  overflow-x:hidden;
-  padding-inline: 50px;
-  overflow-y: scroll;
-}
-.nav{
-  margin-inline: 45px; 
-  padding-right: 10px;
-}
-.subTitle{
-  display: flex;
-  justify-content:start;
-  align-items:center;
-  gap: 10px;
-  /* width: 75%; */
-}
+@media only screen and (orientation: landscape) {
+  .card {
+    width: 80%;
+    position: relative;
+  }
+
+  .main-card {
+    height: 80vh;
+
+  }
+
+  .carousel-wrapper {
+    aspect-ratio: 813/650;
+    position: absolute;
+    left: 84%;
+    top: 15%;
+    width: 40%;
+    height: 70%
+  }
+
+  .carousel__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carousel-image {
+    width: 95%;
+    aspect-ratio: 1;
+  }
+
+  :deep(.description) {
+    font-size: 110%;
+  }
+
+  .full-desc {
+    width: 85%;
+    height: 80%;
+    overflow-x: hidden;
+    padding-inline: 50px;
+    overflow-y: scroll;
+
+  }
+
+  .nav {
+    margin-inline: 45px;
+    padding-right: 10px;
+  }
 }
 </style>
-

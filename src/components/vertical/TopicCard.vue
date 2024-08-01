@@ -214,7 +214,7 @@ export default {
  }
  @media only screen and (orientation: portrait) {
   .image-container {
-      height: 300px;
+      height: 250px;
       width: 100%;
       padding: 10px;
       padding-top: 0;
@@ -231,7 +231,7 @@ export default {
            
          }
   .description-container {
-      height:70%;
+      height:64%;
       width: 90%;
       
     }

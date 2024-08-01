@@ -82,10 +82,9 @@ export default {
     justify-content: center;
 
 }
-.translate-card{
+/* .translate-card{
  padding-bottom: 50px;
-
-}
+} */
 .topic-card{
   margin-inline: 4%;
   display: flex;                  
