@@ -63,30 +63,16 @@
       <div class="nav mb-3">
         <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
           @click="$router.push('/digitalBoard/detailsPage'); "></v-btn>
-        <div class="subTitle" v-for="sub in subTitle" :key="sub.commonId">
-          <!-- <v-speed-dial
-  location="bottom center"
-  transition="fade-transition"
->
-  <template v-slot:activator="{ props: activatorProps }">
-    <v-fab class="nav"
-      v-bind="activatorProps"
-      size="large"
-      icon="mdi mdi-menu"
-    ></v-fab>
-  </template>
-  <div v-for="sub in subTitle" :key="sub.commonId">
-  <v-btn key="1" @click="goToSub(sub)" >{{ sub.title }}</v-btn>
-  </div>
-  
-</v-speed-dial> -->
-          <router-link to="/digitalBoard/detailsPage">
-            <v-btn variant="outlined" elevation="10" color="#5D4037">{{ sub.title }}</v-btn>
-          </router-link>
+        <v-sheet class="subTitle bg-transparent" max-width="1100" >
           <!-- <router-link to="/digitalBoard/detailsPage">
-          <v-btn append-icon="mdi mdi-menu-right-outline" variant="outlined" elevation="10" color="#5D4037">{{ topic.title }}</v-btn>
-        </router-link> -->
-        </div>
+            <v-btn variant="outlined" elevation="10" color="#5D4037">{{ sub.title }}</v-btn>
+          </router-link> -->
+          <v-slide-group>
+            <v-slide-group-item v-for="(sub) in subTitle" :key="sub.commonId" v-slot="{isSelected, btnToggle}">
+              <v-btn class="ma-2" variant="outlined" elevation="10" :color="isSelected?'#5D4037' : undefined" @click="btnToggle">{{ sub.title }}</v-btn>
+            </v-slide-group-item>
+          </v-slide-group>
+        </v-sheet>
         <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
