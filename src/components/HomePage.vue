@@ -3,7 +3,6 @@
     <header class=" pt-3 d-flex justify-content-between mx-5">
       <h3 class=" select-topic text-uppercase">Select Topics</h3>
     </header>
-
     <div class="topic-list-display">
       <div class="d-flex align-items-center py-1" v-for="(topic, index) in topics" :key="index"
         style="width: fit-content;">
@@ -14,7 +13,6 @@
         </div>
       </div>
     </div>
-
     <div class="submit-btn w-100">
       <v-card class="translate-btn text-capitalize p-2 rounded-5" width="50" height="50" @click="toggleDtId">
         <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
@@ -23,8 +21,8 @@
             <path class="svg-path" :d="path2" fill="#5D4037" />
           </g>
         </svg></v-card>
-      <v-card color="#004D40" width="50" height="50" class="submit rounded-5" :disabled="selectedTopics.length===0"> <v-icon size="50"
-          @click="submitSelection">mdi-menu-right</v-icon></v-card>
+      <v-card color="#004D40" width="50" height="50" class="submit rounded-5" :disabled="selectedTopics.length === 0">
+        <v-icon size="50" @click="submitSelection">mdi-menu-right</v-icon></v-card>
     </div>
   </v-main>
 </template>
@@ -130,10 +128,10 @@ export default {
   width: 100%;
   position: relative;
 }
-.topic-list-display{
+.topic-list-display {
   display: flex;
   margin-left: 45px;
-  flex-direction: column; 
+  flex-direction: column;
   justify-content: start;
   flex-wrap: wrap;
   overflow-x: auto;
@@ -159,7 +157,6 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.571);
   border-radius: 0 0px 40px 0;
 }
-
 .highlighted {
   transform: scale(1.1);
   margin-left: 5%;
@@ -167,7 +164,7 @@ export default {
   border: 3px solid rgb(232, 229, 187);
   box-shadow: 0 4px 8px rgba(58, 10, 10, 0.362);
   background-image: linear-gradient(to bottom, rgba(33, 31, 7, 0.889), rgba(96, 82, 4, 0.668)),
-    url('@/assets/green.png');
+  url('@/assets/green.png');
 }
 .topics {
   font-size: 16px;
@@ -179,15 +176,12 @@ export default {
   color: #f7f4d3 !important;
   border: 2px solid #40584284;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-  /* margin-top: 15px; */
 }
 .svg-path {
   fill: #1B5E20 !important;
 }
 .submit {
   margin-bottom: 30px;
-  /* animation: scale-up 2s ease-in-out infinite;
-  animation-delay: .5s; */
   border: 2px solid #40584284;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
@@ -211,17 +205,16 @@ export default {
   top: 90%;
   right: 1%;
   padding-top: 5px;
-  /* right: 5%; */
 }
-@media only screen and (orientation: portrait){
-.topic-list-display{
-  flex-wrap: nowrap;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: 2%;
-}
-.submit-btn{
-  right: 2%;
-}
+@media only screen and (orientation: portrait) {
+  .topic-list-display {
+    flex-wrap: nowrap;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-left: 2%;
+  }
+  .submit-btn {
+    right: 2%;
+  }
 }
 </style>

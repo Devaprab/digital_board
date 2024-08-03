@@ -12,7 +12,8 @@
             <path :d="path2" fill="#1b1008" />
           </g>
         </svg>
-        Translate</v-btn>
+        Translate
+      </v-btn>
     </div>
   </v-main>
 </template>
@@ -29,7 +30,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSelectedTopics','getSelectedCommonIds','getLanguage']),
+    ...mapGetters(['getSelectedTopics', 'getSelectedCommonIds', 'getLanguage']),
     Topics() {
       return this.getSelectedTopics;
     },
@@ -40,7 +41,6 @@ export default {
       return this.getSelectedCommonIds;
     }
   },
- 
   methods: {
     async toggleDtId() {
       if (this.language === 1) {
@@ -52,9 +52,8 @@ export default {
         language: this.language,
         selectedTopics: this.commonId
       }
-      console.log('Selected topics:', payload);
       try {
-        await this.$store.dispatch('selectedTopics', payload) 
+        await this.$store.dispatch('selectedTopics', payload)
       }
       catch (error) {
         console.error(error)
@@ -63,43 +62,38 @@ export default {
   }
 }
 </script>
-<style scoped>
 
-.translate-card .btn-style{
+<style scoped>
+.translate-card .btn-style {
   border: 2px solid #2a1a0e;
 }
 @media only screen and (orientation: portrait) {
-  .main{
-  background: #FDFAF6;
-  background-image: url('@/assets/noise.svg');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  padding-block:48px;
-  display: flex;
+  .main {
+    background: #FDFAF6;
+    background-image: url('@/assets/noise.svg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    padding-block: 48px;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+  }
+  .topic-card {
+    margin-inline: 4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
-/* .translate-card{
- padding-bottom: 50px;
-} */
-.topic-card{
-  margin-inline: 4%;
-  display: flex;                  
-  flex-direction: column;      
-  justify-content: center;
-  align-items: center;
-}
-}
-
 @media only screen and (orientation: landscape) {
-  .main{
-  background: #FDFAF6;
-  background-image: url('@/assets/noise.svg');
+  .main {
+    background: #FDFAF6;
+    background-image: url('@/assets/noise.svg');
     background-size: cover;
-   background-position: center;
+    background-position: center;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -107,32 +101,22 @@ export default {
     justify-content: center;
     padding: 48px;
     position: relative;
-    /* margin: 0; */
+  }
+  .topic-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    width: 95vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-block: 55px;
+  }
+  .translate-card {
+    position: absolute;
+    bottom: 3%;
+    right: 3%;
+  }
 }
-
-.topic-card{
-  /* margin-inline: 4%; */
-  display: flex;                  
-  flex-direction: row;        
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-  width: 95vw;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-block: 55px ;
-}
-.translate-card{
-  position: absolute;
-  bottom: 3%;
-  right: 3%;
-}
-/* .topic-card{
-  height: 90%;
-} */
-/* .logo{
-margin-bottom: 8%;
-} */
-}
-
 </style>

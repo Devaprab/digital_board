@@ -4,6 +4,45 @@
   </v-app>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      inactivityTimeout: null,
+      inactivityDuration: 100000, // 30 seconds
+    };
+  },
+  methods: {
+    resetInactivityTimeout() {
+      if (this.inactivityTimeout) {
+        clearTimeout(this.inactivityTimeout);
+      }
+      this.inactivityTimeout = setTimeout(this.handleInactivity, this.inactivityDuration);
+    },
+    handleInactivity() {
+      this.$router.push('/digitalBoard/selectedTopics');
+    },
+  },
+  mounted() {
+    this.resetInactivityTimeout();
+    document.addEventListener('touchstart', this.resetInactivityTimeout);
+    document.addEventListener('mousemove', this.resetInactivityTimeout);
+    document.addEventListener('mousedown', this.resetInactivityTimeout);
+    document.addEventListener('keydown', this.resetInactivityTimeout);
+    document.addEventListener('scroll', this.resetInactivityTimeout);
+  },
+  beforeUnmount() {
+    document.removeEventListener('touchstart', this.resetInactivityTimeout);
+    document.removeEventListener('mousemove', this.resetInactivityTimeout);
+    document.removeEventListener('mousedown', this.resetInactivityTimeout);
+    document.removeEventListener('keydown', this.resetInactivityTimeout);
+    document.removeEventListener('scroll', this.resetInactivityTimeout);
+    if (this.inactivityTimeout) {
+      clearTimeout(this.inactivityTimeout);
+    }
+  },
+};
+</script>
 <style>
 *{
   margin: 0;
