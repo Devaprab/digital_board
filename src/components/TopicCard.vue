@@ -52,7 +52,7 @@ export default {
         const response = await this.$store.dispatch('getMainDetails', payload)
 
         if (response) {
-          this.$router.push({ name: 'detailsPage-portrait' })
+          this.$router.push({ name: 'detailsPage' })
         }
       } catch (error) {
         console.error(error);

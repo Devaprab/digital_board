@@ -4,27 +4,27 @@ const route = createRouter({
     routes: [
       {
         path: '/digitalBoard',
-        name: 'home-portrait',
+        name: 'home',
         component: () => import("./components/HomePage.vue")
       },
       {
         path: '/digitalBoard/selectedTopics',
-        name: 'card-portrait',
+        name: 'card',
         component: () => import("./components/SelectedTopic.vue")
       },
       {
         path: '/digitalBoard/detailsPage',
-        name: 'detailsPage-portrait',
+        name: 'detailsPage',
         component: () => import("./components/MainPage.vue")
       },
       {
         path: '/digitalBoard/detailsPage/firstSub',
-        name: 'subPage-portrait',
+        name: 'subPage',
         component: () => import("./components/FirstSubPage.vue")
       },
       {
         path: '/digitalBoard/detailsPage/secondSub',
-        name: 'sub2Page-portrait',
+        name: 'sub2Page',
         component: () => import("./components/SecondSubPage.vue")
       },
     ],

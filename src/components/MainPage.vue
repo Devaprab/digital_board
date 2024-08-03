@@ -196,12 +196,12 @@ export default {
     },
     goToSub(topic) {
       this.$store.commit('setFirstSub', topic);
-      this.$router.push({ name: 'subPage-portrait' });
+      this.$router.push({ name: 'subPage' });
     },
     goToSub2(topic, event) {
       event.stopPropagation();
       this.$store.commit('setSecondSub', topic);
-      this.$router.push({ name: 'sub2Page-portrait' });
+      this.$router.push({ name: 'sub2Page' });
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {

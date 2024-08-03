@@ -187,7 +187,7 @@ export default ({
   methods: {
     goToSub(topic) {
       this.$store.commit('setSecondSub', topic);
-      this.$router.push({ name: 'sub2Page-portrait' });
+      this.$router.push({ name: 'sub2Page' });
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
