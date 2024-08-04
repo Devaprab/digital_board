@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       inactivityTimeout: null,
-      inactivityDuration: 30000,
+      inactivityDuration: 60000,
     };
   },
   methods: {
@@ -20,9 +20,7 @@ export default {
       this.inactivityTimeout = setTimeout(this.handleInactivity, this.inactivityDuration);
     },
     handleInactivity() {
-      if (this.$route.path === '/digitalBoard/') {
-        console.log('hello');
-      } else {
+      if (this.$route.path != '/digitalBoard/') {
         this.$router.push('/digitalBoard/selectedTopics');
       }
     },

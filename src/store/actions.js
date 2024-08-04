@@ -5,12 +5,12 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getMainComplete?dtId=${payload}`);
         if (response.status >= 200 || response.status < 300) {
-          // console.log(response.data);
-            commit('setAllTopics', response.data);
+          const filteredData = response.data.filter(item => item.commonId !== null ) 
+          // console.log(filteredData);
+            commit('setAllTopics', filteredData);
         }
       } catch (error) {
-        console.log(error.message);
-        console.error(error);
+        throw Error(error);
       }
   },
   //setting selected topics details
@@ -65,8 +65,7 @@ export default {
           return true;
         }
       } catch (error) {
-        console.log(error.message);
-        console.error(error);
+        throw Error(error);
       }
   },
   //First Sub Details

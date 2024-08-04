@@ -1,12 +1,23 @@
 <template>
-  <v-card v-for="topic in Topics" :key="topic.uId" class="image-container" :style="{
+  <v-skeleton-loader type="card" v-if="loadingTopic" width="100%" color="transparent"></v-skeleton-loader>
+  <v-card v-for="topic in Topics" :key="topic.uId" class="image-container" v-else
+    :style="{
     'background-image': `radial-gradient(circle at center center, rgba(28,27,27, 0.78),rgba(0,0,0, 0.69)), ${getBackgroundImage(topic)}`}">
     <div v-if="topic" class="image-details" @click="goToTopic(topic[0].commonId)">
       <h1 class="image-title">{{ topic[0].title }}</h1>
       <v-divider class="divider"></v-divider>
       <div class="description-container">
-        <p v-html="topic[0].description"></p>
+        <p v-html="topic[0].description??''" v-if="topic[0].description && topic[0].description.length > 10"></p>
+        <div
+          v-if=" topic[0].description && topic[0].description.length < 10 && topic[0].combinedDataSubList &&
+          topic[0].combinedDataSubList.length> 0">
+        <ul v-for="sub in topic[0].combinedDataSubList" :key="sub.fsCommonId">
+          <li>
+            {{ sub.title }}
+          </li>
+        </ul>
       </div>
+    </div>
     </div>
     <div @click="goToTopic(topic[0].commonId)" class="d-flex scrollright-container justify-content-end ">
       <p class="read-more mt-3 me-4" style="font-size: 18px;">Read More...</p>
@@ -28,6 +39,11 @@ export default {
       type: Array,
       required: true,
       default: () => []
+    }, 
+    loadingTopic: {
+      type: Boolean,
+      required: true,
+      default: () => false
     }
   },
   computed: {

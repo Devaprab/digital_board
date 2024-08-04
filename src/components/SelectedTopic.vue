@@ -1,7 +1,7 @@
 <template>
   <v-main class="main">
     <div class="topic-card ">
-      <topic-card :Topics="Topics"></topic-card>
+      <topic-card :Topics="Topics" :loadingTopic="loadTopic"></topic-card>
     </div>
     <div class="d-flex justify-content-end translate-card w-100">
       <v-btn class="text-capitalize btn-style" @click="toggleDtId" size="large" variant="tonal" elevation="10" rounded
@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       path1: this.$store.getters.getPath1,
-      path2: this.$store.getters.getPath2
+      path2: this.$store.getters.getPath2,
+      loadTopic: false
     }
   },
   computed: {
@@ -53,9 +54,14 @@ export default {
         selectedTopics: this.commonId
       }
       try {
-        await this.$store.dispatch('selectedTopics', payload)
+        this.loadTopic = true;
+        const res = await this.$store.dispatch('selectedTopics', payload)
+        if (res) {
+          this.loadTopic = false;
+        }
       }
       catch (error) {
+        this.loadTopic = false;
         console.error(error)
       }
     },
