@@ -18,11 +18,14 @@
     "vue3-carousel": "^0.3.3",
     "vuetify": "^3.0.0-beta.0",
     "vuex": "^4.0.2",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@types/eslint": "^9.6.0",
+    "@types/ws": "^8.5.12",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
