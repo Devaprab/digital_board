@@ -85,7 +85,7 @@ export default {
             description: description[imageName]
             };
           });
-          console.log(response.data)
+          console.log('sub',response.data)
           commit('setFirstSub', response.data[0])
           return true;
         }
@@ -111,6 +111,7 @@ export default {
             description: description[imageName]
             };
           });
+          console.log('sub2',response.data)
           commit('setSecondSub', response.data[0])
           return true;
         }

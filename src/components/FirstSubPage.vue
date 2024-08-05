@@ -79,14 +79,14 @@
         <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
           @click="$router.push('/digitalBoard/detailsPage');"></v-btn>
         <!--Showing other subheadings  -->
-        <v-sheet class="subTitle bg-transparent" max-width="1100">
+        <!-- <v-sheet class="subTitle bg-transparent" max-width="1100">
           <v-slide-group>
             <v-slide-group-item v-for="(sub) in subTitle" :key="sub.commonId" v-slot="{ isSelected, btnToggle }">
               <v-btn class="ma-2" variant="outlined" elevation="10" :color="isSelected ? '#5D4037' : undefined"
                 @click="btnToggle">{{ sub.title }}</v-btn>
             </v-slide-group-item>
           </v-slide-group>
-        </v-sheet>
+        </v-sheet> -->
         <!-- Translate -->
         <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -192,6 +192,7 @@ export default ({
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
         const backgroundImage = topic.backgroundImgList[0].bgUrl || '';
+        console.log('hello bg',backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;

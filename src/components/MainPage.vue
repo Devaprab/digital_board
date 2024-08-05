@@ -195,10 +195,12 @@ export default {
       }
     },
     goToSub(topic) {
+      console.log('subtopics',topic)
       this.$store.commit('setFirstSub', topic);
       this.$router.push({ name: 'subPage' });
     },
     goToSub2(topic, event) {
+      console.log('sub2topics', topic)
       event.stopPropagation();
       this.$store.commit('setSecondSub', topic);
       this.$router.push({ name: 'sub2Page' });
