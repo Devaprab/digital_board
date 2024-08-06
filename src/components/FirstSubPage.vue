@@ -79,16 +79,16 @@
         <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
           @click="$router.push('/digitalBoard/detailsPage');"></v-btn>
         <!--Showing other subheadings  -->
-        <!-- <v-sheet class="subTitle bg-transparent" max-width="1100">
+        <v-sheet class="subTitle bg-transparent" max-width="1100">
           <v-slide-group>
-            <v-slide-group-item v-for="(sub) in subTitle" :key="sub.commonId" v-slot="{ isSelected, btnToggle }">
+            <v-slide-group-item v-for="(sub) in subTitle" :key="sub.commonId" v-slot="{ isSelected  }">
               <v-btn class="ma-2" variant="outlined" elevation="10" :color="isSelected ? '#5D4037' : undefined"
-                @click="btnToggle">{{ sub.title }}</v-btn>
+              @click="goToSubFirst(sub.commonId)" >{{ sub.title }}</v-btn>
             </v-slide-group-item>
           </v-slide-group>
-        </v-sheet> -->
+        </v-sheet>
         <!-- Translate -->
-        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
+        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate" :disabled="translateDisabled" :loading="translateDisabled">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
             <g opacity="1">
@@ -112,7 +112,8 @@ export default ({
       path1: this.$store.getters.getPath1,
       path2: this.$store.getters.getPath2,
       isScrolledToBottom: false,
-      isScrolledToTop: true
+      isScrolledToTop: true,
+      translateDisabled: false
     }
   },
   computed: {
@@ -180,6 +181,11 @@ export default ({
   mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
+    // this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language});
+    this.$store.dispatch('getSubTitle',{id:this.$store.getters.getMainData[0].commonId,language: this.language});
+
+    console.log('title',this.subTitle);
+
   },
   unmounted() {
     document.body.style.backgroundImage = ''
@@ -188,6 +194,11 @@ export default ({
     goToSub(topic) {
       this.$store.commit('setSecondSub', topic);
       this.$router.push({ name: 'sub2Page' });
+    },
+    goToSubFirst(topic){
+      // console.log('subtopics',topic)
+      this.$store.dispatch('getSubDetails', {id:topic, language: this.language});
+      // this.$router.push({ name: 'subPage' });
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
@@ -205,13 +216,24 @@ export default ({
       ];
       this.dialog = true;
     },
-    translate() {
-      if (this.language == 1) {
+    async translate() {
+      try{
+        if (this.language == 1) {
         this.$store.commit('setLanguage', 2);
       } else {
         this.$store.commit('setLanguage', 1);
       }
-      this.goToTopic()
+      this.translateDisabled = true;
+      const res1 = this.goToTopic()
+      const res2 = await this.$store.dispatch('getSubTitle',{id:this.$store.getters.getMainData[0].commonId, language: this.language});
+      if(res1 && res2){
+        this.translateDisabled= false
+      }
+      }
+      catch(error){
+        console.log(error);
+        this.translateDisabled = false;
+      }
     },
     formattedDescription(description) {
       if (description) {
@@ -220,7 +242,11 @@ export default ({
       else return '';
     },
     async goToTopic() {
-      await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language, })
+      console.log(this.topic.fsCommonId)
+      const res = await this.$store.dispatch('getSubDetails', { id: this.topic.fsCommonId, language: this.language, })
+      if(res){
+        return true
+      }
     },
     scrollToBottom() {
       const fullDescElement = document.querySelector('.full-desc');

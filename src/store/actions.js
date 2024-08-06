@@ -56,11 +56,11 @@ export default {
             };
           });
           commit('setMainData', response.data);
-          const subTopics = response.data[0].combinedDataSubList.map(subItem => ({
-            title: subItem.title,
-            fsCommonId: subItem.fsCommonId
-          }));
-          commit('setSubFirstTitle', subTopics)
+          // const subTopics = response.data[0].combinedDataSubList.map(subItem => ({
+          //   title: subItem.title,
+          //   fsCommonId: subItem.fsCommonId
+          // }));
+          // commit('setSubFirstTitle', subTopics)
           // console.log("Sub", subTopics)
           return true;
         }
@@ -73,6 +73,7 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry2/getAllByCommonId/${payload.id}?dtId=${payload.language}`);
         if (response.status >= 200 && response.status < 300) {
+          if(response.data[0].referenceUrl){
           const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
             const [key, description] = name.split('#');
             map[key] = description;
@@ -87,6 +88,7 @@ export default {
           });
           console.log('sub',response.data)
           commit('setFirstSub', response.data[0])
+        }
           return true;
         }
       }
@@ -99,20 +101,22 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry3/getSecondSub?dtId=${payload.language}&ssCommonId=${payload.id}`);
         if (response.status >= 200 && response.status < 300) {
-          const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
-            const [key, description] = name.split('#');
-            map[key] = description;
-            return map;
-          }, {});
-          response.data[0].imgData2List = response.data[0].imgData2List.map(image => {
-            const imageName = image.fname.replace(/^[^_]*_|(.jpg|.jpeg|.png|.gif|.bmp|.tiff|.svg|.webp|.heif|.heic)$/gi, '');
-            return {
-            ...image,
-            description: description[imageName]
-            };
-          });
-          console.log('sub2',response.data)
-          commit('setSecondSub', response.data[0])
+          if(response.data[0].referenceUrl){
+            const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
+              const [key, description] = name.split('#');
+              map[key] = description;
+              return map;
+            }, {});
+            response.data[0].imgData2List = response.data[0].imgData2List.map(image => {
+              const imageName = image.fname.replace(/^[^_]*_|(.jpg|.jpeg|.png|.gif|.bmp|.tiff|.svg|.webp|.heif|.heic)$/gi, '');
+              return {
+              ...image,
+              description: description[imageName]
+              };
+            });
+            console.log('sub2',response.data)
+            commit('setSecondSub', response.data[0])
+          }
           return true;
         }
       }
@@ -120,4 +124,18 @@ export default {
         throw Error(err.response? err.response.data : err.message);
       }
     },
+    // get Subheading title
+    async getSubTitle({commit, rootGetters}, payload) {
+      try {
+        const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getSubDataByCommonId?dtId=${payload.language}&commonId=${payload.id}`);
+        if (response.status >= 200 || response.status < 300) {
+          const subData = response.data
+          // console.log(filteredData);
+            commit('setSubFirstTitle', subData);
+            return true;
+        }
+      } catch (err) {
+        throw Error(err.response? err.response.data : err.message);
+      }
+  },
 }

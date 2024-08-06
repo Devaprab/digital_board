@@ -66,6 +66,15 @@
       <div class="nav mb-3">
         <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
           @click="$router.back();"></v-btn>
+          <!--Showing other subheadings  -->
+        <v-sheet class="subTitle bg-transparent" max-width="1100">
+          <v-slide-group>
+            <v-slide-group-item v-for="(sub) in subTitle" :key="sub.commonId" v-slot="{ isSelected  }">
+              <v-btn class="ma-2" variant="outlined" elevation="10" :color="isSelected ? '#5D4037' : undefined"
+              @click="goToSubFirst(sub.commonId)" >{{ sub.title }}</v-btn>
+            </v-slide-group-item>
+          </v-slide-group>
+        </v-sheet>
         <!-- Translate -->
         <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -102,6 +111,9 @@ export default ({
     },
     language() {
       return this.$store.getters.getLanguage;
+    },
+    subTitle() {
+      return this.$store.getters.getFirstSubTitle;
     },
     dynamicStyle() {
       if (window.matchMedia("(orientation: portrait)").matches) {
@@ -158,11 +170,18 @@ export default ({
   mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
+    console.log('title',this.subTitle);
+    this.$store.dispatch('getSubTitle',{id:this.$store.getters.getFirstSub.fsCommonId,language: this.language});
   },
   unmounted() {
     document.body.style.backgroundImage = ''
   },
   methods: {
+    goToSubFirst(topic){
+      // console.log('subtopics',topic)
+      this.$store.dispatch('getSub2Details', {id:topic, language: this.language});
+      // this.$router.push({ name: 'subPage' });
+    },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
         const backgroundImage = topic.backgroundImgList[0].bgUrl || '';
