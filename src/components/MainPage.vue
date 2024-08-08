@@ -194,16 +194,19 @@ export default {
         return false;
       }
     },
-    goToSub(topic) {
-      console.log('subtopics',topic)
-      this.$store.commit('setFirstSub', topic);
-      this.$router.push({ name: 'subPage' });
+    async goToSub(topic) {
+      // this.$store.commit('setFirstSub', topic);
+      const res = await this.$store.dispatch('getSubDetails', { id: topic.fsCommonId, language: this.language });
+      if (res) {
+        this.$router.push({ name: 'subPage' });
+      }
     },
-    goToSub2(topic, event) {
-      console.log('sub2topics', topic)
+    async goToSub2(topic, event) {
       event.stopPropagation();
-      this.$store.commit('setSecondSub', topic);
-      this.$router.push({ name: 'sub2Page' });
+      const res = await this.$store.dispatch('getSub2Details', { id: topic.ssCommonId, language: this.language });
+      if (res) {
+        this.$router.push({ name: 'sub2Page' });
+      }  
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {

@@ -191,19 +191,18 @@ export default ({
     document.body.style.backgroundImage = ''
   },
   methods: {
-    goToSub(topic) {
-      this.$store.commit('setSecondSub', topic);
-      this.$router.push({ name: 'sub2Page' });
+    async goToSub(topic) {
+      const res = await this.$store.dispatch('getSub2Details', { id: topic.ssCommonId, language: this.language });
+      if (res) {
+        this.$router.push({ name: 'sub2Page' });
+      }  
     },
-    goToSubFirst(topic){
-      // console.log('subtopics',topic)
-      this.$store.dispatch('getSubDetails', {id:topic, language: this.language});
-      // this.$router.push({ name: 'subPage' });
+    async goToSubFirst(topic){
+      await this.$store.dispatch('getSubDetails', {id:topic, language: this.language});
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
         const backgroundImage = topic.backgroundImgList[0].bgUrl || '';
-        console.log('hello bg',backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;

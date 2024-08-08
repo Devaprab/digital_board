@@ -40,6 +40,6 @@ export default {
   },
   setClearTitle(state){
     state.subFirstTitle = [];
-    sessionStorage.setItem('subFirstTitle', []);
+    sessionStorage.setItem('subFirstTitle', JSON.stringify([]));
   }
 }

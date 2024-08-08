@@ -167,20 +167,17 @@ export default ({
       return {}
     }
   },
-  mounted() {
+  async mounted() {
     document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
-    console.log('title',this.subTitle);
-    this.$store.dispatch('getSubTitle',{id:this.$store.getters.getFirstSub.fsCommonId,language: this.language});
+    await this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language});
   },
   unmounted() {
     document.body.style.backgroundImage = ''
   },
   methods: {
     goToSubFirst(topic){
-      // console.log('subtopics',topic)
       this.$store.dispatch('getSub2Details', {id:topic, language: this.language});
-      // this.$router.push({ name: 'subPage' });
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
@@ -201,13 +198,17 @@ export default ({
       const nameParts = fname.split('_').slice(1);
       return nameParts.join(' ').replace(/\.[^/.]+$/, '');
     },
-    translate() {
+    async translate() {
       if (this.language == 1) {
         this.$store.commit('setLanguage', 2);
       } else {
         this.$store.commit('setLanguage', 1);
       }
-      this.goToTopic()
+      const res1 = this.goToTopic();
+      const res2 = await this.$store.dispatch('getSubTitle', { id: this.topic.fsCommonId, language: this.language });
+      if (res1 && res2) {
+        this.translateDisabled = false
+      }
     },
     formattedDescription(description) {
       if (description) {

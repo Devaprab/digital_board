@@ -42,7 +42,7 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/qrcode/getScanDetails?dtId=${payload.language}&commonId=${payload.item}`);
         if (response.status >= 200 || response.status < 300) {
-          console.log(response.data);
+          // console.log(response.data);
           const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
             const [key, description] = name.split('#');
             map[key] = description;
@@ -56,12 +56,6 @@ export default {
             };
           });
           commit('setMainData', response.data);
-          // const subTopics = response.data[0].combinedDataSubList.map(subItem => ({
-          //   title: subItem.title,
-          //   fsCommonId: subItem.fsCommonId
-          // }));
-          // commit('setSubFirstTitle', subTopics)
-          // console.log("Sub", subTopics)
           return true;
         }
       } catch (error) {
@@ -86,9 +80,9 @@ export default {
             description: description[imageName]
             };
           });
-          console.log('sub',response.data)
+          }
+          // console.log('sub',response.data)
           commit('setFirstSub', response.data[0])
-        }
           return true;
         }
       }
@@ -114,9 +108,9 @@ export default {
               description: description[imageName]
               };
             });
-            console.log('sub2',response.data)
-            commit('setSecondSub', response.data[0])
           }
+          // console.log('sub2',response.data[0])
+          commit('setSecondSub', response.data[0])
           return true;
         }
       }
@@ -125,9 +119,8 @@ export default {
       }
     },
     // get Subheading title
-    async getSubTitle({commit, rootGetters,getters}, payload) {
+    async getSubTitle({commit, rootGetters}, payload) {
       commit('setClearTitle');
-      console.log('subtitle',getters.getFirstSubTitle)
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getSubDataByCommonId?dtId=${payload.language}&commonId=${payload.id}`);
         if (response.status >= 200 || response.status < 300) {
