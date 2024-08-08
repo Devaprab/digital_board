@@ -125,7 +125,9 @@ export default {
       }
     },
     // get Subheading title
-    async getSubTitle({commit, rootGetters}, payload) {
+    async getSubTitle({commit, rootGetters,getters}, payload) {
+      commit('setClearTitle');
+      console.log('subtitle',getters.getFirstSubTitle)
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getSubDataByCommonId?dtId=${payload.language}&commonId=${payload.id}`);
         if (response.status >= 200 || response.status < 300) {

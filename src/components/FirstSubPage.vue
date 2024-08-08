@@ -79,7 +79,7 @@
         <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
           @click="$router.push('/digitalBoard/detailsPage');"></v-btn>
         <!--Showing other subheadings  -->
-        <v-sheet class="subTitle bg-transparent" max-width="1100">
+        <v-sheet class="subTitle bg-transparent" max-width="1100" v-if="subTitle && subTitle.length > 0">
           <v-slide-group>
             <v-slide-group-item v-for="(sub) in subTitle" :key="sub.commonId" v-slot="{ isSelected  }">
               <v-btn class="ma-2" variant="outlined" elevation="10" :color="isSelected ? '#5D4037' : undefined"

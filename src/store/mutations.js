@@ -37,5 +37,9 @@ export default {
   setSubFirstTitle(state, payload){
     state.subFirstTitle = payload;
     sessionStorage.setItem('subFirstTitle', JSON.stringify(payload));
+  },
+  setClearTitle(state){
+    state.subFirstTitle = [];
+    sessionStorage.setItem('subFirstTitle', []);
   }
 }
