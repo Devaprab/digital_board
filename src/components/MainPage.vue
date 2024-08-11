@@ -179,12 +179,8 @@ export default {
     }
   },
   mounted() {
-    // document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
   },
-  // unmounted() {
-  //   document.body.style.backgroundImage = ''
-  // },
   methods: {
     hasScroll() {
       const fullDescElement = document.querySelector('.full-desc');

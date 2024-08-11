@@ -574,9 +574,6 @@ export default ({
     flex-direction: column;
     gap: 20px;
   }
-  /* .group1 .v-btn{
-    margin-bottom: 20px;
-  } */
 }
 @media only screen and (orientation: landscape) {
   .card {

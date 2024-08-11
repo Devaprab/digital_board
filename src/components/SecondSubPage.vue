@@ -201,7 +201,6 @@ export default ({
     }
   },
   async mounted() {
-    // document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
     try {
      await this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language}); 
@@ -210,9 +209,6 @@ export default ({
       console.error(error)
     }
   },
-  // unmounted() {
-  //   document.body.style.backgroundImage = ''
-  // },
   methods: {
     async goToSubFirst(topic) {
       try {
@@ -224,16 +220,6 @@ export default ({
     },
     async goToPrev() {
       this.$router.back();
-      // this.$router.push({ name: 'subPage' });
-      // try {
-      //   const res = await this.$store.dispatch('getSubDetails', { id: this.topic[0].fsCommonId, language: this.language });
-      //   if (res) {
-      //     this.$router.push({ name: 'subPage' });
-      //   }
-      // }
-      // catch (error) {
-      //   console.error(error)
-      // }
     },
     goHome() {
       this.$router.push('/digitalBoard/detailsPage');
