@@ -38,8 +38,8 @@
           </v-carousel>
           <!-- Image with description dialog box -->
           <v-dialog v-model="dialog" max-width="100%" class="bg-grey-darken-4" height="100%">
-            <v-container class="d-flex justify-content-center align-items-center flex-column bg-white h-100">
-              <v-carousel :show-delimiters="topic.imgData2List && topic.imgData2List.length > 1" class="carousel"
+            <v-container class="d-flex justify-content-center align-items-center flex-column h-100">
+              <v-carousel :hide-delimiters="!(topic.imgData2List && topic.imgData2List.length > 1)" class="carousel"
                 :show-arrows="false" height="100vh" width="100%">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
                   <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
@@ -64,27 +64,51 @@
       </div>
       <!-- Bottom navigation -->
       <div class="nav mb-3">
-        <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
-          @click="$router.back();"></v-btn>
-          <!--Showing other subheadings  -->
-        <v-sheet class="subTitle bg-transparent" max-width="1100" v-if="subTitle && subTitle.length > 0">
-          <v-slide-group>
-            <v-slide-group-item v-for="(sub) in subTitle" :key="sub.commonId" v-slot="{ isSelected  }">
-              <v-btn class="ma-2" variant="outlined" elevation="10" :color="isSelected ? '#5D4037' : undefined"
-              @click="goToSubFirst(sub.commonId)" >{{ sub.title }}</v-btn>
-            </v-slide-group-item>
-          </v-slide-group>
-        </v-sheet>
+        <div class="group1 d-flex gap-3">
+          <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
+            @click="goToPrev"></v-btn>
+          <v-btn icon="mdi mdi-home" variant="outlined" elevation="10" class="home-btn"
+            @click="goHome"></v-btn>
+        </div>
+        <!--Showing other subheadings  -->
+        <div v-if="!subView">
+          <v-sheet class="subTitle bg-transparent" max-width="1100" v-if="subTitle && subTitle.length > 0">
+            <v-slide-group>
+              <v-slide-group-item v-for="(sub) in this.subTitle.filter(sub => sub.title !== this.topic.title)"
+                :key="sub.commonId" v-slot="{ isSelected  }">
+                <v-btn class="ma-2" variant="outlined" elevation="10" :color="isSelected ? '#5D4037' : undefined"
+                  @click="goToSubFirst(sub.commonId)">{{ sub.title }}</v-btn>
+              </v-slide-group-item>
+            </v-slide-group>
+          </v-sheet>
+        </div>
         <!-- Translate -->
-        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
-          <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
-            class="svg-icon">
-            <g opacity="1">
-              <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
-              <path class="svg-path" :d="path2" fill="#5D4037" />
-            </g>
-          </svg>
-        </v-card>
+        <div class="group2 d-flex gap-3">
+          <!-- showing other subheadings portrait  -->
+          <div v-if="subView">
+            <v-speed-dial location="left top" transition="fade-transition" scrim="black"
+              v-if="subTitle && subTitle.length > 1">
+              <template v-slot:activator="{ props: activatorProps }">
+                <v-fab v-bind="activatorProps" size="default" icon="mdi-chevron-triple-right" class="subs"
+                  variant="outlined" color="#5D4037" elevation="10"></v-fab>
+              </template>
+              <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
+                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="450" height="50"
+                  class="text-capitalize" rounded @click="goToSubFirst(sub.commonId)"><v-icon
+                    class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{ sub.title }}</v-btn>
+              </div>
+            </v-speed-dial>
+          </div>
+          <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
+            <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+              class="svg-icon">
+              <g opacity="1">
+                <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
+                <path class="svg-path" :d="path2" fill="#5D4037" />
+              </g>
+            </svg>
+          </v-card>
+        </div>
       </div>
     </div>
   </v-main>
@@ -102,7 +126,8 @@ export default ({
       path1: this.$store.getters.getPath1,
       path2: this.$store.getters.getPath2,
       isScrolledToBottom: false,
-      isScrolledToTop: true
+      isScrolledToTop: true,
+      translateDisabled: false
     }
   },
   computed: {
@@ -114,6 +139,14 @@ export default ({
     },
     subTitle() {
       return this.$store.getters.getFirstSubTitle;
+    },
+    subView() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return true;
+      }
+      else {
+        return false;
+      }
     },
     dynamicStyle() {
       if (window.matchMedia("(orientation: portrait)").matches) {
@@ -168,16 +201,42 @@ export default ({
     }
   },
   async mounted() {
-    document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
+    // document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
-    await this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language});
+    try {
+     await this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language}); 
+    }
+    catch (error) {
+      console.error(error)
+    }
   },
-  unmounted() {
-    document.body.style.backgroundImage = ''
-  },
+  // unmounted() {
+  //   document.body.style.backgroundImage = ''
+  // },
   methods: {
-    goToSubFirst(topic){
-      this.$store.dispatch('getSub2Details', {id:topic, language: this.language});
+    async goToSubFirst(topic) {
+      try {
+        await this.$store.dispatch('getSub2Details', {id:topic, language: this.language});
+      }
+      catch (error) {
+        console.error(error)
+      }
+    },
+    async goToPrev() {
+      this.$router.back();
+      // this.$router.push({ name: 'subPage' });
+      // try {
+      //   const res = await this.$store.dispatch('getSubDetails', { id: this.topic[0].fsCommonId, language: this.language });
+      //   if (res) {
+      //     this.$router.push({ name: 'subPage' });
+      //   }
+      // }
+      // catch (error) {
+      //   console.error(error)
+      // }
+    },
+    goHome() {
+      this.$router.push('/digitalBoard/detailsPage');
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
@@ -204,10 +263,15 @@ export default ({
       } else {
         this.$store.commit('setLanguage', 1);
       }
-      const res1 = this.goToTopic();
-      const res2 = await this.$store.dispatch('getSubTitle', { id: this.topic.fsCommonId, language: this.language });
-      if (res1 && res2) {
-        this.translateDisabled = false
+      try {
+        const res1 = this.goToTopic();
+        const res2 = await this.$store.dispatch('getSubTitle', { id: this.topic.fsCommonId, language: this.language });
+        if (res1 && res2) {
+          this.translateDisabled = false
+        }
+      }
+      catch (error) {
+        console.error(error)
       }
     },
     formattedDescription(description) {
@@ -217,7 +281,12 @@ export default ({
       else return '';
     },
     async goToTopic() {
-      await this.$store.dispatch('getSub2Details', { language: this.language, id: this.topic.ssCommonId })
+      try {
+        await this.$store.dispatch('getSub2Details', { language: this.language, id: this.topic.ssCommonId })
+      }
+      catch (error) {
+        console.error(error);
+      }
     },
     scrollToBottom() {
       const fullDescElement = document.querySelector('.full-desc');
@@ -322,18 +391,21 @@ export default ({
   font-weight: 500;
 }
 :deep(.v-carousel__controls__item .v-icon) {
-  opacity: 0.9;
+  opacity: 0.7;
 }
+
 :deep(.v-carousel__controls) {
   background: transparent;
 }
+
 :deep(.v-carousel .v-btn--icon.v-btn--density-default) {
   width: 8px;
   height: 12px;
 }
+
 :deep(.v-carousel__controls__item.v-btn--active) {
-  opacity: 0.8;
-  color: #261503;
+  opacity: 1;
+  color: #4d3d29;
 }
 .title {
   display: flex;

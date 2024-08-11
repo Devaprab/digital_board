@@ -60,14 +60,14 @@
           </v-carousel>
           <!-- Image with description dialog box -->
           <v-dialog v-model="dialog" max-width="100%" class="bg-grey-darken-4" height="100%">
-            <v-container class="d-flex justify-content-center align-items-center flex-column bg-white h-100">
-              <v-carousel :show-delimiters="topic.imgDataList && topic.imgDataList.length > 1" class="carousel"
+            <v-container class="d-flex justify-content-center align-items-center flex-column  h-100">
+              <v-carousel :hide-delimiters="!(topic.imgDataList && topic.imgDataList.length > 1)" class="carousel"
                 :show-arrows="false" height="100vh" width="100%">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
                   <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                     style="height: 100vh;">
                     <v-card-text class="d-flex justify-content-end p-0 w-100 flex-grow-0">
-                      <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;"></v-icon>
+                      <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;" color="white"></v-icon>
                     </v-card-text>
                     <v-img :src="image.furl" :lazy-src="image.furl" :alt="image.description ?? 'no image'" contain
                       height="50vh" width="100vw">
@@ -77,7 +77,7 @@
                         </div>
                       </template>
                     </v-img>
-                    <v-card-text class="text-center my-2 imgdesc">{{ image.description ?? '' }}</v-card-text>
+                    <v-card-text class="text-center my-2 imgdesc text-white">{{ image.description ?? '' }}</v-card-text>
                   </v-container>
                 </v-carousel-item>
               </v-carousel>
@@ -179,12 +179,12 @@ export default {
     }
   },
   mounted() {
-    document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
+    // document.body.style.backgroundImage = 'linear-gradient(to bottom right, #110b03, #3e7132)'
     this.goToTopic();
   },
-  unmounted() {
-    document.body.style.backgroundImage = ''
-  },
+  // unmounted() {
+  //   document.body.style.backgroundImage = ''
+  // },
   methods: {
     hasScroll() {
       const fullDescElement = document.querySelector('.full-desc');
@@ -196,17 +196,27 @@ export default {
     },
     async goToSub(topic) {
       // this.$store.commit('setFirstSub', topic);
-      const res = await this.$store.dispatch('getSubDetails', { id: topic.fsCommonId, language: this.language });
-      if (res) {
-        this.$router.push({ name: 'subPage' });
+      try {
+        const res = await this.$store.dispatch('getSubDetails', { id: topic.fsCommonId, language: this.language });
+        if (res) {
+          this.$router.push({ name: 'subPage' });
+        }
+      }
+      catch (error) {
+        console.error(error);
       }
     },
     async goToSub2(topic, event) {
       event.stopPropagation();
-      const res = await this.$store.dispatch('getSub2Details', { id: topic.ssCommonId, language: this.language });
-      if (res) {
-        this.$router.push({ name: 'sub2Page' });
-      }  
+      try {
+        const res = await this.$store.dispatch('getSub2Details', { id: topic.ssCommonId, language: this.language });
+        if (res) {
+          this.$router.push({ name: 'sub2Page' });
+        } 
+      }
+      catch (error) {
+        console.error(error);
+      }
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
@@ -238,7 +248,12 @@ export default {
       else return '';
     },
     async goToTopic() {
-      await this.$store.dispatch('getMainDetails', { language: this.language, item: this.mainTopics[0].commonId })
+      try {
+        await this.$store.dispatch('getMainDetails', { language: this.language, item: this.mainTopics[0].commonId })
+      }
+      catch (error) {
+        console.log(error)
+      }
     },
     scrollToBottom() {
       const fullDescElement = document.querySelector('.full-desc');
@@ -336,7 +351,7 @@ export default {
   font-weight: 500;
 }
 :deep(.v-carousel__controls__item .v-icon) {
-  opacity: 0.9;
+  opacity: 0.7;
 }
 :deep(.v-carousel__controls) {
   background: transparent;
@@ -346,8 +361,8 @@ export default {
   height: 12px;
 }
 :deep(.v-carousel__controls__item.v-btn--active) {
-  opacity: 0.8;
-  color: #261503;
+  opacity: 1;
+  color: #4d3d29;
 }
 .title {
   display: flex;

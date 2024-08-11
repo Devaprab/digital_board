@@ -43,7 +43,8 @@ export default {
         const response = await axios.get(`${rootGetters.getUrl}/api/qrcode/getScanDetails?dtId=${payload.language}&commonId=${payload.item}`);
         if (response.status >= 200 || response.status < 300) {
           // console.log(response.data);
-          const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
+          if (response.data[0].referenceUrl) {
+            const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
             const [key, description] = name.split('#');
             map[key] = description;
             return map;
@@ -55,6 +56,7 @@ export default {
             description: description[imageName]
             };
           });
+          }
           commit('setMainData', response.data);
           return true;
         }

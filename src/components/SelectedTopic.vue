@@ -30,6 +30,12 @@ export default {
       loadTopic: false
     }
   },
+  mounted() {
+    this.getTopics({
+      language: this.language,
+      selectedTopics: this.commonId
+    });
+  },
   computed: {
     ...mapGetters(['getSelectedTopics', 'getSelectedCommonIds', 'getLanguage']),
     Topics() {
@@ -53,6 +59,9 @@ export default {
         language: this.language,
         selectedTopics: this.commonId
       }
+      this.getTopics(payload);
+    },
+    async getTopics(payload) {
       try {
         this.loadTopic = true;
         const res = await this.$store.dispatch('selectedTopics', payload)
@@ -64,7 +73,7 @@ export default {
         this.loadTopic = false;
         console.error(error)
       }
-    },
+    }
   }
 }
 </script>
