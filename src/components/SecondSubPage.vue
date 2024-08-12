@@ -6,7 +6,8 @@
         <h1 class="text-center text-wrap title-h1">{{ topic.title }}</h1>
       </div>
       <!-- Card with topic description & image -->
-      <div class=" card mb-3" :style="cardPortrait">
+      <div class=" card mb-3" :style="cardPortrait"
+        v-if="((topic.description && Array.from(topic.description).length > 60))">
         <div class="main-card ps-1 py-1" :style="[backgroundImageStyle, mainCardHeight]">
           <div class="d-flex justify-content-center arrow-up py-3">
             <v-icon color="darkgray" style="z-index: 100;" v-if="!isScrolledToTop || isScrolledToBottom"
@@ -62,13 +63,33 @@
           </v-dialog>
         </v-card>
       </div>
+      <!-- Only image is present -->
+      <div v-else class="mx-auto">
+        <v-card class="bg-transparent" elevation="10" v-if="topic.imgData2List && topic.imgData2List.length > 0"
+          height="80vh" width="100vh">
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+            :touch="true" style="" height="100%" width="100%">
+            <v-carousel-item v-for="(image) in topic.imgData2List" :key="image.furl" class="sub-carousel image-box ">
+              <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
+                style="height: 100vh;">
+                <v-img :src="image.furl" :lazy-src="image.furl" :alt="image.description ?? 'no image'" contain
+                  height="50vh" width="100vw">
+                  <template v-slot:placeholder>
+                    <div class="d-flex align-center justify-center fill-height">
+                      <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                    </div>
+                  </template></v-img>
+                <v-card-text class="text-center mt-1 imgdesc">{{ image.description ?? '' }}</v-card-text>
+              </v-container>
+            </v-carousel-item>
+          </v-carousel>
+        </v-card>
+      </div>
       <!-- Bottom navigation -->
       <div class="nav mb-3">
         <div class="group1 d-flex gap-3">
-          <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
-            @click="goToPrev"></v-btn>
-          <v-btn icon="mdi mdi-home" variant="outlined" elevation="10" class="home-btn"
-            @click="goHome"></v-btn>
+          <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn" @click="goToPrev"></v-btn>
+          <v-btn icon="mdi mdi-home" variant="outlined" elevation="10" class="home-btn" @click="goHome"></v-btn>
         </div>
         <!--Showing other subheadings  -->
         <div v-if="!subView">
