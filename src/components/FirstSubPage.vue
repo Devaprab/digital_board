@@ -6,7 +6,8 @@
         <h1 class="text-center text-wrap title-h1">{{ topic.title }}</h1>
       </div>
       <!-- Card with topic description & image -->
-      <div class=" card mb-3" :style="cardPortrait">
+      <div class=" card mb-3" :style="cardPortrait"
+        v-if="((topic.description && Array.from(topic.description).length > 60) || (topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1))">
         <div class="main-card ps-1 py-1" :style="[backgroundImageStyle, mainCardHeight]">
           <!-- Scroll up -->
           <div class="d-flex justify-content-center arrow-up py-3">
@@ -77,8 +78,7 @@
       <!-- Bottom navigation -->
       <div class="nav mb-3">
         <div class="group1 d-flex gap-3">
-          <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn"
-            @click="goToPrev"></v-btn>
+          <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn" @click="goToPrev"></v-btn>
           <!-- <v-btn icon="mdi mdi-home" variant="outlined" elevation="10" class="home-btn"
             @click="$router.push('/digitalBoard/detailsPage');"></v-btn>  -->
         </div>
