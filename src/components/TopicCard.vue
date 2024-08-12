@@ -7,15 +7,17 @@
       <h1 class="image-title">{{ topic[0].title }}</h1>
       <v-divider class="divider"></v-divider>
       <div class="description-container">
-        <p v-html="topic[0].description??''" v-if="topic[0].description && topic[0].description.length > 10"></p>
-        <div v-if="!topic[0].description && topic[0].description.length < 10">
+        <p v-html="topic[0].description??''"
+          v-if="topic[0].description && Array.from(topic[0].description).length > 20"></p>
+        <div
+          v-if="(!topic[0].description && Array.from(topic[0].description).length < 20) || (topic[0].description && Array.from(topic[0].description).length < 20)">
           <div v-if="topic[0].combinedDataSubList && topic[0].combinedDataSubList.length> 0">
             <ul v-for="sub in topic[0].combinedDataSubList" :key="sub.fsCommonId">
               <li>{{ sub.title }}</li>
             </ul>
           </div>
+        </div>
       </div>
-    </div>
     </div>
     <div @click="goToTopic(topic[0].commonId)" class="d-flex scrollright-container justify-content-end ">
       <p class="read-more mt-3 me-4" style="font-size: 18px;">Read More...</p>
