@@ -359,6 +359,14 @@ export default ({
     transform: translate(0, 5px);
   }
 }
+:deep(.v-fab__container){
+  position: static;
+  border-radius: 50%;
+  /* border: 2px solid brown; */
+  animation: scaleUpDown 2s ease-in-out infinite;
+  animation-delay: 0.8s;
+  /* background-color: transparent; */
+}
 .topic-list {
   height: 100vh;
   background: #e9e1d7;
@@ -537,6 +545,11 @@ export default ({
     top: 17%;
     left: 50%;
     transform: translateX(-50%);
+  }
+  .group1, .group2{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 }
 @media only screen and (orientation: landscape) {
