@@ -407,10 +407,8 @@ export default ({
 :deep(.v-fab__container){
   position: static;
   border-radius: 50%;
-  /* border: 2px solid brown; */
   animation: scaleUpDown 2s ease-in-out infinite;
   animation-delay: 0.8s;
-  /* background-color: transparent; */
 }
 .topic-list {
   height: 100vh;
