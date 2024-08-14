@@ -346,11 +346,18 @@ export default {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
 }
-:deep(.v-carousel__controls__item .v-icon) {
+:deep(.v-carousel__controls__item .v-btn) {
   opacity: 0.7;
 }
 :deep(.v-carousel__controls) {
   background: transparent;
+}
+:deep(.v-carousel__controls__item .v-btn__content i){
+  color: rgb(168, 159, 120);
+}
+:deep(.v-carousel__controls__item.v-btn--active .v-btn__content i) {
+  color: rgb(6, 6, 6);
+  opacity: 1;
 }
 :deep(.v-carousel .v-btn--icon.v-btn--density-default) {
   width: 8px;
@@ -358,7 +365,7 @@ export default {
 }
 :deep(.v-carousel__controls__item.v-btn--active) {
   opacity: 1;
-  color: #4d3d29;
+  color: #0c0c0b;
 }
 .title {
   display: flex;

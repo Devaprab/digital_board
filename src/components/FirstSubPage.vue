@@ -75,6 +75,28 @@
           </v-dialog>
         </v-card>
       </div>
+      <!-- Only image is present -->
+      <div v-else class="mx-auto">
+        <v-card class="bg-transparent" flat v-if="topic.imgDataList && topic.imgDataList.length > 0" height="80vh"
+          width="100vh">
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+            :touch="true" style="" height="100%" width="100%">
+            <v-carousel-item v-for="(image) in topic.imgDataList" :key="image.furl" class="sub-carousel">
+              <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
+                style="height: 100vh;">
+                <v-img :src="image.furl" :lazy-src="image.furl" :alt="image.description ?? 'no image'" contain
+                  height="50vh" width="100vw">
+                  <template v-slot:placeholder>
+                    <div class="d-flex align-center justify-center fill-height">
+                      <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                    </div>
+                  </template></v-img>
+                <v-card-text class="text-center mt-1 imgdesc">{{ image.description ?? '' }}</v-card-text>
+              </v-container>
+            </v-carousel-item>
+          </v-carousel>
+        </v-card>
+      </div>
       <!-- Bottom navigation -->
       <div class="nav mb-3">
         <div class="group1 d-flex gap-3">
