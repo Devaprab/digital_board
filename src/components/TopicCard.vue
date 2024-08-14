@@ -8,9 +8,9 @@
       <v-divider class="divider"></v-divider>
       <div class="description-container">
         <p v-html="topic[0].description??''"
-          v-if="topic[0].description && Array.from(topic[0].description).length > 20"></p>
+          v-if="(topic[0].description && Array.from(topic[0].description).length > 20) || !topic[0].description"></p>
         <div
-          v-if="(!topic[0].description && Array.from(topic[0].description).length < 20) || (topic[0].description && Array.from(topic[0].description).length < 20)">
+          v-if="((topic[0].description && Array.from(topic[0].description).length < 20) || (topic[0].description && Array.from(topic[0].description).length < 20)) || !topic[0].description">
           <div v-if="topic[0].combinedDataSubList && topic[0].combinedDataSubList.length> 0">
             <ul v-for="sub in topic[0].combinedDataSubList" :key="sub.fsCommonId">
               <li>{{ sub.title }}</li>
