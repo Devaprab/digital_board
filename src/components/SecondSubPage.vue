@@ -39,7 +39,7 @@
           </v-carousel>
           <!-- Image with description dialog box -->
           <v-dialog v-model="dialog" max-width="100%" class="bg-grey-darken-4" height="100%">
-            <v-container class="d-flex justify-content-center align-items-center flex-column h-100">
+            <v-container class="d-flex justify-content-center align-items-center flex-column h-100 bg-white">
               <v-carousel :hide-delimiters="!(topic.imgData2List && topic.imgData2List.length > 1)" class="carousel"
                 :show-arrows="false" height="100vh" width="100%">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
@@ -65,11 +65,11 @@
       </div>
       <!-- Only image is present -->
       <div v-else class="mx-auto">
-        <v-card class="bg-transparent" elevation="10" v-if="topic.imgData2List && topic.imgData2List.length > 0"
+        <v-card class="bg-transparent" flat v-if="topic.imgData2List && topic.imgData2List.length > 0"
           height="80vh" width="100vh">
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
             :touch="true" style="" height="100%" width="100%">
-            <v-carousel-item v-for="(image) in topic.imgData2List" :key="image.furl" class="sub-carousel image-box ">
+            <v-carousel-item v-for="(image) in topic.imgData2List" :key="image.furl" class="sub-carousel">
               <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                 style="height: 100vh;">
                 <v-img :src="image.furl" :lazy-src="image.furl" :alt="image.description ?? 'no image'" contain

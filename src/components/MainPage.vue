@@ -60,14 +60,14 @@
           </v-carousel>
           <!-- Image with description dialog box -->
           <v-dialog v-model="dialog" max-width="100%" class="bg-grey-darken-4" height="100%">
-            <v-container class="d-flex justify-content-center align-items-center flex-column  h-100">
+            <v-container class="d-flex justify-content-center align-items-center flex-column  h-100 bg-white">
               <v-carousel :hide-delimiters="!(topic.imgDataList && topic.imgDataList.length > 1)" class="carousel"
                 :show-arrows="false" height="100vh" width="100%">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
                   <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                     style="height: 100vh;">
                     <v-card-text class="d-flex justify-content-end p-0 w-100 flex-grow-0">
-                      <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;" color="white"></v-icon>
+                      <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;" color="black"></v-icon>
                     </v-card-text>
                     <v-img :src="image.furl" :lazy-src="image.furl" :alt="image.description ?? 'no image'" contain
                       height="50vh" width="100vw">

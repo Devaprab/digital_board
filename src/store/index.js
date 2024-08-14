@@ -6,7 +6,7 @@ const store = createStore({
   state() {
     return {
       // baseUrl: 'http://localhost:8448',
-      // baseUrl: 'http://192.168.1.27:8083',
+      // baseUrl: 'http://192.168.1.31:8083',
       baseUrl: 'https://aksharammuseum.com',
       selectedCommonIds: JSON.parse(sessionStorage.getItem('selectedCommonIds')) || [],
       selectedTopics: JSON.parse(sessionStorage.getItem('selectedTopics')) || [],

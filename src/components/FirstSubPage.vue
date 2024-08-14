@@ -50,7 +50,7 @@
           </v-carousel>
           <!-- Image with description dialog box -->
           <v-dialog v-model="dialog" max-width="100%" class="bg-grey-darken-4" height="100%">
-            <v-container class="d-flex justify-content-center align-items-center flex-column h-100">
+            <v-container class="d-flex justify-content-center align-items-center flex-column h-100 bg-white">
               <v-carousel :hide-delimiters="!(topic.imgDataList && topic.imgDataList.length > 1)" class="carousel"
                 :show-arrows="false" height="100vh" width="100%">
                 <v-carousel-item v-for="(image, index) in reorderedImages" :key="index">
