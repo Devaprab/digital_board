@@ -66,7 +66,7 @@
       <!-- Only image is present -->
       <div v-else class="mx-auto">
         <v-card class="bg-transparent" flat v-if="topic.imgData2List && topic.imgData2List.length > 0"
-          height="80vh" width="100vh">
+          :height="dynamicHeight" :width="dynamicWidth">
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
             :touch="true" style="" height="100%" width="100%">
             <v-carousel-item v-for="(image) in topic.imgData2List" :key="image.furl" class="sub-carousel">
@@ -176,6 +176,17 @@ export default ({
         }
       } return {};
     },
+    dynamicHeight() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return "80vh";
+      }else return "80vh";
+    },
+    dynamicWidth() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return "80vw";
+      }else return "100vw";
+    },
+
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
