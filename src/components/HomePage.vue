@@ -73,7 +73,7 @@ export default {
     toggleHighlight(index, topic) {
       const idx = this.highlightedDivs.indexOf(index);
       if (idx === -1) {
-        if (this.selectedTopics.length < 5) {
+        if (this.selectedTopics.length < 4) {
           this.highlightedDivs.push(index);
           this.selectedTopics.push(topic.commonId)
         } else {
@@ -95,7 +95,7 @@ export default {
         alert('Please select at least one topic.');
         return;
       }
-      if (this.selectedTopics.length >= 6) {
+      if (this.selectedTopics.length >= 5) {
         alert('You can select a maximum of 4 topics.');
         return;
       }
