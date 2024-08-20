@@ -55,7 +55,7 @@
           <img :src="item.furl" alt="Image" style="width: 100%; height: 100%; object-fit: cover;">
         </template>
         <template v-if="item.type === 'video'">
-          <video :src="item.furl" controls autoplay loop muted  style="width: 100%; height: 100%; object-fit: cover;">
+          <video :src="item.furl"  autoplay loop muted  style="width: 100%; height: 100%; object-fit: cover;">
             Your browser does not support the video tag.
           </video>
         </template>
@@ -71,7 +71,7 @@
     <v-container class="d-flex justify-content-center align-items-center flex-column h-100 bg-white">
       <v-carousel :hide-delimiters="!(carouselItems && carouselItems.length > 1)" class="carousel"
                   :show-arrows="false" height="100vh" width="100%">
-        <v-carousel-item v-for="(item, index) in carouselItems" :key="index">
+        <v-carousel-item v-for="(item, index) in reorderedImages" :key="index">
           <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                       style="height: 100vh;">
             <v-card-text class="d-flex justify-content-end p-0 w-100 flex-grow-0">
@@ -96,7 +96,7 @@
               </video>
             </template>
             
-            <v-card-text class="text-center my-2 imgdesc text-white">{{ item.description ?? '' }}</v-card-text>
+            <v-card-text class="text-center my-2 imgdesc ">{{ item.description ?? '' }}</v-card-text>
           </v-container>
         </v-carousel-item>
       </v-carousel>
@@ -254,13 +254,27 @@ export default {
       return `url(${defaultImg})`;
     },
     openDialog(index) {
-      const imgDataList = this.mainTopics[0].imgDataList
-      this.reorderedImages = [
-        ...imgDataList.slice(index),
-        ...imgDataList.slice(0, index)
-      ];
-      this.dialog = true;
-    },
+    const imgDataList = this.mainTopics[0].imgDataList.map(image => ({
+      type: 'image',
+      furl: image.furl,
+      description: image.description || '' // Add description if available
+    }));
+console.log('image',imgDataList);
+    const mp4DataList = this.mainTopics[0].mp4DataList.map(video => ({
+      type: 'video',
+      furl: video.furl,
+      description: video.description || '' // Add description if available
+    }));
+
+    const combinedList = [...imgDataList, ...mp4DataList];
+
+    this.reorderedImages = [
+      ...combinedList.slice(index),
+      ...combinedList.slice(0, index)
+    ];
+
+    this.dialog = true;
+  },
     translate() {
       if (this.language == 1) {
         this.$store.commit('setLanguage', 2);
