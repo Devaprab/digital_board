@@ -85,7 +85,7 @@
       </div>
       <!-- Only image is present -->
       <div v-else class="mx-auto">
-        <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 1 > 0"
+        <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0"
           :height="dynamicHeight" :width="dynamicWidth">
           <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
             :touch="true" style="" height="100%" width="100%">
@@ -266,6 +266,7 @@ export default ({
     }
   },
   async mounted() {
+    console.log('image',this.imgDataList);
     this.goToTopic();
     try {
      await this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language}); 

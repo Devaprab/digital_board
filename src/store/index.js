@@ -10,7 +10,7 @@ const store = createStore({
       baseUrl: 'https://aksharammuseum.com',
       selectedCommonIds: JSON.parse(sessionStorage.getItem('selectedCommonIds')) || [],
       selectedTopics: JSON.parse(sessionStorage.getItem('selectedTopics')) || [],
-      language: sessionStorage.getItem('language') || 2,
+      language: sessionStorage.getItem('language') || 1,
       mainTopics: JSON.parse(sessionStorage.getItem('mainTopics')) || [],
       mainData: JSON.parse(sessionStorage.getItem('mainData')) || [],
       firstSub: JSON.parse(sessionStorage.getItem('firstSub')) || [],
