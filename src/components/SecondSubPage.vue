@@ -83,23 +83,39 @@
   </v-dialog>
         </v-card>
       </div>
-      <!-- Only image is present -->
+      <!-- Only image is present cycle interval="6000"-->
       <div v-else class="mx-auto">
         <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0"
           :height="dynamicHeight" :width="dynamicWidth">
-          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" 
             :touch="true" style="" height="100%" width="100%">
             <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
               <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                 style="height: 100vh;">
-                <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                <!-- <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
                   height="50vh" width="100vw">
                   <template v-slot:placeholder>
                     <div class="d-flex align-center justify-center fill-height">
                       <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
                     </div>
-                  </template></v-img>
-                <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text>
+                  </template></v-img> -->
+                <!-- <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text> -->
+                <template v-if="item.type === 'image'">
+              <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                     height="50vh" width="100vw">
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                  </div>
+                </template>
+              </v-img>
+            </template>
+            
+            <template v-else-if="item.type === 'video'">
+              <video :src="item.furl"  :lazy-src="item.furl" controls autoplay loop muted style=" height:100vh; width:100%; object-fit: cover;" >
+              </video>
+            </template>
+            <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text>
               </v-container>
             </v-carousel-item>
           </v-carousel>
@@ -205,7 +221,7 @@ export default ({
     dynamicStyle() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '200px' : '50px'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '200px' : '50px'
         }
       } return {};
     },
@@ -223,8 +239,8 @@ export default ({
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '54vh' : '76vh',
-          marginTop: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '8%' : '0.5%'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '54vh' : '76vh',
+          marginTop: this.carouselItems && this.carouselItems.length > 0 ? '8%' : '0.5%'
         };
       }
       return {};
@@ -232,12 +248,12 @@ export default ({
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          bottom: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '2%' : '5%'
+          bottom: this.carouselItems && this.carouselItems.length > 0 ? '2%' : '5%'
         };
       }
       return {
-        width: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '80%' : '90%',
-        marginInline: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '0' : 'auto'
+        width: this.carouselItems && this.carouselItems.length > 0 ? '80%' : '90%',
+        marginInline: this.carouselItems && this.carouselItems.length > 0 ? '0' : 'auto'
       };
     },
     backgroundImageStyle() {
@@ -248,25 +264,25 @@ export default ({
     mainCardHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '75vh' : '85vh'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '75vh' : '85vh'
         };
       }
       return {
-        borderRadius: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '0px 30px 30px 0px' : '30px',
+        borderRadius: this.carouselItems && this.carouselItems.length > 0 ? '0px 30px 30px 0px' : '30px',
       };
     },
     scrollStyle() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
           position: 'absolute',
-          top: this.topic.imgData2List && this.topic.imgData2List.length > 0 ? '1' : '-630%'
+          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-630%'
         };
       }
       return {}
     }
   },
   async mounted() {
-    console.log('image',this.imgDataList);
+    console.log('image',this.carouselItems);
     this.goToTopic();
     try {
      await this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language}); 
