@@ -26,14 +26,14 @@
                   <v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>
                   {{ sub.title }}
                   <!-- Sub of subheadings -->
-                  <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >= 1" class="ms-5">
+                  <!-- <div v-if="sub.combinedDataSubSubList && sub.combinedDataSubSubList.length >= 1" class="ms-5">
                     <ul v-for="top in sub.combinedDataSubSubList" :key="top.commonId" class="list-unstyled">
                       <li style="font-size: 100%;" class="mb-0 mt-1" @click="goToSub2(top, $event)">
                         <v-icon class="mdi mdi-circle-small" size="20"></v-icon>
                         {{ top.title }}
                       </li>
                     </ul>
-                  </div>
+                  </div> -->
                 </li>
               </ul>
             </div>

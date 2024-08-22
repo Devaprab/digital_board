@@ -9,14 +9,14 @@
       <div class="description-container">
         <p v-html="topic[0].description??''"
           v-if="(topic[0].description && Array.from(topic[0].description).length > 20) || !topic[0].description"></p>
-        <div
+        <!-- <div
           v-if="((topic[0].description && Array.from(topic[0].description).length < 20) || (topic[0].description && Array.from(topic[0].description).length < 20)) || !topic[0].description">
           <div v-if="topic[0].combinedDataSubList && topic[0].combinedDataSubList.length> 0">
             <ul v-for="sub in topic[0].combinedDataSubList" :key="sub.fsCommonId">
               <li>{{ sub.title }}</li>
             </ul>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div @click="goToTopic(topic[0].commonId)" class="d-flex scrollright-container justify-content-end ">

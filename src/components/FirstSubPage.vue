@@ -136,8 +136,7 @@
       <div class="nav mb-3">
         <div class="group1 d-flex gap-3">
           <v-btn icon="mdi mdi-arrow-left" variant="outlined" elevation="10" class="home-btn" @click="goToPrev"></v-btn>
-          <!-- <v-btn icon="mdi mdi-home" variant="outlined" elevation="10" class="home-btn"
-            @click="$router.push('/digitalBoard/detailsPage');"></v-btn>  -->
+          <v-btn icon="mdi mdi-home" variant="outlined" elevation="10" class="home-btn" @click="goHome"></v-btn>
         </div>
         <!--Showing other subheadings landscape-->
         <div v-if="!subView">
@@ -317,6 +316,9 @@ export default ({
     },
     goToPrev() {
       this.$router.push('/digitalBoard/detailsPage');
+    },
+    goHome() {
+      this.$router.push('/digitalBoard/selectedTopics');
     },
     async goToSubFirst(topic) {
       try {
