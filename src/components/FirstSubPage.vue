@@ -98,10 +98,10 @@
       <div v-else class="mx-auto">
         <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0"
           :height="dynamicHeight" :width="dynamicWidth">
-          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
-            :touch="true" style="" height="100%" width="100%">
+          <v-carousel class="sub-carousel"  cover :show-arrows="false" cycle interval="6000" 
+            :touch="true" style="" height="100%" width="100%" :hide-delimiters="carouselItems && carouselItems.length <= 1">
             <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
-              <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
+              <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0 pb-5"
                 style="height: 100vh;">
                 <!-- <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
                   height="50vh" width="100vw">
@@ -114,19 +114,21 @@
                 <template v-if="item.type === 'image'">
               <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
                      height="50vh" width="100vw">
+                     
                 <template v-slot:placeholder>
                   <div class="d-flex align-center justify-center fill-height">
                     <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
                   </div>
                 </template>
               </v-img>
+              <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text>
             </template>
             
             <template v-else-if="item.type === 'video'">
               <video :src="item.furl"  :lazy-src="item.furl" controls autoplay loop muted style=" height:100%; width:100%; object-fit: cover;" >
               </video>
             </template>
-            <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text>
+            
               </v-container>
             </v-carousel-item>
           </v-carousel>

@@ -83,12 +83,12 @@
   </v-dialog>
         </v-card>
       </div>
-      <!-- Only image is present cycle interval="6000"-->
+      <!-- Only image is present-->
       <div v-else class="mx-auto">
         <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0"
           :height="dynamicHeight" :width="dynamicWidth">
-          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" 
-            :touch="true" style="" height="100%" width="100%">
+          <v-carousel class="sub-carousel" :hide-delimiters="carouselItems && carouselItems.length <= 1" cover :show-arrows="false" 
+            :touch="true" style="" height="100%" width="100%" cycle interval="6000">
             <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
               <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                 style="height: 100vh;">

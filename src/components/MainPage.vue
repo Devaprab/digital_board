@@ -89,13 +89,11 @@
                 </template>
               </v-img>
             </template>
-            
             <template v-else-if="item.type === 'video'">
               <video :src="item.furl" controls autoplay loop muted style=" height:100%; width:100%; object-fit: contain;" >
                 Your browser does not support the video tag.
               </video>
             </template>
-            
             <v-card-text class="text-center my-2 imgdesc ">{{ item.description ?? '' }}</v-card-text>
           </v-container>
         </v-carousel-item>
@@ -108,7 +106,7 @@
        <div v-else class="mx-auto">
         <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0"
           :height="dynamicHeight" :width="dynamicWidth">
-          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+          <v-carousel class="sub-carousel" :hide-delimiters="carouselItems && carouselItems.length <= 1" cover :show-arrows="false" cycle interval="6000"
             :touch="true" style="" height="100%" width="100%">
             <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
               <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
