@@ -1,6 +1,6 @@
 <template>
-  <v-app class="p-0 m-0">
-       <router-view></router-view>
+  <v-app :class="fontClass" class="p-0 m-0">
+    <router-view></router-view>
   </v-app>
 </template>
 
@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       inactivityTimeout: null,
-      inactivityDuration: 600000,
+      inactivityDuration: 120000
     };
   },
   methods: {
@@ -20,7 +20,7 @@ export default {
       this.inactivityTimeout = setTimeout(this.handleInactivity, this.inactivityDuration);
     },
     handleInactivity() {
-      if (this.$route.path != '/digitalBoard/') {
+      if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedTopics.length > 1) {
         this.$router.push('/digitalBoard/selectedTopics');
       }
     },
@@ -43,14 +43,34 @@ export default {
       clearTimeout(this.inactivityTimeout);
     }
   },
+  computed: {
+    language() {
+      return this.$store.getters.getLanguage;
+    },
+    fontClass() {
+      return this.language == 1 ? 'malayalam-font' : 'default-font';
+    }
+  }
 };
 </script>
 
 <style>
-*{
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@100..900&family=Noto+Serif+Malayalam:wght@100..900&display=swap');
+/* Default font for English or other languages */
+.default-font * {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Font for Malayalam */
+.malayalam-font * {
+  font-family: 'Noto Sans Malayalam', sans-serif;
+}
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 </style>

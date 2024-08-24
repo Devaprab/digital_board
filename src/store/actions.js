@@ -46,18 +46,21 @@ export default {
           if (response.data[0].referenceUrl) {
             const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
             const [key, description] = name.split('#');
-            map[key] = description;
+              map[key] = description;
             return map;
           }, {});
           response.data[0].imgDataList = response.data[0].imgDataList.map(image => {
             const imageName = image.fname.replace(/^[^_]*_|(.jpg|.jpeg|.png|.gif|.bmp|.tiff|.svg|.webp|.heif|.heic)$/gi, '');
+            const name = imageName.split('_').join(' ');
             return {
-            ...image,
+              ...image,
+            name: name,
             description: description[imageName]
             };
           });
           }
           commit('setMainData', response.data);
+          console.log(response.data)
           return true;
         }
       } catch (error) {
@@ -77,13 +80,15 @@ export default {
           }, {});
           response.data[0].imgDataList = response.data[0].imgDataList.map(image => {
             const imageName = image.fname.replace(/^[^_]*_|(.jpg|.jpeg|.png|.gif|.bmp|.tiff|.svg|.webp|.heif|.heic)$/gi, '');
+            const name = imageName.split('_').join(' ');
             return {
-            ...image,
+              ...image,
+            name: name,
             description: description[imageName]
             };
           });
           }
-          // console.log('sub',response.data)
+          console.log('sub',response.data)
           commit('setFirstSub', response.data[0])
           return true;
         }
@@ -101,17 +106,20 @@ export default {
             const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
               const [key, description] = name.split('#');
               map[key] = description;
+              
               return map;
             }, {});
             response.data[0].imgData2List = response.data[0].imgData2List.map(image => {
               const imageName = image.fname.replace(/^[^_]*_|(.jpg|.jpeg|.png|.gif|.bmp|.tiff|.svg|.webp|.heif|.heic)$/gi, '');
+              const name = imageName.split('_').join(' ');
               return {
-              ...image,
+                ...image,
+                name: name,
               description: description[imageName]
               };
             });
           }
-          // console.log('sub2',response.data[0])
+          console.log('sub2',response.data[0])
           commit('setSecondSub', response.data[0])
           return true;
         }

@@ -90,6 +90,21 @@ export default {
     isHighlighted(index) {
       return this.highlightedDivs.includes(index);
     },
+    async goToTopic() {
+      const payload = {
+        language: this.language,
+        item: this.selectedTopics[0]
+      }
+      try {
+        const response = await this.$store.dispatch('getMainDetails', payload)
+
+        if (response) {
+          this.$router.push({ name: 'detailsPage' })
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async submitSelection() {
       if (this.selectedTopics.length < 1) {
         alert('Please select at least one topic.');
@@ -100,13 +115,20 @@ export default {
         return;
       }
       try {
+        console.log('select',this.selectedTopics)
         this.$store.commit('setCommonIds', this.selectedTopics)
         const res = await this.$store.dispatch('selectedTopics', {
           language: this.language,
           selectedTopics: this.selectedTopics,
         });
         if (res) {
-          this.$router.push('/digitalBoard/selectedTopics')
+          if (this.$store.getters.getSelectedTopics.length > 1) {
+            this.$router.push('/digitalBoard/selectedTopics')
+          }
+          else {
+            this.goToTopic();
+          }
+          
         }
       }
       catch (error) {
@@ -118,6 +140,7 @@ export default {
 </script>
 
 <style scoped>
+
 .main {
   background: #FDFAF6;
   background-image: url('@/assets/noise.svg');
