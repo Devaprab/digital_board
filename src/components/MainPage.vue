@@ -7,7 +7,7 @@
           {{ topic.title }}</h1>
       </div>
       <!-- Card with topic description & image -->
-      <div class=" card mb-3" :style="cardPortrait">
+      <div class=" card mb-3" :style="cardPortrait" v-if="((topic.description && Array.from(topic.description).length > 60) || (topic.combinedDataSubList && topic.combinedDataSubList.length >= 1))">
         <div class="main-card ps-1 py-1" :style="[backgroundImageStyle, mainCardHeight]">
           <!-- Scroll up -->
           <div class="d-flex justify-content-center arrow-up py-3">
@@ -104,6 +104,45 @@
   </v-dialog>
         </v-card>
       </div>
+       <!-- Only image is present -->
+       <div v-else class="mx-auto">
+        <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0"
+          :height="dynamicHeight" :width="dynamicWidth">
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+            :touch="true" style="" height="100%" width="100%">
+            <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
+              <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
+                style="height: 100vh;">
+                <!-- <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                  height="50vh" width="100vw">
+                  <template v-slot:placeholder>
+                    <div class="d-flex align-center justify-center fill-height">
+                      <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                    </div>
+                  </template></v-img>
+                <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text> -->
+                <template v-if="item.type === 'image'">
+              <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                     height="50vh" width="100vw">
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                  </div>
+                </template>
+              </v-img>
+            </template>
+            
+            <template v-else-if="item.type === 'video'">
+              <video :src="item.furl"  :lazy-src="item.furl" controls autoplay loop muted style=" height:100%; width:100%; object-fit: cover;" >
+              </video>
+            </template>
+            <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text>
+              </v-container>
+            </v-carousel-item>
+          </v-carousel>
+        </v-card>
+      </div>
+ 
       <!-- Bottom navigation -->
       <div class="nav mb-3">
         <v-btn icon="mdi-home" variant="outlined" elevation="10" class="home-btn"
@@ -159,15 +198,25 @@ export default {
     dynamicStyle() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '200px' : '50px'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '200px' : '50px'
         }
       } return {};
+    },
+    dynamicHeight() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return "80vh";
+      }else return "80vh";
+    },
+    dynamicWidth() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return "80vw";
+      }else return "100vw";
     },
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '54vh' : '76vh',
-          marginTop: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '8%' : '0.5%'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '54vh' : '76vh',
+          marginTop: this.carouselItems && this.carouselItems.length > 0 ? '8%' : '0.5%'
         };
       }
       return {
@@ -177,12 +226,12 @@ export default {
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          bottom: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '2%' : '5%'
+          bottom: this.carouselItems && this.carouselItems.length > 0 ? '2%' : '5%'
         };
       }
       return {
-        width: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '80%' : '90%',
-        marginInline: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '0' : 'auto'
+        width: this.carouselItems && this.carouselItems.length > 0 ? '80%' : '90%',
+        marginInline: this.carouselItems && this.carouselItems.length > 0 ? '0' : 'auto'
       };
     },
     backgroundImageStyle() {
@@ -193,18 +242,18 @@ export default {
     mainCardHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '75vh' : '85vh'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '75vh' : '85vh'
         };
       }
       return {
-        borderRadius: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '0px 30px 30px 0px' : '30px',
+        borderRadius: this.carouselItems && this.carouselItems.length > 0 ? '0px 30px 30px 0px' : '30px',
       };
     },
     scrollStyle() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
           position: 'absolute',
-          top: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '1' : '-630%'
+          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-630%'
         };
       }
       return {}
