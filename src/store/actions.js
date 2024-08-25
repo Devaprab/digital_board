@@ -7,7 +7,8 @@ export default {
         if (response.status >= 200 || response.status < 300) {
           const filteredData = response.data.filter(item => item.commonId !== null ) 
           // console.log(filteredData);
-            commit('setAllTopics', filteredData);
+          commit('setAllTopics', filteredData);
+          return true;
         }
       } catch (error) {
         throw Error(error);

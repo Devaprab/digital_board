@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="submit-btn w-100">
-      <v-card class="translate-btn text-capitalize p-2 rounded-5" width="50" height="50" @click="toggleDtId">
+      <v-card class="translate-btn text-capitalize p-2 rounded-5" width="50" height="50" @click="toggleDtId" :disabled="transLoad" :loading="transLoad">
         <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
           <g opacity="1">
             <path fill-rule="evenodd" clip-rule="evenodd" class="svg-path" :d="path1" fill="#5D4037" />
@@ -34,7 +34,8 @@ export default {
       selectedTopics: [],
       highlightedDivs: [],
       path1: this.$store.getters.getPath1,
-      path2: this.$store.getters.getPath2
+      path2: this.$store.getters.getPath2,
+      transLoad: false
     };
   },
   computed: {
@@ -51,7 +52,10 @@ export default {
   methods: {
     async getTopics() {
       try {
-        await this.$store.dispatch('getTopics', this.language)
+        const res = await this.$store.dispatch('getTopics', this.language)
+        if (res) {
+          return res;
+        }
       }
       catch (error) {
         console.log(error);
@@ -64,9 +68,14 @@ export default {
         this.$store.commit('setLanguage', 1);
       }
       try {
-        await this.getTopics();
+        this.transLoad = true;
+        const res = await this.getTopics();
+        if (res) {
+          this.transLoad = false;
+        }
       }
       catch (error) {
+        this.transLoad = false;
         console.error(error)
       }
     },
