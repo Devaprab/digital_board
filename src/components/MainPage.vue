@@ -151,7 +151,8 @@
           @click="$router.push('/digitalBoard/selectedTopics');"
           v-if="$store.getters.getSelectedTopics.length > 1"></v-btn>
         <!-- Translate -->
-        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
+        <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate"
+          :loading="transLoad" :disabled="transLoad">
           <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="svg-icon">
             <g opacity="1">
@@ -175,7 +176,8 @@ export default {
       path1: this.$store.getters.getPath1,
       path2: this.$store.getters.getPath2,
       isScrolledToBottom: false,
-      isScrolledToTop: true
+      isScrolledToTop: true,
+      transLoad: false
     }
   },
   computed: {
@@ -342,9 +344,14 @@ export default {
     },
     async goToTopic() {
       try {
-        await this.$store.dispatch('getMainDetails', { language: this.language, item: this.mainTopics[0].commonId })
+        this.transLoad = true;
+        const res = await this.$store.dispatch('getMainDetails', { language: this.language, item: this.mainTopics[0].commonId });
+        if (res) {
+          this.transLoad = false;
+        }
       }
       catch (error) {
+        this.transLoad = false
         console.log(error)
       }
     },

@@ -113,7 +113,7 @@
                 </template>
 
                 <template v-else-if="item.type === 'video'">
-                  <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop muted
+                  <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop
                     style=" height:100vh; width:100%; object-fit: cover;">
                   </video>
                 </template>
@@ -159,7 +159,7 @@
               </div>
             </v-speed-dial>
           </div>
-          <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate">
+          <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate" :loading="translateDisabled" :disabled="translateDisabled">
             <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
               class="svg-icon">
               <g opacity="1">
@@ -352,13 +352,15 @@ console.log('image',imgDataList);
         this.$store.commit('setLanguage', 1);
       }
       try {
+        this.translateDisabled = true;
         const res1 = this.goToTopic();
         const res2 = await this.$store.dispatch('getSubTitle', { id: this.topic.fsCommonId, language: this.language });
         if (res1 && res2) {
-          this.translateDisabled = false
+          this.translateDisabled = false;
         }
       }
       catch (error) {
+        this.translateDisabled = false
         console.error(error)
       }
     },

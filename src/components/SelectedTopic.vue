@@ -5,7 +5,7 @@
     </div>
     <div class="d-flex justify-content-end translate-card w-100">
       <v-btn class="text-capitalize btn-style" @click="toggleDtId" size="large" variant="tonal" elevation="10" rounded
-        color="#1b1008">
+        color="#1b1008" :disabled="loadTopic" :loading="loadTopic">
         <svg width="40" height="40" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g opacity="0.8">
             <path fill-rule="evenodd" clip-rule="evenodd" :d="path1" fill="#1b1008" />

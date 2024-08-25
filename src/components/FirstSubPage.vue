@@ -173,7 +173,7 @@
             </v-speed-dial>
           </div>
           <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate"
-            :disabled="translateDisabled" :loading="translateDisabled">
+            :loading="transLoad" :disabled="transLoad">
             <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
               class="svg-icon">
               <g opacity="1">
@@ -200,7 +200,7 @@ export default ({
       path2: this.$store.getters.getPath2,
       isScrolledToBottom: false,
       isScrolledToTop: true,
-      translateDisabled: false
+      transLoad: false
     }
   },
   computed: {
@@ -375,16 +375,16 @@ export default ({
       } else {
         this.$store.commit('setLanguage', 1);
         }
-      this.translateDisabled = true;
+        this.transLoad = true;
       const res1 = this.goToTopic()
       const res2 = await this.$store.dispatch('getSubTitle',{id:this.$store.getters.getMainData[0].commonId, language: this.language});
       if(res1 && res2){
-        this.translateDisabled= false
+        this.transLoad = false
       }
       }
       catch(error){
         console.log(error);
-        this.translateDisabled = false;
+        this.transLoad = false;
       }
     },
     formattedDescription(description) {
