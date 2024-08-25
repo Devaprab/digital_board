@@ -251,7 +251,7 @@ export default ({
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          bottom: this.carouselItems && this.carouselItems.length > 0 ? '2%' : '5%'
+          bottom: this.carouselItems && this.carouselItems.length > 0 ? '6%' : '5%'
         };
       }
       return {
@@ -267,7 +267,7 @@ export default ({
     mainCardHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.carouselItems && this.carouselItems.length > 0 ? '75vh' : '85vh'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '73vh' : '85vh'
         };
       }
       return {
@@ -600,6 +600,10 @@ console.log('image',imgDataList);
     justify-content: center;
     position: relative;
   }
+  .title{
+    display: flex;
+    justify-content: center;
+  }
   .title h1 {
     margin-top: 2%;
     margin-bottom: 2%;
@@ -623,7 +627,7 @@ console.log('image',imgDataList);
     aspect-ratio: 813/650;
     position: absolute;
     left: 13%;
-    top: -14%;
+    top: -16%;
     width: 75%;
     height: 32%;
   }

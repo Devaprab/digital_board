@@ -197,7 +197,7 @@ export default {
       const videos = this.mainTopics[0].mp4DataList.map(video => ({
         type: 'video',
         furl: video.furl,
-        description: video.description // Adjust this based on available data
+        description: video.description 
       }));
       return [...images, ...videos];
     },
@@ -232,7 +232,7 @@ export default {
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          bottom: this.carouselItems && this.carouselItems.length > 0 ? '2%' : '5%'
+          bottom: this.carouselItems && this.carouselItems.length > 0 ? '6%' : '5%'
         };
       }
       return {
@@ -248,7 +248,7 @@ export default {
     mainCardHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.carouselItems && this.carouselItems.length > 0 ? '75vh' : '85vh'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '73vh' : '85vh'
         };
       }
       return {
@@ -558,6 +558,7 @@ export default {
     justify-content: center;
     position: relative;
   }
+ 
   .title h1 {
     margin-top: 2%;
     margin-bottom: 2%;
@@ -581,7 +582,7 @@ export default {
     aspect-ratio: 813/650;
     position: absolute;
     left: 13%;
-    top: -14%;
+    top: -16%;
     width: 75%;
     height: 32%;
   }
