@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       inactivityTimeout: null,
-      inactivityDuration: 120000
+      inactivityDuration: 90000
     };
   },
   methods: {
