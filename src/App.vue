@@ -58,15 +58,20 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@100..900&family=Noto+Serif+Malayalam:wght@100..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@100..900&family=Noto+Serif+Malayalam:wght@100..900&display=swap'); */
 /* Default font for English or other languages */
+@font-face {
+  font-family: 'Noto Serif Malayalam, serif';
+  src: url('@/assets/fonts/Noto_Serif_Malayalam/NotoSerifMalayalam-VariableFont_wght.ttf') format('truetype');
+   
+}
 .default-font * {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Font for Malayalam */
 .malayalam-font * {
-  font-family: 'Noto Sans Malayalam', sans-serif;
+  font-family: 'Noto Serif Malayalam, serif';
 }
 
 * {
