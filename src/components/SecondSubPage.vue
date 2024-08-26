@@ -68,8 +68,7 @@
                           </div>
                         </template>
                       </v-img>
-                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic">{{ item.description ??
-                        ''}}</v-card-text>
+                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic text-break">{{ item.description ?? ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
                       <video :src="item.furl" controls autoplay loop muted
