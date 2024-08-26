@@ -68,8 +68,7 @@
                           </div>
                         </template>
                       </v-img>
-                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic">{{ item.description ?? ''
-                        }}</v-card-text>
+                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic">{{ item.description ?? ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
                       <video :src="item.furl" controls autoplay loop muted
@@ -85,7 +84,7 @@
         </v-card>
       </div>
       <!-- Only image is present-->
-      <div v-else class="mx-auto">
+      <div v-else class="mx-auto image-card">
         <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
           :width="dynamicWidth">
           <v-carousel class="sub-carousel" :hide-delimiters="carouselItems && carouselItems.length <= 1" cover
@@ -117,7 +116,7 @@
                     style=" height:100vh; width:100%; object-fit: cover;">
                   </video>
                 </template>
-                <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text>
+                <v-card-text class="text-center imgdesc pb-0 pt-1">{{ item.description ?? '' }}</v-card-text>
               </v-container>
             </v-carousel-item>
           </v-carousel>
@@ -159,7 +158,8 @@
               </div>
             </v-speed-dial>
           </div>
-          <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate" :loading="translateDisabled" :disabled="translateDisabled">
+          <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate"
+            :loading="translateDisabled" :disabled="translateDisabled">
             <svg width="30" height="30" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"
               class="svg-icon">
               <g opacity="1">
@@ -242,8 +242,8 @@ export default ({
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.carouselItems && this.carouselItems.length > 0 ? '54vh' : '76vh',
-          marginTop: this.carouselItems && this.carouselItems.length > 0 ? '8%' : '0.5%'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '46vh' : '66vh',
+          marginTop: this.carouselItems && this.carouselItems.length > 0 ? '8%' : '5%'
         };
       }
       return {};
@@ -251,7 +251,7 @@ export default ({
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          bottom: this.carouselItems && this.carouselItems.length > 0 ? '6%' : '5%'
+          bottom: this.carouselItems && this.carouselItems.length > 0 ? '9%' : '9%'
         };
       }
       return {
@@ -267,7 +267,7 @@ export default ({
     mainCardHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.carouselItems && this.carouselItems.length > 0 ? '73vh' : '85vh'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '70vh' : '79vh'
         };
       }
       return {
@@ -278,7 +278,7 @@ export default ({
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
           position: 'absolute',
-          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-630%'
+          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-590%'
         };
       }
       return {}
@@ -605,10 +605,18 @@ console.log('image',imgDataList);
     justify-content: center;
   }
   .title h1 {
-    margin-top: 2%;
+    margin-top: 3%;
     margin-bottom: 2%;
     position: absolute;
     top: 2%;
+    padding-inline: 10px;
+  }
+  .image-card {
+    margin-inline: auto;
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .card {
     margin-inline: auto;
@@ -627,7 +635,7 @@ console.log('image',imgDataList);
     aspect-ratio: 813/650;
     position: absolute;
     left: 13%;
-    top: -16%;
+    top: -15%;
     width: 75%;
     height: 32%;
   }
@@ -652,7 +660,7 @@ console.log('image',imgDataList);
   }
   .arrow-down {
     position: absolute;
-    bottom: 2%;
+    bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -672,6 +680,9 @@ console.log('image',imgDataList);
   .card {
     width: 80%;
     position: relative;
+  }
+  :deep(.v-carousel__controls) {
+    height: 30px;
   }
   .main-card {
     height: 80vh;

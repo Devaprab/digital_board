@@ -96,7 +96,7 @@
         </v-card>
       </div>
       <!-- Only image is present -->
-      <div v-else class="mx-auto">
+      <div v-else class="mx-auto image-card">
         <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
           :width="dynamicWidth">
           <v-carousel class="sub-carousel" cover :show-arrows="false" cycle interval="6000" :touch="true" style=""
@@ -122,7 +122,7 @@
                       </div>
                     </template>
                   </v-img>
-                  <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text>
+                  <v-card-text class="text-center imgdesc pb-0 pt-1">{{ item.description ?? '' }}</v-card-text>
                 </template>
 
                 <template v-else-if="item.type === 'video'">
@@ -166,8 +166,8 @@
                   variant="outlined" color="#5D4037" elevation="10"></v-fab>
               </template>
               <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
-                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="450" height="50"
-                  class="text-capitalize" rounded @click="goToSubFirst(sub.commonId)"><v-icon
+                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="350" height="50"
+                  class="text-capitalize text-wrap" rounded @click="goToSubFirst(sub.commonId)"><v-icon
                     class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{ sub.title }}</v-btn>
               </div>
             </v-speed-dial>
@@ -255,8 +255,8 @@ export default ({
     portraitHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.carouselItems && this.carouselItems.length > 0 ? '54vh' : '76vh',
-          marginTop: this.carouselItems && this.carouselItems.length > 0 ? '8%' : '0.5%'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '46vh' : '66vh',
+          marginTop: this.carouselItems && this.carouselItems.length > 0 ? '8%' : '5%'
         };
       }
       return {};
@@ -264,7 +264,7 @@ export default ({
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          bottom: this.carouselItems && this.carouselItems.length > 0 ? '6%' : '5%'
+          bottom: this.carouselItems && this.carouselItems.length > 0 ? '9%' : '9%'
         };
       }
       return {
@@ -276,7 +276,7 @@ export default ({
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
           position: 'absolute',
-          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-630%'
+          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-590%'
         };
       }
       return {}
@@ -289,7 +289,7 @@ export default ({
     mainCardHeight() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
-          height: this.carouselItems && this.carouselItems.length > 0 ? '73vh' : '85vh'
+          height: this.carouselItems && this.carouselItems.length > 0 ? '70vh' : '79vh'
         };
       }
       return {
@@ -623,10 +623,18 @@ export default ({
     position: relative;
   }
   .title h1 {
-    margin-top: 2%;
+    margin-top: 3%;
     margin-bottom: 2%;
     position: absolute;
     top: 2%;
+    padding-inline: 10px;
+  }
+  .image-card {
+    margin-inline: auto;
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .card {
     margin-inline: auto;
@@ -645,7 +653,7 @@ export default ({
     aspect-ratio: 813/650;
     position: absolute;
     left: 13%;
-    top: -16%;
+    top: -15%;
     width: 75%;
     height: 32%;
   }
@@ -670,7 +678,7 @@ export default ({
   }
   .arrow-down {
     position: absolute;
-    bottom: 2%;
+    bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -690,6 +698,9 @@ export default ({
   .card {
     width: 80%;
     position: relative;
+  }
+  :deep(.v-carousel__controls){
+    height: 30px;
   }
   .main-card {
     height: 80vh;
