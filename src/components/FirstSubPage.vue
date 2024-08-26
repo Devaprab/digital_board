@@ -166,7 +166,7 @@
                   variant="outlined" color="#5D4037" elevation="10"></v-fab>
               </template>
               <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
-                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="350" height="50"
+                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="380" height="30" style="font-size: 10px;"
                   class="text-capitalize text-wrap" rounded @click="goToSubFirst(sub.commonId)"><v-icon
                     class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{ sub.title }}</v-btn>
               </div>

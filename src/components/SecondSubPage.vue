@@ -68,7 +68,8 @@
                           </div>
                         </template>
                       </v-img>
-                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic">{{ item.description ?? ''}}</v-card-text>
+                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic">{{ item.description ??
+                        ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
                       <video :src="item.furl" controls autoplay loop muted
@@ -152,9 +153,10 @@
                   variant="outlined" color="#5D4037" elevation="10"></v-fab>
               </template>
               <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
-                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="450" height="50"
-                  class="text-capitalize" rounded @click="goToSubFirst(sub.commonId)"><v-icon
-                    class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{ sub.title }}</v-btn>
+                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="380" height="30"
+                  style="font-size: 10px;" class="text-capitalize text-wrap" rounded
+                  @click="goToSubFirst(sub.commonId)"><v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0"
+                    size="22"></v-icon>{{ sub.title }}</v-btn>
               </div>
             </v-speed-dial>
           </div>
