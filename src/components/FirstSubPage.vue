@@ -82,7 +82,7 @@
                       <v-card-text class="text-center my-2 imgdesc text-caption fst-italic text-break">{{ item.description ?? ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="item.furl" controls autoplay loop muted
+                      <video :src="item.furl" controls autoplay loop
                         style=" height:100%; width:100%; object-fit: contain;">
                         Your browser does not support the video tag.
                       </video>
@@ -125,7 +125,7 @@
                 </template>
 
                 <template v-else-if="item.type === 'video'">
-                  <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop muted
+                  <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop
                     style=" height:100%; width:100%; object-fit: cover;">
                   </video>
                 </template>

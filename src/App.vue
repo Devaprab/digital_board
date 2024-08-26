@@ -23,7 +23,7 @@ export default {
       if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedTopics.length > 1) {
         this.$router.push('/digitalBoard/selectedTopics');
       }
-      if (this.$route.path != '/digitalBoard/detailsPage' && this.$store.getters.getSelectedTopics.length == 1) {
+      if ((this.$route.path != '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
         this.$router.push('/digitalBoard/detailsPage');
       }
     },
