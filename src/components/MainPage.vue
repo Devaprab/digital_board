@@ -3,7 +3,7 @@
     <div class="topic-list" v-for="topic in mainTopics" :key="topic.uId">
       <!-- Topic title -->
       <div class="title">
-        <h1 class="text-center text-wrap title-h1">
+        <h1 class="text-center text-wrap title-h1 mt-1">
           {{ topic.title }}</h1>
       </div>
       <!-- Card with topic description & image -->

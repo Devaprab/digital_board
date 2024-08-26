@@ -3,7 +3,7 @@
     <div class="topic-list">
       <!-- Topic title -->
       <div class="title">
-        <h1 class="text-center text-wrap title-h1">{{ topic.title }}</h1>
+        <h1 class="text-center text-wrap title-h1 mt-1">{{ topic.title }}</h1>
       </div>
       <!-- Card with topic description & image -->
       <div class=" card mb-3" :style="cardPortrait"
@@ -144,7 +144,7 @@
         </div>
         <!--Showing other subheadings landscape-->
         <div v-if="!subView">
-          <v-sheet class="subTitle bg-transparent" max-width="1100" v-if="subTitle && subTitle.length > 1">
+          <v-sheet class="subTitle bg-transparent" max-width="900" v-if="subTitle && subTitle.length > 1">
             <v-slide-group>
               <v-slide-group-item v-for="(sub) in this.subTitle.filter(sub => sub.title !== this.topic.title)"
                 :key="sub.commonId" v-slot="{ isSelected }">
