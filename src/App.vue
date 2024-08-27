@@ -80,5 +80,6 @@ export default {
   box-sizing: border-box;
   font-optical-sizing: auto;
   font-style: normal;
+  user-select: none
 }
 </style>
