@@ -3,7 +3,7 @@
     <div class="topic-list">
       <!-- Topic title -->
       <div class="title">
-        <h1 class="text-center text-wrap title-h1 mt-1">{{ topic.title }}</h1>
+        <h1 class="text-center text-wrap title-h1 mt-2">{{ topic.title }}</h1>
       </div>
       <!-- Card with topic description & image -->
       <div class=" card mb-3" :style="cardPortrait"
@@ -258,7 +258,9 @@ export default ({
           marginTop: this.carouselItems && this.carouselItems.length > 0 ? '8%' : '5%'
         };
       }
-      return {};
+      return {
+        width: this.carouselItems && this.carouselItems.length > 0 ? '85%' : '100%'
+      };
     },
     cardPortrait() {
       if (window.matchMedia("(orientation: portrait)").matches) {
@@ -702,14 +704,14 @@ export default ({
     height: 30px;
   }
   .main-card {
-    height: 80vh;
+    height: 75vh;
   }
   .carousel-wrapper {
     aspect-ratio: 813/650;
     position: absolute;
     left: 84%;
     top: 15%;
-    width: 40%;
+    width: 38%;
     height: 70%
   }
   .carousel__item {
@@ -725,7 +727,7 @@ export default ({
     font-size: 110%;
   }
   .full-desc {
-    width: 85%;
+    /* width: 85%; */
     height: 80%;
     overflow-x: hidden;
     padding-inline: 50px;

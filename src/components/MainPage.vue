@@ -3,7 +3,7 @@
     <div class="topic-list" v-for="topic in mainTopics" :key="topic.uId">
       <!-- Topic title -->
       <div class="title">
-        <h1 class="text-center text-wrap title-h1 mt-1">
+        <h1 class="text-center text-wrap title-h1 mt-2">
           {{ topic.title }}</h1>
       </div>
       <!-- Card with topic description & image -->
@@ -225,7 +225,7 @@ export default {
         };
       }
       return {
-        width: this.mainTopics[0].imgDataList && this.mainTopics[0].imgDataList.length > 0 ? '85%' : '100%'
+        width: this.carouselItems && this.carouselItems.length > 0 ? '85%' : '100%'
       };
     },
     cardPortrait() {
@@ -631,7 +631,7 @@ export default {
     position: relative;
   }
   .main-card {
-    height: 80vh;
+    height: 75vh;
   }
   :deep(.v-carousel__controls) {
     height: 30px;
@@ -641,7 +641,7 @@ export default {
     position: absolute;
     left: 84%;
     top: 15%;
-    width: 40%;
+    width: 38%;
     height: 70%
   }
   .carousel__item {
