@@ -158,16 +158,19 @@
         <div class="group2 d-flex gap-3">
           <!-- showing other subheadings portrait  -->
           <div v-if="subView">
-            <v-speed-dial location="left top" transition="fade-transition" scrim="black"
+            <v-speed-dial location="left top" transition="fade-transition" scrim="black" class="subs"
               v-if="subTitle && subTitle.length > 1">
               <template v-slot:activator="{ props: activatorProps }">
                 <v-fab v-bind="activatorProps" size="default" icon="mdi-chevron-triple-right" class="subs"
                   variant="outlined" color="#5D4037" elevation="10"></v-fab>
               </template>
               <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
-                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="380" height="30" style="font-size: 10px;"
-                  class="text-capitalize text-wrap" rounded @click="goToSubFirst(sub.commonId)"><v-icon
-                    class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{ sub.title }}</v-btn>
+                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="300" height="fit-content"
+                  style="font-size: 10px;" class="text-capitalize text-wrap" rounded="3"
+                  @click="goToSubFirst(sub.commonId)"><v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0"
+                    size="22"></v-icon>
+                  <p class="text-wrap my-1">{{ sub.title }}</p>
+                </v-btn>
               </div>
             </v-speed-dial>
           </div>
@@ -619,6 +622,9 @@ export default ({
   background-color: none;
 }
 @media only screen and (orientation: portrait) {
+    :deep(.v-speed-dial__content) {
+        gap: 2px;
+      }
   .topic-list {
     justify-content: center;
     position: relative;

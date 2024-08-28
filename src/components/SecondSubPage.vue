@@ -71,7 +71,7 @@
                       <v-card-text class="text-center my-2 imgdesc text-caption fst-italic text-break">{{ item.description ?? ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="item.furl" controls autoplay loop 
+                      <video :src="item.furl" controls autoplay loop
                         style=" height:100%; width:100%; object-fit: contain;">
                         Your browser does not support the video tag.
                       </video>
@@ -145,17 +145,19 @@
         <div class="group2 d-flex gap-3">
           <!-- showing other subheadings portrait  -->
           <div v-if="subView">
-            <v-speed-dial location="left top" transition="fade-transition" scrim="black"
+            <v-speed-dial location="left top" transition="fade-transition" scrim="black" class="subs"
               v-if="subTitle && subTitle.length > 1">
               <template v-slot:activator="{ props: activatorProps }">
-                <v-fab v-bind="activatorProps" size="default" icon="mdi-chevron-triple-right" class="subs"
+                <v-fab v-bind="activatorProps" size="default" icon="mdi-chevron-triple-right"
                   variant="outlined" color="#5D4037" elevation="10"></v-fab>
               </template>
               <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
-                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="380" height="30"
-                  style="font-size: 10px;" class="text-capitalize text-wrap" rounded
+                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="300" height="fit-content"
+                  style="font-size: 10px;" class="text-capitalize text-wrap" rounded="3"
                   @click="goToSubFirst(sub.commonId)"><v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0"
-                    size="22"></v-icon>{{ sub.title }}</v-btn>
+                    size="22"></v-icon>
+                  <p class="text-wrap my-1">{{ sub.title }}</p>
+                </v-btn>
               </div>
             </v-speed-dial>
           </div>
@@ -466,6 +468,7 @@ console.log('image',imgDataList);
     transform: translate(0, 5px);
   }
 }
+
 :deep(.v-fab__container){
   position: static;
   border-radius: 50%;
@@ -599,6 +602,9 @@ console.log('image',imgDataList);
   background-color: none;
 }
 @media only screen and (orientation: portrait) {
+  :deep(.v-speed-dial__content){
+    gap: 2px;
+  }
   .topic-list {
     justify-content: center;
     position: relative;
