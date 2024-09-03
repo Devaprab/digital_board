@@ -60,8 +60,16 @@ export default {
             };
           });
           }
+          response.data[0].mp4DataList = response.data[0].mp4DataList.map(video => {
+              const videoName = video.fname.replace(/^[^_]*_|(.mp4|.mov|.wmv|.avi|.mkv|.flv|.webm|.mpeg|.mpg|.3gp|.m4v|.ogg|.mxf|.ts|.vob|.rm|.rmvb|.asf|.m2ts)$/gi, '');
+              const name = videoName.split('_').join(' ');
+              return {
+                ...video,
+                name: name,
+              };
+          });
           commit('setMainData', response.data);
-          console.log(response.data)
+          // console.log(response.data)
           return true;
         }
       } catch (error) {
@@ -89,7 +97,15 @@ export default {
             };
           });
           }
-          console.log('sub',response.data)
+          response.data[0].mp4DataList = response.data[0].mp4DataList.map(video => {
+              const videoName = video.fname.replace(/^[^_]*_|(.mp4|.mov|.wmv|.avi|.mkv|.flv|.webm|.mpeg|.mpg|.3gp|.m4v|.ogg|.mxf|.ts|.vob|.rm|.rmvb|.asf|.m2ts)$/gi, '');
+              const name = videoName.split('_').join(' ');
+              return {
+                ...video,
+                name: name,
+              };
+            });
+          // console.log('sub',response.data)
           commit('setFirstSub', response.data[0])
           return true;
         }
@@ -120,7 +136,16 @@ export default {
               };
             });
           }
-          console.log('sub2',response.data[0])
+          response.data[0].mp4Data2List = response.data[0].mp4Data2List.map(video => {
+              const videoName = video.fname.replace(/^[^_]*_|(.mp4|.mov|.wmv|.avi|.mkv|.flv|.webm|.mpeg|.mpg|.3gp|.m4v|.ogg|.mxf|.ts|.vob|.rm|.rmvb|.asf|.m2ts)$/gi, '');
+              const name = videoName.split('_').join(' ');
+              return {
+                ...video,
+                name: name,
+              };
+            });
+          //  console.log('video',response.data[0])
+          // console.log('sub2',response.data[0])
           commit('setSecondSub', response.data[0])
           return true;
         }

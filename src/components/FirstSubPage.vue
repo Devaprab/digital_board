@@ -59,31 +59,32 @@
           <!-- Image with description dialog box -->
           <v-dialog v-model="dialog" max-width="100%" class="bg-grey-darken-4" height="100%">
             <v-container class="d-flex justify-content-center align-items-center flex-column h-100 bg-white">
-              <v-carousel :hide-delimiters="!(carouselItems && carouselItems.length > 1)" class="carousel"
+              <v-carousel :hide-delimiters="!(carouselItems && carouselItems.length > 1)" class="carousel p-0"
                 :show-arrows="false" height="100vh" width="100%">
-                <v-carousel-item v-for="(item, index) in reorderedImages" :key="index">
-                  <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
-                    style="height: 100vh;">
+                <v-carousel-item v-for="(item, index) in reorderedImages" :key="index" class="p-0">
+                  <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0">
                     <v-card-text class="d-flex justify-content-end p-0 w-100 flex-grow-0">
-                      <v-icon class="mdi mdi-close close-icon d-flex" @click="dialog = false;" color="black"></v-icon>
+                      <v-icon class="mdi mdi-close close-icon d-flex close" @click="dialog = false;"
+                        color="black"></v-icon>
                     </v-card-text>
-
                     <!-- Conditional rendering based on the item type -->
                     <template v-if="item.type === 'image'">
                       <h5 class="text-center">{{ item.name ?? ' ' }}</h5>
                       <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
-                        height="50vh" width="100vw">
+                        height="60vh" width="100vw">
                         <template v-slot:placeholder>
                           <div class="d-flex align-center justify-center fill-height">
                             <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
                           </div>
                         </template>
                       </v-img>
-                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic text-break">{{ item.description ?? ''}}</v-card-text>
+                      <v-card-text class="text-center my-2 imgdesc text-caption fst-italic text-break px-2"
+                        style="line-height: 15px;">{{
+                        item.description ?? '' }}</v-card-text>
                     </template>
+
                     <template v-else-if="item.type === 'video'">
-                      <video :src="item.furl" controls autoplay loop
-                        style=" height:100%; width:100%; object-fit: contain;">
+                      <video :src="item.furl" controls autoplay loop style="width:100%; object-fit: contain;">
                         Your browser does not support the video tag.
                       </video>
                     </template>
@@ -94,46 +95,64 @@
           </v-dialog>
         </v-card>
       </div>
-      <!-- Only image is present -->
+      <!-- Only image is present-->
       <div v-else class="mx-auto image-card">
-        <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
-          :width="dynamicWidth">
-          <v-carousel class="sub-carousel" cover :show-arrows="false" cycle interval="6000" :touch="true" style=""
-            height="100%" width="100%" :hide-delimiters="carouselItems && carouselItems.length <= 1">
-            <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
-              <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0 pb-5"
-                style="height: 100vh;">
-                <!-- <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
-                  height="50vh" width="100vw">
-                  <template v-slot:placeholder>
-                    <div class="d-flex align-center justify-center fill-height">
-                      <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-                    </div>
-                  </template></v-img>
-                <v-card-text class="text-center mt-1 imgdesc">{{ item.description ?? '' }}</v-card-text> -->
-                <template v-if="item.type === 'image'">
-                  <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
-                    height="50vh" width="100vw">
-
-                    <template v-slot:placeholder>
-                      <div class="d-flex align-center justify-center fill-height">
-                        <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-                      </div>
-                    </template>
-                  </v-img>
-                  <v-card-text class="text-center imgdesc pb-0 pt-1">{{ item.description ?? '' }}</v-card-text>
-                </template>
-
-                <template v-else-if="item.type === 'video'">
-                  <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop
-                    style=" height:100%; width:100%; object-fit: cover;">
-                  </video>
-                </template>
-
-              </v-container>
-            </v-carousel-item>
-          </v-carousel>
+        <div v-if="(topic.mp4Data2List?.length < 2) && (topic.imgData2List?.length > 0)">
+          <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
+            :width="dynamicWidth">
+            <v-carousel class="sub-carousel" :hide-delimiters="carouselItems && carouselItems.length <= 1" cover
+              :show-arrows="false" :touch="true" style="" height="100%" width="100%" cycle interval="6000">
+              <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
+                <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
+                  style="height: 100vh;">
+                  <template v-if="item.type === 'image'">
+                    <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                      height="50vh" width="100vw">
+                      <template v-slot:placeholder>
+                        <div class="d-flex align-center justify-center fill-height">
+                          <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                        </div>
+                      </template>
+                    </v-img>
+                  </template>
+                  <template v-else-if="item.type === 'video'">
+                    <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop
+                      style=" height:100vh; width:100%; object-fit: cover;">
+                    </video>
+                  </template>
+                  <v-card-text class="text-center imgdesc pb-0 pt-1 px-2" style="line-height: 15px;">{{
+                    item.description ?? '' }}</v-card-text>
+                </v-container>
+              </v-carousel-item>
+            </v-carousel>
+          </v-card>
+        </div>
+        <!-- video content -->
+        <v-card flat v-else-if="topic.mp4DataList?.length > 1"
+          class="d-flex flex-wrap bg-transparent justify-content-center align-items-center video-cards gap-3"
+          :class="videoCard" :height="dynamicHeight" :width="dynamicWidth">
+          <div v-for="video in topic.mp4DataList" :key="video.furl" style="height: 200px;" class="mx-3">
+            <v-card elevation="5" width="300" height="auto" class="p-0 bg-transparent d-flex align-items-center">
+              <v-overlay v-model="overlayvideo" class="align-center justify-center" contained>
+                <v-btn variant="text" size="50" @click="selectVideo(video)">
+                  <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
+                </v-btn>
+              </v-overlay>
+              <video :src="video.furl" :lazy-src="video.furl" style=" height:100%; width:100%; object-fit: contain;">
+              </video>
+            </v-card>
+            <v-card-text class="text-center p-0 py-2">{{ video.name }}</v-card-text>
+          </div>
         </v-card>
+        <!-- dialog to show video content -->
+        <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
+          <video :src="selectedVideo.furl" :lazy-src="selectedVideo.furl" controls autoplay
+            style="height: 100vh; object-fit: contain;" class="dialog-video">
+          </video>
+          <div class="d-flex justify-content-end">
+            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;"></v-icon>
+          </div>
+        </v-dialog>
       </div>
       <!-- Bottom navigation -->
       <div class="nav mb-3">
@@ -158,21 +177,22 @@
         <div class="group2 d-flex gap-3">
           <!-- showing other subheadings portrait  -->
           <div v-if="subView">
-            <v-speed-dial location="left top" transition="fade-transition" scrim="black" class="subs"
-              v-if="subTitle && subTitle.length > 1">
-              <template v-slot:activator="{ props: activatorProps }">
-                <v-fab v-bind="activatorProps" size="default" icon="mdi-chevron-triple-right" class="subs"
-                  variant="outlined" color="#5D4037" elevation="10"></v-fab>
-              </template>
-              <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
-                <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="300" height="fit-content"
-                  style="font-size: 10px;" class="text-capitalize text-wrap" rounded="3"
-                  @click="goToSubFirst(sub.commonId)"><v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0"
-                    size="22"></v-icon>
-                  <p class="text-wrap my-1">{{ sub.title }}</p>
-                </v-btn>
+            <v-btn icon="mdi-chevron-triple-right" variant="outlined" color="#5D4037" elevation="10"
+              v-if="subTitle && subTitle.length > 1" @click="showSubView" class="translate-btn"></v-btn>
+            <v-overlay v-model="overlay" location-strategy="connected" class="align-center justify-end"
+              style="padding-right: 12%; background-color: #0606067b;" scroll-strategy="block">
+              <div class="subview-list d-flex flex-column justify-content-center align-items-end gap-2">
+                <div v-for="(sub, index) in subTitle.filter(sub => sub.title !== topic.title)" :key="sub.commonId">
+                  <v-btn :key="index + 1" variant="elevated" color="#EFEBE9" width="250" height="fit-content"
+                    style="font-size: 10px;" class="text-capitalize text-wrap" rounded="3"
+                    @click="goToSubFirst(sub.commonId)"><v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0"
+                      size="22"></v-icon>
+                    <p class="text-wrap my-1">{{ sub.title }}</p>
+                  </v-btn>
+                </div>
               </div>
-            </v-speed-dial>
+              <v-icon class="mdi mdi-plus" color="white"></v-icon>
+            </v-overlay>
           </div>
           <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate"
             :loading="transLoad" :disabled="transLoad">
@@ -202,7 +222,11 @@ export default ({
       path2: this.$store.getters.getPath2,
       isScrolledToBottom: false,
       isScrolledToTop: true,
-      transLoad: false
+      transLoad: false,
+      overlay: false,
+      overlayvideo: true,
+      videoShow: false,
+      selectedVideo: null
     }
   },
   computed: {
@@ -225,7 +249,7 @@ export default ({
       const videos = this.topic.mp4DataList.map(video => ({
         type: 'video',
         furl: video.furl,
-        description: video.description 
+        description: video.name 
       }));
       return [...images, ...videos];
     },
@@ -299,6 +323,12 @@ export default ({
       return {
         borderRadius: this.carouselItems && this.carouselItems.length > 0 ? '0px 30px 30px 0px' : '30px',
       };
+    },
+    videoCard() {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        return ' ';
+      } else
+        return 'flex-column'
     }
   },
   async mounted() {
@@ -313,6 +343,13 @@ export default ({
     }
   },
   methods: {
+    showSubView() {
+      this.overlay = true;
+    },
+    selectVideo(video) {
+      this.selectedVideo = video;
+      this.videoShow = true;
+    },
     async goToSub(topic) {
       try {
         const res = await this.$store.dispatch('getSub2Details', { id: topic.ssCommonId, language: this.language });
@@ -332,7 +369,10 @@ export default ({
     },
     async goToSubFirst(topic) {
       try {
-        await this.$store.dispatch('getSubDetails', { id: topic, language: this.language });
+        const res = await this.$store.dispatch('getSubDetails', { id: topic, language: this.language });
+        if (res) {
+          this.overlay = false;
+        }
       }
       catch (error) {
         console.error(error);
@@ -363,7 +403,7 @@ export default ({
     const mp4DataList = this.topic.mp4DataList.map(video => ({
       type: 'video',
       furl: video.furl,
-      description: video.description || '' // Add description if available
+      description: video.name || '' // Add description if available
     }));
     const combinedList = [...imgDataList, ...mp4DataList];
     this.reorderedImages = [
@@ -523,10 +563,7 @@ export default ({
 :deep(.v-carousel__controls) {
   background: transparent;
 }
-:deep(.v-carousel .v-btn--icon.v-btn--density-default) {
-  width: 8px;
-  height: 12px;
-}
+
 :deep(.v-carousel__controls__item .v-btn__content i) {
   color: rgb(168, 159, 120);
 }
@@ -535,9 +572,24 @@ export default ({
   color: #060606;
   opacity: 1;
 }
+:deep(.v-carousel .v-btn--icon.v-btn--density-default) {
+  width: 1px;
+  height: 0.5px;
+}
+
 :deep(.v-carousel__controls__item.v-btn--active) {
   opacity: 1;
-  color: #060606;
+  color: #0c0c0b;
+}
+
+:deep(.carousel .mdi:before) {
+  font-size: 10px;
+}
+
+:deep(.close.mdi:before) {
+  font-size: 20px;
+  width: 5px;
+  /* height: 10px; */
 }
 .title {
   display: flex;
@@ -625,6 +677,20 @@ export default ({
     :deep(.v-speed-dial__content) {
         gap: 2px;
       }
+      .video-cards {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+      /* .subview{
+        display: flex;
+        justify-content: center;
+        align-items:center ;
+      } */
+      .subview-list{
+        height: 500px;
+        width: 250px;
+        overflow-y: auto;
+      }
   .topic-list {
     justify-content: center;
     position: relative;
@@ -706,6 +772,21 @@ export default ({
     width: 80%;
     position: relative;
   }
+    .video-cards {
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  
+    .dialog-video {
+      position: relative;
+    }
+  
+    .close-video {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 100;
+    }
   :deep(.v-carousel__controls){
     height: 30px;
   }
