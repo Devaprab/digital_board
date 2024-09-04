@@ -26,7 +26,7 @@
         <!-- Image carousel -->
         <v-card class="carousel-wrapper bg-brown-lighten-5" elevation="10"
           v-if="carouselItems && carouselItems.length > 0">
-          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="9000"
             :touch="true" style="" height="100%">
             <v-carousel-item v-for="(item, index) in carouselItems" :key="item.furl" @click="openDialog(index)"
               class="sub-carousel image-box">
@@ -89,7 +89,7 @@
           <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
             :width="dynamicWidth">
             <v-carousel class="sub-carousel" :hide-delimiters="carouselItems && carouselItems.length <= 1" cover
-              :show-arrows="false" :touch="true" style="" height="100%" width="100%" cycle interval="8000">
+              :show-arrows="false" :touch="true" style="" height="100%" width="100%" cycle interval="9000">
               <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
                 <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                   style="height: 100vh;">
@@ -120,7 +120,8 @@
           class="d-flex flex-wrap bg-transparent justify-content-center align-items-center video-cards gap-3"
           :class="videoCard" :height="dynamicHeight" :width="dynamicWidth">
           <div v-for="video in topic.mp4Data2List" :key="video.furl" style="height: 200px;" class="mx-3">
-            <v-card elevation="5" width="300" height="auto" class="p-0 bg-transparent d-flex align-items-center">
+            <v-card elevation="5" width="300" height="auto"
+              class="p-0 bg-transparent d-flex align-items-center border-card">
               <v-overlay v-model="overlayvideo" class="align-center justify-center" contained>
                 <v-btn variant="text" size="50" @click="selectVideo(video)">
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
@@ -129,7 +130,7 @@
               <video :src="video.furl" :lazy-src="video.furl" style=" height:100%; width:100%; object-fit: contain;">
               </video>
             </v-card>
-            <v-card-text class="text-center p-0 py-4">{{ video.name }}</v-card-text>
+            <v-card-text class="text-center p-0 py-3">{{ video.name }}</v-card-text>
           </div>
         </v-card>
         <!-- dialog to show video content -->
@@ -526,7 +527,9 @@ console.log('image',imgDataList);
     transform: translate(0, 5px);
   }
 }
-
+.border-card{
+  border: 2px solid cornsilk;
+}
 :deep(.v-fab__container){
   position: static;
   border-radius: 50%;

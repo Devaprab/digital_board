@@ -48,7 +48,7 @@
         <!-- Image carousel -->
         <v-card class="carousel-wrapper bg-brown-lighten-5" elevation="10"
           v-if="carouselItems && carouselItems.length > 0">
-          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="6000"
+          <v-carousel class="sub-carousel" hide-delimiters cover :show-arrows="false" cycle interval="9000"
             :touch="true" style="" height="100%">
             <v-carousel-item v-for="(item, index) in carouselItems" :key="item.furl" @click="openDialog(index)"
               class="sub-carousel image-box">
@@ -88,9 +88,12 @@
                         style="line-height: 15px;">{{item.description ?? ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="item.furl" controls autoplay loop style="width:100%; object-fit: contain;">
+
+                      <video :src="item.furl" :lazy-src="item.furl" controls autoplay
+                        style="width:100%; object-fit: contain;">
                         Your browser does not support the video tag.
                       </video>
+
                     </template>
                   </v-container>
                 </v-carousel-item>
@@ -105,7 +108,7 @@
           <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
             :width="dynamicWidth">
             <v-carousel class="sub-carousel" :hide-delimiters="carouselItems && carouselItems.length <= 1" cover
-              :show-arrows="false" :touch="true" style="" height="100%" width="100%" cycle interval="6000">
+              :show-arrows="false" :touch="true" style="" height="100%" width="100%" cycle interval="9000">
               <v-carousel-item v-for="(item) in carouselItems" :key="item.furl" class="sub-carousel">
                 <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                   style="height: 100vh;">
@@ -136,7 +139,8 @@
           class="d-flex flex-wrap bg-transparent justify-content-center align-items-center video-cards gap-3"
           :class="videoCard" :height="dynamicHeight" :width="dynamicWidth">
           <div v-for="video in topic.mp4DataList" :key="video.furl" style="height: 200px;" class="mx-3">
-            <v-card elevation="5" width="300" height="auto" class="p-0 bg-transparent d-flex align-items-center">
+            <v-card elevation="5" width="300" height="auto"
+              class="p-0 bg-transparent d-flex align-items-center border-card">
               <v-overlay v-model="overlayvideo" class="align-center justify-center" contained>
                 <v-btn variant="text" size="50" @click="selectVideo(video)">
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
@@ -346,7 +350,7 @@ export default {
     const mp4DataList = this.mainTopics[0].mp4DataList.map(video => ({
       type: 'video',
       furl: video.furl,
-      description: video.description || '' 
+      description: video.name || '' 
     }));
       const combinedList = [...imgDataList, ...mp4DataList];
       // const combinedList = [...imgDataList];
@@ -461,6 +465,9 @@ export default {
   50% {
     transform: translate(0, 5px);
   }
+}
+.border-card {
+  border: 2px solid cornsilk;
 }
 .topic-list {
   height: 100vh;

@@ -68,6 +68,7 @@ export default {
                 name: name,
               };
           });
+          // console.log(response.data)
           commit('setMainData', response.data);
           // console.log(response.data)
           return true;
