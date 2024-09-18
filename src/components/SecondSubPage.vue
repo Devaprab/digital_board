@@ -117,26 +117,37 @@
         </div>
         <!-- video content -->
         <v-card flat v-else-if="topic.mp4Data2List?.length > 1"
-          class="d-flex flex-wrap bg-transparent justify-content-center align-items-center video-cards gap-3"
+          class="d-flex flex-wrap bg-transparent justify-content-start align-items-center video-cards gap-4 mt-3"
           :class="videoCard" :height="dynamicHeight" :width="dynamicWidth">
-          <div v-for="video in topic.mp4Data2List" :key="video.furl" style="height: 200px;" class="mx-3">
-            <v-card elevation="5" width="300" height="auto"
-              class="p-0 bg-transparent d-flex align-items-center border-card">
+          <div v-for="video in topic.mp4Data2List" :key="video.furl"
+            class="d-flex justify-content-center align-items-center flex-column">
+            <v-card elevation="5" width="200" height="auto"
+              class="p-0 bg-transparent d-flex align-items-center justify-content-center border-card flex-column">
               <v-overlay v-model="overlayvideo" class="align-center justify-center" contained>
                 <v-btn variant="text" size="50" @click="selectVideo(video)">
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
                 </v-btn>
               </v-overlay>
-              <video :src="video.furl" :lazy-src="video.furl" style=" height:100%; width:100%; object-fit: contain;">
-              </video>
+              <video :src="video.furl" :lazy-src="video.furl"
+                style=" height:120px; width:250px; object-fit: contain;"></video>
             </v-card>
-            <v-card-text class="text-center p-0 py-3">{{ video.name }}</v-card-text>
+            <v-card-text class="text-center p-0 py-3 text-wrap">{{ video.name }}</v-card-text>
+          </div>
+        </v-card>
+        <!-- only video present without images -->
+        <v-card flat v-else-if="topic.mp4Data2List?.length === 1" class="bg-transparent" height="80vh">
+          <div v-for="video in topic.mp4Data2List" :key="video.furl" class="mx-auto">
+            <v-card class="bg-transparent" flat :height="dynamicHeight" :width="dynamicWidth">
+              <video :src="video.furl" :lazy-src="video.furl" style=" height:100%; width:100%; object-fit: contain;"
+                autoplay controls loop></video>
+            </v-card>
+            <v-card-text class="text-center p-0 py-4">{{ video.name }}</v-card-text>
           </div>
         </v-card>
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
           <video :src="selectedVideo.furl" :lazy-src="selectedVideo.furl" controls autoplay
-            style="height: 100vh; object-fit: contain;" class="dialog-video">
+            style="height: 100%; object-fit: contain;" class="dialog-video">
           </video>
           <div class="d-flex justify-content-end">
             <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;"></v-icon>
@@ -277,7 +288,7 @@ export default ({
     dynamicWidth() {
       if (window.matchMedia("(orientation: portrait)").matches) {
         return "80vw";
-      }else return "100vw";
+      }else return "auto";
     },
 
     portraitHeight() {
