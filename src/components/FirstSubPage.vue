@@ -160,7 +160,7 @@
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
           <video :src="selectedVideo.furl" :lazy-src="selectedVideo.furl" controls autoplay
-            style="height: 100%; object-fit: contain;" class="dialog-video">
+            style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;">
           </video>
           <div class="d-flex justify-content-end">
             <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;"></v-icon>
