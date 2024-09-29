@@ -10,21 +10,30 @@ export default {
     return {
       inactivityTimeout: null,
       inactivityDuration: 90000
+      // inactivityDuration: 10000
+
     };
   },
   methods: {
     resetInactivityTimeout() {
       if (this.inactivityTimeout) {
+        this.$store.commit('setResetTime', false);
         clearTimeout(this.inactivityTimeout);
       }
       this.inactivityTimeout = setTimeout(this.handleInactivity, this.inactivityDuration);
     },
     handleInactivity() {
       if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedTopics.length > 1) {
+        this.$store.commit('setResetTime', false);
         this.$router.push('/digitalBoard/selectedTopics');
       }
+
       if ((this.$route.path != '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
+        this.$store.commit('setResetTime', false);
         this.$router.push('/digitalBoard/detailsPage');
+      }
+      if ((this.$route.path == '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
+        this.$store.commit('setResetTime', true);
       }
     },
   },
