@@ -31,18 +31,30 @@
             <v-carousel-item v-for="(item, index) in carouselItems" :key="item.furl" @click="openDialog(index)"
               class="sub-carousel image-box">
               <template v-if="item.type === 'image'">
-                <img :src="item.furl" alt="Image" style="width: 100%; height: 100%; object-fit: cover;">
+                <v-img :src="item.furl" :lazy-src="item.furl" alt="Image"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                  <template v-slot:placeholder>
+                    <div class="d-flex align-center justify-center fill-height">
+                      <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                    </div>
+                  </template>
+                </v-img>
               </template>
-              <template v-if="item.type === 'video'">
-                <video :src="item.furl" autoplay loop muted style="width: 100%; height: 100%; object-fit: cover;">
-                  Your browser does not support the video tag.
-                </video>
+              <template v-else-if="item.type === 'video'">
+                <div class="p-0 bg-transparent d-flex align-items-center justify-content-center flex-column">
+                  <v-overlay v-model="videoOverlay" class="align-center justify-center" contained>
+                    <v-btn variant="text" size="100">
+                      <v-icon class="mdi mdi-play-circle-outline" size="100" color="#EFEBE9"></v-icon>
+                    </v-btn>
+                  </v-overlay>
+                  <video :src="item.furl" :lazy-src="item.furl" autoplay></video>
+                </div>
               </template>
-              <template v-slot:placeholder>
+              <!-- <template v-slot:placeholder>
                 <div class="d-flex align-center justify-center fill-height">
                   <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
                 </div>
-              </template>
+              </template> -->
             </v-carousel-item>
           </v-carousel>
           <!-- Image with description dialog box -->
@@ -72,7 +84,8 @@
                         item.description ?? '' }}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="item.furl" controls autoplay loop style="width:100%; object-fit: contain;">
+                      <video :src="item.furl" :lazy-src="item.furl" controls autoplay
+                        style="width:100%; object-fit: contain;" @ended="dialog = false;">
                         Your browser does not support the video tag.
                       </video>
                     </template>
