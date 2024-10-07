@@ -44,5 +44,9 @@ export default {
   },
   setResetTime(state, payload) {
     state.resetTime = payload;
+  },
+  setIp(state, payload) {
+      state.ipAddress = payload;
+      localStorage.setItem('ipAddress', payload);  // Save to localStorage
   }
 }

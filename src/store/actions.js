@@ -18,7 +18,7 @@ export default {
   async selectedTopics({ commit, rootGetters }, payload) {
     commit('clearSelectedTopics');
     const topicDataArray = [];
-    const topicPromises = payload.selectedTopics.slice(0, 5).map(async (topicId, index) => {
+    const topicPromises = payload.selectedTopics.map(async (topicId, index) => {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/qrcode/getScanDetails?dtId=${payload.language}&commonId=${topicId}`);
         if (response.status >= 200 && response.status < 300) {
@@ -170,4 +170,32 @@ export default {
         throw Error(err.response? err.response.data : err.message);
       }
   },
+  // send ipaddress
+  async sendIpAddress({rootGetters, dispatch}, payload) {
+    try {
+      const response = await axios.post('http://192.168.1.114:7000/api/get-topicsbyip', {
+        ip: payload
+      })
+      if (response.status >= 200 || response.status < 300) {
+        let res;
+        if (response.data.length > 1) {
+         res = dispatch('selectedTopics', {
+          language: rootGetters.getLanguage,
+          selectedTopics: response.data.topics,
+        }) 
+        } else {
+          res = dispatch('getMainDetails', {
+          language: rootGetters.getLanguage,
+          item: response.data.topics[0],
+        }) 
+        }
+        if (res) {
+          return res;
+        }
+      }
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
 }

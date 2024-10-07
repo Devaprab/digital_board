@@ -10,5 +10,6 @@ export default {
     getPath1: (state) => state.path1,
     getPath2: (state) => state.path2,
     getFirstSubTitle: (state) => state.subFirstTitle,
-    getResetTime: (state) => state.resetTime
+    getResetTime: (state) => state.resetTime,
+    getIpAddress: (state) => state.ipAddress 
 }

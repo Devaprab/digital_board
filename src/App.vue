@@ -5,13 +5,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
       inactivityTimeout: null,
-      inactivityDuration: 90000
-      // inactivityDuration: 10000
-
+      inactivityDuration: 90000,
+      // inactivityDuration: 10000,
+      // ipAddress: null
     };
   },
   methods: {
@@ -36,6 +37,28 @@ export default {
         this.$store.commit('setResetTime', true);
       }
     },
+    async getPublicIP() {
+      try {
+        const response = await axios.get('https://api.ipify.org?format=json');
+        if (response.status >= 200 || response.status < 300) {
+          this.$store.commit('setIp',response.data.ip);
+          const res = await this.$store.dispatch('sendIpAddress', this.ipAddress);
+          if (res) {
+            if (this.$store.getters.getSelectedTopics.length > 1) {
+              this.$router.push('/digitalBoard/selectedTopics')
+            } else {
+              this.$router.push({ name: 'detailsPage' })
+            }
+          }
+        }
+      }
+      catch (error) {
+        console.error('Error fetching IP address:', error);
+      }
+    },
+  },
+  created() {
+    this.getPublicIP();
   },
   mounted() {
     this.resetInactivityTimeout();
@@ -61,6 +84,9 @@ export default {
     },
     fontClass() {
       return this.language == 1 ? 'malayalam-font' : 'default-font';
+    },
+    ipAddress() {
+      return this.$store.getters.getIpAddress;
     }
   }
 };
