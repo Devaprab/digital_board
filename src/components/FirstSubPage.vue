@@ -42,7 +42,7 @@
             <v-carousel-item v-for="(item, index) in carouselItems" :key="item.furl" @click="openDialog(index)"
               class="sub-carousel image-box">
               <template v-if="item.type === 'image'">
-                <v-img :src="item.furl" :lazy-src="item.furl" alt="Image"
+                <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" alt="Image"
                   style="width: 100%; height: 100%; object-fit: cover;">
                   <template v-slot:placeholder>
                     <div class="d-flex align-center justify-center fill-height">
@@ -58,7 +58,7 @@
                       <v-icon class="mdi mdi-play-circle-outline" size="100" color="#EFEBE9"></v-icon>
                     </v-btn>
                   </v-overlay>
-                  <video :src="item.furl" :lazy-src="item.furl" autoplay></video>
+                  <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" autoplay></video>
                 </div>
               </template>
             </v-carousel-item>
@@ -77,7 +77,7 @@
                     <!-- Conditional rendering based on the item type -->
                     <template v-if="item.type === 'image'">
                       <h5 class="text-center">{{ item.name ?? ' ' }}</h5>
-                      <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                      <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" :alt="item.description ?? 'no image'" contain
                         height="60vh" width="100vw">
                         <template v-slot:placeholder>
                           <div class="d-flex align-center justify-center fill-height">
@@ -90,7 +90,7 @@
                         item.description ?? '' }}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="item.furl" :lazy-src="item.furl" controls autoplay
+                      <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" controls autoplay
                         style="width:100%; object-fit: contain;" @ended="dialog = false;">
                         Your browser does not support the video tag.
                       </video>
@@ -113,7 +113,7 @@
                 <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                   style="height: 100vh;">
                   <template v-if="item.type === 'image'">
-                    <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                    <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" :alt="item.description ?? 'no image'" contain
                       height="50vh" width="100vw">
                       <template v-slot:placeholder>
                         <div class="d-flex align-center justify-center fill-height">
@@ -123,7 +123,7 @@
                     </v-img>
                   </template>
                   <template v-else-if="item.type === 'video'">
-                    <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop
+                    <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" controls autoplay loop
                       style=" height:100vh; width:100%; object-fit: cover;">
                     </video>
                   </template>
@@ -147,7 +147,7 @@
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
                 </v-btn>
               </v-overlay>
-              <video :src="video.furl" :lazy-src="video.furl"
+              <video :src="`${mediaUrl}/${video.fname}`" :lazy-src="`${mediaUrl}/${video.fname}`"
                 style=" height:120px; width:250px; object-fit: contain;"></video>
             </v-card>
             <v-card-text class="text-center p-0 py-3 text-wrap">{{ video.name }}</v-card-text>
@@ -158,7 +158,7 @@
           <div v-for="video in topic.mp4DataList" :key="video.furl" class="mx-auto">
             <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
               :width="dynamicWidth">
-              <video :src="video.furl" :lazy-src="video.furl" style=" height:100%; width:100%; object-fit: contain;"
+              <video :src="`${mediaUrl}/${video.fname}`" :lazy-src="`${mediaUrl}/${video.fname}`" style=" height:100%; width:100%; object-fit: contain;"
                 autoplay controls loop></video>
             </v-card>
             <v-card-text class="text-center p-0 py-4">{{ video.name }}</v-card-text>
@@ -166,7 +166,7 @@
         </v-card>
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
-          <video :src="selectedVideo.furl" :lazy-src="selectedVideo.furl" controls autoplay
+          <video :src="`${mediaUrl}/${selectVideo.fname}`" :lazy-src="`${mediaUrl}/${selectVideo.fname}`" controls autoplay
             style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;">
           </video>
           <div class="d-flex justify-content-end">
@@ -259,16 +259,21 @@ export default ({
     subTitle() {
       return this.$store.getters.getFirstSubTitle;
     },
+    mediaUrl() {
+      return this.$store.getters.getMediaUrl;
+    },
     carouselItems() {
       const images = this.topic.imgDataList.map(image => ({
         type: 'image',
         furl: image.furl,
+        fname: image.fname,
         description: image.description,
         name: image.name
       }));
       const videos = this.topic.mp4DataList.map(video => ({
         type: 'video',
         furl: video.furl,
+        fname: video.fname,
         description: video.name 
       }));
       return [...images, ...videos];
@@ -400,7 +405,7 @@ export default ({
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
-        const backgroundImage = topic.backgroundImgList[0].bgUrl || '';
+        const backgroundImage = `${this.mediaUrl}/${topic.backgroundImgList[0].bgName}` || '';
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
@@ -417,12 +422,14 @@ export default ({
     const imgDataList = this.topic.imgDataList.map(image => ({
       type: 'image',
       furl: image.furl,
+      fname: image.fname,
       description: image.description || '', // Add description if available
       name: image.name
     }));
     const mp4DataList = this.topic.mp4DataList.map(video => ({
       type: 'video',
       furl: video.furl,
+      fname: video.fname,
       description: video.name || '' // Add description if available
     }));
     const combinedList = [...imgDataList, ...mp4DataList];

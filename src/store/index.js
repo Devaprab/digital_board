@@ -8,6 +8,7 @@ const store = createStore({
       // baseUrl: 'http://localhost:8448',
       // baseUrl: 'http://192.168.1.31:8083',
       baseUrl: 'https://aksharammuseum.com',
+      mediaUrl: 'https://aksharammuseum.s3.ap-south-1.amazonaws.com',
       selectedCommonIds: JSON.parse(sessionStorage.getItem('selectedCommonIds')) || [],
       selectedTopics: JSON.parse(sessionStorage.getItem('selectedTopics')) || [],
       language: sessionStorage.getItem('language') || 1,

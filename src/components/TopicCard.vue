@@ -49,12 +49,16 @@ export default {
   computed: {
     language() {
       return this.$store.getters.getLanguage;
-    }
+    },
+    mediaUrl() {
+      return this.$store.getters.getMediaUrl;
+    },
   },
   methods: {
     getBackgroundImage(topic) {
       if (topic[0].backgroundImgList && topic[0].backgroundImgList.length > 0) {
-        const backgroundImage = topic[0].backgroundImgList[0].bgUrl || '';
+        const backgroundImage = `${this.mediaUrl}/${topic[0].backgroundImgList[0].bgName}` || '';
+        console.log(backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
