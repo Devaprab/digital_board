@@ -252,7 +252,8 @@ export default ({
       scroll: false,
       overlayvideo: true,
       videoShow: false,
-      selectedVideo: null
+      selectedVideo: null,
+      videoOverlay: true
     }
   },
   computed: {
