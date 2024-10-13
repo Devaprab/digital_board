@@ -166,7 +166,7 @@
         </v-card>
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
-          <video :src="`${mediaUrl}/${selectVideo.fname}`" :lazy-src="`${mediaUrl}/${selectVideo.fname}`" controls autoplay
+          <video :src="`${mediaUrl}/${selectedVideo.fname}`" :lazy-src="`${mediaUrl}/${selectedVideo.fname}`" controls autoplay
             style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;">
           </video>
           <div class="d-flex justify-content-end">
@@ -246,7 +246,8 @@ export default ({
       overlay: false,
       overlayvideo: true,
       videoShow: false,
-      selectedVideo: null
+      selectedVideo: null,
+      videoOverlay: true
     }
   },
   computed: {
