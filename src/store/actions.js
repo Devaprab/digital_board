@@ -173,7 +173,7 @@ export default {
   // send ipaddress
   async sendIpAddress({rootGetters, dispatch}, payload) {
     try {
-      const response = await axios.post('http://192.168.10.100/cms-api/get-topicsbyip', {
+      const response = await axios.post('http://192.168.10.100/cms-api/api/get-topicsbyip', {
         ip: payload
       })
       if (response.status >= 200 || response.status < 300) {
