@@ -157,7 +157,7 @@
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
                 </v-btn>
               </v-overlay>
-              <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`"
+              <video :src="`${mediaUrl}/${video.fname}`" :lazy-src="`${mediaUrl}/${video.fname}`"
                 style=" height:120px; width:250px; object-fit: contain;"></video>
             </v-card>
             <v-card-text class="text-center p-0 py-3 text-wrap">{{ video.name }}</v-card-text>
@@ -168,7 +168,7 @@
           <div v-for="video in topic.mp4DataList" :key="video.furl" class="mx-auto">
             <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
               :width="dynamicWidth">
-              <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`"
+              <video :src="`${mediaUrl}/${video.fname}`" :lazy-src="`${mediaUrl}/${video.fname}`"
                 style=" height:100%; width:100%; object-fit: contain;" autoplay controls loop></video>
             </v-card>
 
