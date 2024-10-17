@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 export default {
   data() {
     return {
@@ -37,28 +37,45 @@ export default {
         this.$store.commit('setResetTime', true);
       }
     },
-    async getPublicIP() {
-      try {
-        const response = await axios.get('https://api.ipify.org?format=json');
-        if (response.status >= 200 || response.status < 300) {
-          this.$store.commit('setIp',response.data.ip);
-          const res = await this.$store.dispatch('sendIpAddress', this.ipAddress);
-          if (res) {
+    async getIP(){
+      try{
+        let ip= location.href.split("?")[1].split("=")[1]
+        this.$store.commit('setIp', ip);
+        const res = await this.$store.dispatch('sendIpAddress', this.ipAddress);
+        if (res) {
             if (this.$store.getters.getSelectedTopics.length > 1) {
               this.$router.push('/digitalBoard/selectedTopics')
             } else {
               this.$router.push({ name: 'detailsPage' })
             }
           }
-        }
       }
       catch (error) {
         console.error('Error fetching IP address:', error);
       }
     },
+    // async getPublicIP() {
+    //   try {
+    //     const response = await axios.get('https://api.ipify.org?format=json');
+    //     if (response.status >= 200 || response.status < 300) {
+    //       this.$store.commit('setIp',response.data.ip);
+    //       const res = await this.$store.dispatch('sendIpAddress', this.ipAddress);
+    //       if (res) {
+    //         if (this.$store.getters.getSelectedTopics.length > 1) {
+    //           this.$router.push('/digitalBoard/selectedTopics')
+    //         } else {
+    //           this.$router.push({ name: 'detailsPage' })
+    //         }
+    //       }
+    //     }
+    //   }
+    //   catch (error) {
+    //     console.error('Error fetching IP address:', error);
+    //   }
+    // },
   },
   created() {
-    this.getPublicIP();
+    this.getIP();
   },
   mounted() {
     this.resetInactivityTimeout();
@@ -67,6 +84,7 @@ export default {
     document.addEventListener('mousedown', this.resetInactivityTimeout);
     document.addEventListener('keydown', this.resetInactivityTimeout);
     document.addEventListener('scroll', this.resetInactivityTimeout);
+    console.log(window.location.href);
   },
   beforeUnmount() {
     document.removeEventListener('touchstart', this.resetInactivityTimeout);
