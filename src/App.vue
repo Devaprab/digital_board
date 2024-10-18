@@ -44,8 +44,8 @@ export default {
         this.$store.commit('setIp', ip);
         const res = await this.$store.dispatch('sendIpAddress', this.ipAddress);
         if (res) {
+          console.log('cms response',res);
             if (this.$store.getters.getSelectedTopics.length > 1) {
-            console.log('cms response',res);
               this.$router.push('/digitalBoard/selectedTopics')
             } else {
               this.$router.push({ name: 'detailsPage' })
