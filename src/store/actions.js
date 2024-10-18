@@ -176,9 +176,9 @@ export default {
       const response = await axios.post('http://192.168.10.100/cms-api/get-topicsbyip', {
         ip: payload
       })
-      if (response.status >= 200 || response.status < 300) {
+      if (response.status >= 200 && response.status < 300) {
         let res;
-        if (response.data.length > 1) {
+        if (response.data.topics.length > 1) {
          res = dispatch('selectedTopics', {
           language: rootGetters.getLanguage,
           selectedTopics: response.data.topics,
