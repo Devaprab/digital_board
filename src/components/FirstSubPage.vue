@@ -58,7 +58,7 @@
                       <v-icon class="mdi mdi-play-circle-outline" size="100" color="#EFEBE9"></v-icon>
                     </v-btn>
                   </v-overlay>
-                  <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" autoplay></video>
+                  <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" ></video>
                 </div>
               </template>
             </v-carousel-item>

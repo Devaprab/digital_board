@@ -43,6 +43,7 @@ export default {
         console.log("ipaddress",ip);
         this.$store.commit('setIp', ip);
         const res = await this.$store.dispatch('sendIpAddress', this.ipAddress);
+        console.log('before if cms response',res);
         if (res) {
           console.log('cms response',res);
             if (this.$store.getters.getSelectedTopics.length > 1) {
