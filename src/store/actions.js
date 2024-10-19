@@ -36,6 +36,7 @@ export default {
       }
     });
     commit('setTopic', topicDataArray);
+    console.log('topics array', rootGetters.getSelectedTopics)
     return results.every(result => result !== null);
   },
   //main topic details
@@ -171,14 +172,16 @@ export default {
       }
   },
   // send ipaddress
-  async sendIpAddress({rootGetters, dispatch}, payload) {
+  async sendIpAddress({rootGetters,commit, dispatch}, payload) {
     try {
-      const response = await axios.post('http://192.168.10.100/cms-api/get-topicsbyip', {
+      const response = await axios.post('http://192.168.10.100/api/get-topicsbyip', {
         ip: payload
       })
       if (response.status >= 200 && response.status < 300) {
         let res;
         if (response.data.topics.length > 1) {
+          console.log('going to route')
+          commit('setCommonIds', response.data.topics)
          res = await dispatch('selectedTopics', {
           language: rootGetters.getLanguage,
           selectedTopics: response.data.topics,
@@ -190,6 +193,7 @@ export default {
         }) 
         }
         if (res) {
+          console.log(res)
           return res;
         }
       }
