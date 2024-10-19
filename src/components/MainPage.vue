@@ -374,7 +374,8 @@ export default {
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
-        const backgroundImage = `${this.mediaUrl}/${topic.backgroundImgList[0].bgName}` || '';
+        const bgUrl = topic.backgroundImgList[0].bgName.split(' ').join('%20');
+        const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
