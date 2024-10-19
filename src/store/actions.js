@@ -160,7 +160,7 @@ export default {
       commit('setClearTitle');
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getSubDataByCommonId?dtId=${payload.language}&commonId=${payload.id}`);
-        if (response.status >= 200 || response.status < 300) {
+        if (response.status >= 200 && response.status < 300) {
           const subData = response.data
           // console.log(filteredData);
             commit('setSubFirstTitle', subData);
@@ -173,18 +173,18 @@ export default {
   // send ipaddress
   async sendIpAddress({rootGetters, dispatch}, payload) {
     try {
-      const response = await axios.post('http://192.168.10.100/cms-api/get-topicsbyip', {
+      const response = await axios.post('http://192.168.71.250/cms-api/get-topicsbyip', {
         ip: payload
       })
       if (response.status >= 200 && response.status < 300) {
         let res;
         if (response.data.topics.length > 1) {
-         res = dispatch('selectedTopics', {
+         res = await dispatch('selectedTopics', {
           language: rootGetters.getLanguage,
           selectedTopics: response.data.topics,
         }) 
         } else {
-          res = dispatch('getMainDetails', {
+          res = await dispatch('getMainDetails', {
           language: rootGetters.getLanguage,
           item: response.data.topics[0],
         }) 

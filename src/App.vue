@@ -83,6 +83,8 @@ export default {
   mounted() {
     this.resetInactivityTimeout();
     document.addEventListener('touchstart', this.resetInactivityTimeout);
+    document.addEventListener('play', this.resetInactivityTimeout);
+    document.addEventListener('playing', this.resetInactivityTimeout);
     document.addEventListener('mousemove', this.resetInactivityTimeout);
     document.addEventListener('mousedown', this.resetInactivityTimeout);
     document.addEventListener('keydown', this.resetInactivityTimeout);
@@ -90,6 +92,8 @@ export default {
     console.log(window.location.href);
   },
   beforeUnmount() {
+    document.removeEventListener('play', this.resetInactivityTimeout);
+    document.removeEventListener('playing', this.resetInactivityTimeout);
     document.removeEventListener('touchstart', this.resetInactivityTimeout);
     document.removeEventListener('mousemove', this.resetInactivityTimeout);
     document.removeEventListener('mousedown', this.resetInactivityTimeout);
