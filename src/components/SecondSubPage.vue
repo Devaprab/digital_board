@@ -273,13 +273,13 @@ export default ({
       const images = this.topic.imgData2List.map(image => ({
         type: 'image',
         furl: image.furl,
-        fname: image.fname,
+        fname: image.fname.split(' ').join('%20'),
         description: image.description
       }));
       const videos = this.topic.mp4Data2List.map(video => ({
         type: 'video',
         furl: video.furl,
-        fname: video.fname,
+        fname: video.fname.split(' ').join('%20'),
         description: video.name // Adjust this based on available data
       }));
       return [...images, ...videos];
@@ -406,8 +406,10 @@ export default ({
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
-        const bgUrl = topic.backgroundImgList[0].bgName.split(' ').join('%20');
+        const bgUrl = topic.backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
+        
         const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
+        console.log('background image sub2', backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
@@ -424,7 +426,7 @@ export default ({
     const imgDataList = this.topic.imgData2List.map(image => ({
       type: 'image',
       furl: image.furl,
-      fname: image.fname,
+      fname: image.fname.split(' ').join('%20'),
       description: image.description || '', // Add description if available
       name: image.name
     }));
@@ -432,7 +434,7 @@ console.log('image',imgDataList);
     const mp4DataList = this.topic.mp4Data2List.map(video => ({
       type: 'video',
       furl: video.furl,
-      fname: video.fname,
+      fname: video.fname.split(' ').join('%20'),
       description: video.name || '' // Add description if available
     }));
     const combinedList = [...imgDataList, ...mp4DataList];
