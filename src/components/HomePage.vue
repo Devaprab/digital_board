@@ -1,7 +1,7 @@
 <template>
   <v-main class="main">
     <header class=" pt-3 d-flex justify-content-between mx-5">
-      <h3 class=" select-topic text-uppercase">Select Topics</h3>
+      <h3 class=" select-topic text-uppercase"></h3>
     </header>
     <div class="topic-list-display">
       <div class="d-flex align-items-center py-1" v-for="(topic, index) in topics" :key="index"

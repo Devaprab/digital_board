@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
 export default {
   data() {
     return {
@@ -17,13 +16,20 @@ export default {
   },
   methods: {
     resetInactivityTimeout() {
+      if (this.isVideoPlaying) {
+        return; 
+      }
+
       if (this.inactivityTimeout) {
         this.$store.commit('setResetTime', false);
         clearTimeout(this.inactivityTimeout);
       }
       this.inactivityTimeout = setTimeout(this.handleInactivity, this.inactivityDuration);
     },
+    
+
     handleInactivity() {
+      if (!this.isVideoPlaying) {
       if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedTopics.length > 1) {
         this.$store.commit('setResetTime', false);
         this.$router.push('/digitalBoard/selectedTopics');
@@ -33,10 +39,15 @@ export default {
         this.$store.commit('setResetTime', false);
         this.$router.push('/digitalBoard/detailsPage');
       }
+      
       if ((this.$route.path == '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
         this.$store.commit('setResetTime', true);
       }
+    } else {
+    console.log("Navigation skipped due to video playing.");
+  }
     },
+
     async getIP(){
       try{
         let ip= location.href.split("?")[1].split("=")[1]
@@ -80,8 +91,11 @@ export default {
   created() {
     this.getIP();
   },
+  
   mounted() {
     this.resetInactivityTimeout();
+    
+    // Add event listeners for user activity
     document.addEventListener('touchstart', this.resetInactivityTimeout);
     document.addEventListener('play', this.resetInactivityTimeout);
     document.addEventListener('playing', this.resetInactivityTimeout);
@@ -89,9 +103,12 @@ export default {
     document.addEventListener('mousedown', this.resetInactivityTimeout);
     document.addEventListener('keydown', this.resetInactivityTimeout);
     document.addEventListener('scroll', this.resetInactivityTimeout);
+
     console.log(window.location.href);
   },
+  
   beforeUnmount() {
+
     document.removeEventListener('play', this.resetInactivityTimeout);
     document.removeEventListener('playing', this.resetInactivityTimeout);
     document.removeEventListener('touchstart', this.resetInactivityTimeout);
@@ -99,20 +116,27 @@ export default {
     document.removeEventListener('mousedown', this.resetInactivityTimeout);
     document.removeEventListener('keydown', this.resetInactivityTimeout);
     document.removeEventListener('scroll', this.resetInactivityTimeout);
+
     if (this.inactivityTimeout) {
       clearTimeout(this.inactivityTimeout);
     }
   },
+  
   computed: {
     language() {
       return this.$store.getters.getLanguage;
     },
+    
     fontClass() {
       return this.language == 1 ? 'malayalam-font' : 'default-font';
     },
+    
     ipAddress() {
       return this.$store.getters.getIpAddress;
-    }
+    },
+    isVideoPlaying() {
+    return this.$store.getters.getIsVideoPlaying;
+  }
   }
 };
 </script>

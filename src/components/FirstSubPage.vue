@@ -91,7 +91,7 @@
                     </template>
                     <template v-else-if="item.type === 'video'">
                       <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" controls autoplay
-                        style="width:100%; object-fit: contain;" @ended="dialog = false;">
+                        style="width:100%; object-fit: contain;" @ended="dialog = false;this.$store.commit('setIsVideoPlaying', false);">
                         Your browser does not support the video tag.
                       </video>
                     </template>
@@ -167,10 +167,10 @@
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
           <video :src="`${mediaUrl}/${selectedVideo.fname}`" :lazy-src="`${mediaUrl}/${selectedVideo.fname}`" controls autoplay
-            style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;">
+            style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);">
           </video>
           <div class="d-flex justify-content-end">
-            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;"></v-icon>
+            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;this.$store.commit('setIsVideoPlaying', false);"></v-icon>
           </div>
         </v-dialog>
       </div>
@@ -374,6 +374,7 @@ export default ({
     },
     selectVideo(video) {
       this.selectedVideo = video;
+      this.$store.commit('setIsVideoPlaying', true);
       this.videoShow = true;
     },
     async goToSub(topic) {
@@ -439,6 +440,7 @@ export default ({
       ...combinedList.slice(index),
       ...combinedList.slice(0, index)
     ];
+    this.$store.commit('setIsVideoPlaying', true);
     this.dialog = true;
   },
     async translate() {
