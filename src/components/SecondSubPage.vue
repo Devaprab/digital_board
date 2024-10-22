@@ -85,7 +85,7 @@
                     </template>
                     <template v-else-if="item.type === 'video'">
                       <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" controls autoplay
-                        style="width:100%; object-fit: contain;" @ended="dialog = false;">
+                        style="width:100%; object-fit: contain;" @ended="dialog = false;this.$store.commit('setIsVideoPlaying', false);">
                         Your browser does not support the video tag.
                       </video>
                     </template>
@@ -152,7 +152,7 @@
           <div v-for="video in topic.mp4Data2List" :key="video.furl" class="mx-auto">
             <v-card class="bg-transparent" flat :height="dynamicHeight" :width="dynamicWidth">
               <video :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" style=" height:100%; width:100%; object-fit: contain;"
-                autoplay controls loop></video>
+                autoplay controls loop  @contextmenu.prevent></video>
             </v-card>
             <v-card-text class="text-center p-0 py-4">{{ video.name }}</v-card-text>
           </div>
@@ -160,10 +160,10 @@
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
           <video :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" controls autoplay
-            style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;">
+            style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);"  @contextmenu.prevent>
           </video>
           <div class="d-flex justify-content-end">
-            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;"></v-icon>
+            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;this.$store.commit('setIsVideoPlaying', false);"></v-icon>
           </div>
         </v-dialog>
       </div>
@@ -381,6 +381,7 @@ export default ({
     },
     selectVideo(video) {
       this.selectedVideo = video;
+      this.$store.commit('setIsVideoPlaying', true);
       this.videoShow = true;
     },
     showSubView() {
@@ -441,7 +442,7 @@ console.log('image',imgDataList);
       ...combinedList.slice(index),
       ...combinedList.slice(0, index)
     ];
-
+    this.$store.commit('setIsVideoPlaying', true);
     this.dialog = true;
   },
     async translate() {

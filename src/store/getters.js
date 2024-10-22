@@ -12,5 +12,6 @@ export default {
     getFirstSubTitle: (state) => state.subFirstTitle,
     getResetTime: (state) => state.resetTime,
     getIpAddress: (state) => state.ipAddress,
-    getMediaUrl: (state) => state.mediaUrl
+    getMediaUrl: (state) => state.mediaUrl,
+    getIsVideoPlaying: (state) => state.isVideoPlaying
 }
