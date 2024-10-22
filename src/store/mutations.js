@@ -50,6 +50,7 @@ export default {
       localStorage.setItem('ipAddress', payload); 
   },
   setIsVideoPlaying(state, payload) {
+    console.log("Setting isVideoPlaying to:", payload); 
     state.isVideoPlaying = payload;
   }
 }

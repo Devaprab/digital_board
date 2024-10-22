@@ -90,7 +90,8 @@
                         item.description ?? '' }}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" controls autoplay
+                      <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" controls autoplay @play="this.$store.commit('setIsVideoPlaying', true);"
+                        @pause="this.$store.commit('setIsVideoPlaying', false);"
                         style="width:100%; object-fit: contain;" @ended="dialog = false;this.$store.commit('setIsVideoPlaying', false);">
                         Your browser does not support the video tag.
                       </video>
@@ -167,7 +168,8 @@
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
           <video :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" controls autoplay
-            style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);">
+            style="height: 100%; object-fit: contain;" class="dialog-video" @play="this.$store.commit('setIsVideoPlaying', true);"
+            @pause="this.$store.commit('setIsVideoPlaying', false);" @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);">
           </video>
           <div class="d-flex justify-content-end">
             <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;this.$store.commit('setIsVideoPlaying', false);"></v-icon>
@@ -249,6 +251,13 @@ export default ({
       selectedVideo: null,
       videoOverlay: true
     }
+  },
+  watch: {
+     dialog(newValue) {
+       if (!newValue) {
+         this.$store.commit('setIsVideoPlaying',false)
+       }
+     }
   },
   computed: {
     topic() {
@@ -374,7 +383,6 @@ export default ({
     },
     selectVideo(video) {
       this.selectedVideo = video;
-      this.$store.commit('setIsVideoPlaying', true);
       this.videoShow = true;
     },
     async goToSub(topic) {
@@ -442,7 +450,6 @@ export default ({
       ...combinedList.slice(index),
       ...combinedList.slice(0, index)
     ];
-    this.$store.commit('setIsVideoPlaying', true);
     this.dialog = true;
   },
     async translate() {

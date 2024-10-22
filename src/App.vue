@@ -135,7 +135,9 @@ export default {
       return this.$store.getters.getIpAddress;
     },
     isVideoPlaying() {
-    return this.$store.getters.getIsVideoPlaying;
+    const playing = this.$store.getters.getIsVideoPlaying;
+    console.log("Current isVideoPlaying state:", playing); // Debug log
+    return playing;
   }
   }
 };
