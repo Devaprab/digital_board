@@ -157,7 +157,7 @@
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
                 </v-btn>
               </v-overlay>
-              <video :src="`${mediaUrl}/${video.fname}`" :lazy-src="`${mediaUrl}/${video.fname}`"
+              <video :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
                 style=" height:120px; width:250px; object-fit: contain;"></video>
             </v-card>
             <v-card-text class="text-center p-0 py-3 text-wrap">{{ video.name }}</v-card-text>
@@ -168,7 +168,7 @@
           <div v-for="video in topic.mp4DataList" :key="video.furl" class="mx-auto">
             <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
               :width="dynamicWidth">
-              <video :src="`${mediaUrl}/${video.fname}`" :lazy-src="`${mediaUrl}/${video.fname}`"
+              <video :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
                 style=" height:100%; width:100%; object-fit: contain;" autoplay controls loop></video>
             </v-card>
 
@@ -177,7 +177,7 @@
         </v-card>
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
-          <video :src="`${mediaUrl}/${selectedVideo.fname}`" :lazy-src="`${mediaUrl}/${selectedVideo.fname}`" controls autoplay
+          <video :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" controls autoplay
             style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;">
           </video>
           <div class="d-flex justify-content-end">

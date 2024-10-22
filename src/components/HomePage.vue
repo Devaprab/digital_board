@@ -169,7 +169,7 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
   gap: 20px;
-  height: 80vh;
+  height: 85vh;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -234,7 +234,7 @@ export default {
   gap: 15px;
   position: absolute;
   bottom: 0;
-  top: 90%;
+  top: 85%;
   right: 1%;
   padding-top: 5px;
 }
