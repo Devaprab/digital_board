@@ -248,14 +248,14 @@ export default {
       const images = this.mainTopics[0].imgDataList.map(image => ({
         type: 'image',
         furl: image.furl,
-        fname: image.fname.split(' ').join('%20'),
+        fname: image.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
         description: image.description,
         name: image.name
       }));
       const videos = this.mainTopics[0].mp4DataList.map(video => ({
         type: 'video',
         furl: video.furl,
-        fname: video.fname.split(' ').join('%20'),
+        fname: video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
         description: video.name 
       }));
       return [...images, ...videos];
@@ -374,9 +374,10 @@ export default {
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
-        const bgUrl = topic.backgroundImgList[0].bgName.split(' ').join('%20');
-        console.log('background image', bgUrl)
+        const bgUrl = topic.backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
+        
         const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
+        console.log('background image', backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
@@ -385,14 +386,14 @@ export default {
     const imgDataList = this.mainTopics[0].imgDataList.map(image => ({
       type: 'image',
       furl: image.furl,
-      fname: image.fname.split(' ').join('%20'),
+      fname: image.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
       description: image.description || '',
       name: image.name
     }));
     const mp4DataList = this.mainTopics[0].mp4DataList.map(video => ({
       type: 'video',
       furl: video.furl,
-      fname: video.fname.split(' ').join('%20'),
+      fname: video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
       description: video.name || '' 
     }));
       const combinedList = [...imgDataList, ...mp4DataList];

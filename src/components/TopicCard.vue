@@ -57,7 +57,7 @@ export default {
   methods: {
     getBackgroundImage(topic) {
       if (topic[0].backgroundImgList && topic[0].backgroundImgList.length > 0) {
-        const bgUrl = topic[0].backgroundImgList[0].bgName.split(' ').join('%20');
+        const bgUrl = topic[0].backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
         console.log('bgurl',bgUrl)
         const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
         console.log(backgroundImage)
