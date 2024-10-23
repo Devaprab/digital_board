@@ -187,6 +187,7 @@ export default {
           selectedTopics: response.data.topics,
         }) 
         } else {
+          commit('setCommonIds', response.data.topics)
           res = await dispatch('getMainDetails', {
           language: rootGetters.getLanguage,
           item: response.data.topics[0],
