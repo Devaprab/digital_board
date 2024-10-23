@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       inactivityTimeout: null,
-      inactivityDuration: 90000,
+      inactivityDuration: 10000,
       // inactivityDuration: 10000,
       // ipAddress: null
     };
@@ -29,18 +29,19 @@ export default {
     
 
     handleInactivity() {
+      console.log('inactivity', this.$store.getters.getSelectedCommonIds.length)
       if (!this.isVideoPlaying) {
-      if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedTopics.length > 1) {
+        if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedCommonIds.length > 1) {
         this.$store.commit('setResetTime', false);
         this.$router.push('/digitalBoard/selectedTopics');
       }
 
-      if ((this.$route.path != '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
+        if ((this.$route.path != '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedCommonIds.length == 1) {
         this.$store.commit('setResetTime', false);
         this.$router.push('/digitalBoard/detailsPage');
       }
       
-      if ((this.$route.path == '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
+        if ((this.$route.path == '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedCommonIds.length == 1) {
         this.$store.commit('setResetTime', true);
       }
     } else {
