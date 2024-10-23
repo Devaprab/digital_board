@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       inactivityTimeout: null,
-      inactivityDuration: 10000,
+      inactivityDuration: 90000,
       // inactivityDuration: 10000,
       // ipAddress: null
     };
