@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import defaultImg from '@/assets/ancient.jpg';
+import defaultImg from '@/assets/aksharamBG.jpeg';
 export default {
   props: {
     Topics: {
