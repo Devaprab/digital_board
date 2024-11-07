@@ -46,6 +46,7 @@ export default {
       } else {
         console.log("Navigation skipped due to video playing.");
       }
+    }
     },
     mounted() {
       this.resetInactivityTimeout();
@@ -88,7 +89,6 @@ export default {
         return playing;
       }
     }
-  }
 };
 </script>
 
