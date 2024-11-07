@@ -35,7 +35,6 @@ export default {
       language: this.language,
       selectedTopics: this.commonId
     });
-    console.log('common',this.commonId)
   },
   computed: {
     ...mapGetters(['getSelectedTopics', 'getSelectedCommonIds', 'getLanguage']),

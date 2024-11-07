@@ -6,7 +6,6 @@ export default {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getMainComplete?dtId=${payload}`);
         if (response.status >= 200 || response.status < 300) {
           const filteredData = response.data.filter(item => item.commonId !== null ) 
-          // console.log(filteredData);
           commit('setAllTopics', filteredData);
           return true;
         }
@@ -36,7 +35,6 @@ export default {
       }
     });
     commit('setTopic', topicDataArray);
-    console.log('topics array', rootGetters.getSelectedTopics)
     return results.every(result => result !== null);
   },
   //main topic details
@@ -44,7 +42,6 @@ export default {
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/qrcode/getScanDetails?dtId=${payload.language}&commonId=${payload.item}`);
         if (response.status >= 200 || response.status < 300) {
-          // console.log(response.data);
           if (response.data[0].referenceUrl) {
             const description = response.data[0].referenceUrl.split('\n').reduce((map, name) => {
             const [key, description] = name.split('#');
@@ -69,9 +66,7 @@ export default {
                 name: name,
               };
           });
-          // console.log(response.data)
           commit('setMainData', response.data);
-          // console.log(response.data)
           return true;
         }
       } catch (error) {
@@ -107,7 +102,6 @@ export default {
                 name: name,
               };
             });
-          // console.log('sub',response.data)
           commit('setFirstSub', response.data[0])
           return true;
         }
@@ -146,8 +140,6 @@ export default {
                 name: name,
               };
             });
-          //  console.log('video',response.data[0])
-          // console.log('sub2',response.data[0])
           commit('setSecondSub', response.data[0])
           return true;
         }
@@ -163,44 +155,11 @@ export default {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getSubDataByCommonId?dtId=${payload.language}&commonId=${payload.id}`);
         if (response.status >= 200 && response.status < 300) {
           const subData = response.data
-          // console.log(filteredData);
             commit('setSubFirstTitle', subData);
             return true;
         }
       } catch (err) {
         throw Error(err.response? err.response.data : err.message);
       }
-  },
-  // send ipaddress
-  async sendIpAddress({rootGetters,commit, dispatch}, payload) {
-    try {
-      const response = await axios.post('http://192.168.10.100/cms-api/get-topicsbyip', {
-        ip: payload
-      })
-      if (response.status >= 200 && response.status < 300) {
-        let res;
-        if (response.data.topics.length > 1) {
-          console.log('going to route')
-          commit('setCommonIds', response.data.topics)
-         res = await dispatch('selectedTopics', {
-          language: rootGetters.getLanguage,
-          selectedTopics: response.data.topics,
-        }) 
-        } else {
-          commit('setCommonIds', response.data.topics)
-          res = await dispatch('getMainDetails', {
-          language: rootGetters.getLanguage,
-          item: response.data.topics[0],
-        }) 
-        }
-        if (res) {
-          console.log(res)
-          return res;
-        }
-      }
-    }
-    catch (error) {
-      console.error(error)
-    }
   },
 }

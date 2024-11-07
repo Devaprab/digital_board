@@ -50,11 +50,6 @@
                   <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" ></video>
                 </div>
               </template>
-              <!-- <template v-slot:placeholder>
-                <div class="d-flex align-center justify-center fill-height">
-                  <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-                </div>
-              </template> -->
             </v-carousel-item>
           </v-carousel>
           <!-- Image with description dialog box -->
@@ -380,8 +375,6 @@ export default ({
     }
   },
   async mounted() {
-    console.log('image',this.carouselItems);
-    console.log("ugfer",this.posterUrl);
     this.goToTopic();
     try {
      await this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language}); 
@@ -398,7 +391,6 @@ export default ({
     checkScroll() {
       const element = this.$refs.subviewList;
       this.scroll = element.scrollHeight > element.clientHeight;
-      console.log('list', this.scroll)
     },
     selectVideo(video) {
       this.selectedVideo = video;
@@ -427,15 +419,12 @@ export default ({
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
         const bgUrl = topic.backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
-        
         const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
-        console.log('background image sub2', backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
     },
     posterUrl(thumbnailName) {
-      console.log("posterUrl");
     const mainPoster = `${this.mediaUrl}/${thumbnailName}`;
     if(thumbnailName){
       return mainPoster
@@ -443,23 +432,14 @@ export default ({
       return this.fallbackPoster;
     }
     },
-    // openDialog(index) {
-    //   const imgData2List = this.topic.imgData2List
-    //   this.reorderedImages = [
-    //     ...imgData2List.slice(index),
-    //     ...imgData2List.slice(0, index)
-    //   ];
-    //   this.dialog = true;
-    // },
     openDialog(index) {
     const imgDataList = this.topic.imgData2List.map(image => ({
       type: 'image',
       furl: image.furl,
       fname: image.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
-      description: image.description || '', // Add description if available
+      description: image.description || '', 
       name: image.name
     }));
-console.log('image',imgDataList);
     const mp4DataList = this.topic.mp4Data2List.map(video => ({
       type: 'video',
       furl: video.furl,

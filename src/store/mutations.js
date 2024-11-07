@@ -45,12 +45,7 @@ export default {
   setResetTime(state, payload) {
     state.resetTime = payload;
   },
-  setIp(state, payload) {
-      state.ipAddress = payload;
-      localStorage.setItem('ipAddress', payload); 
-  },
   setIsVideoPlaying(state, payload) {
-    console.log("Setting isVideoPlaying to:", payload); 
     state.isVideoPlaying = payload;
   }
 }

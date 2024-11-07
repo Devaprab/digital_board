@@ -124,7 +124,6 @@ export default {
         return;
       }
       try {
-        // console.log('select',this.selectedTopics)
         this.$store.commit('setCommonIds', this.selectedTopics)
         const res = await this.$store.dispatch('selectedTopics', {
           language: this.language,

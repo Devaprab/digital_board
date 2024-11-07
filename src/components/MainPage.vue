@@ -256,15 +256,6 @@ export default {
     mediaUrl() {
       return this.$store.getters.getMediaUrl; 
     },
-    // posterUrl() {
-    //   console.log("posterUrl");
-    // const mainPoster = `${this.mediaUrl}/${this.carouselItems.thumbnailName}`;
-    // if(this.carouselItems.thumbnailName){
-    //   return mainPoster
-    // }else {
-    //   return this.fallbackPoster;
-    // }
-    // },
     carouselItems() {
       const images = this.mainTopics[0].imgDataList.map(image => ({
         type: 'image',
@@ -357,7 +348,6 @@ export default {
   },
   mounted() {
     this.goToTopic();
-    console.log("carousel",this.carouselItems);
   },
   methods: {
     hasScroll() {
@@ -369,7 +359,6 @@ export default {
       }
     },
     posterUrl(thumbnailName) {
-      console.log("posterUrl",thumbnailName);
     const mainPoster = `${this.mediaUrl}/${thumbnailName}`;
     if(thumbnailName){
       return mainPoster
@@ -382,7 +371,6 @@ export default {
       this.videoShow = true;
     },
     async goToSub(topic) {
-      // this.$store.commit('setFirstSub', topic);
       try {
         const res = await this.$store.dispatch('getSubDetails', { id: topic.fsCommonId, language: this.language });
         if (res) {
@@ -408,9 +396,7 @@ export default {
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
         const bgUrl = topic.backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
-        
         const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
-        console.log('background image', backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
@@ -433,7 +419,6 @@ export default {
         : null
     }));
       const combinedList = [...imgDataList, ...mp4DataList];
-      // const combinedList = [...imgDataList];
     this.reorderedImages = [
       ...combinedList.slice(index),
       ...combinedList.slice(0, index)
@@ -551,7 +536,6 @@ export default {
   object-fit: contain;
   width: 100%;
   height: 100%;
-  /* background-size: contain; */
   background-position: center;
 }
 .border-card {

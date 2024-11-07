@@ -374,9 +374,7 @@ export default ({
     }
   },
   async mounted() {
-    // console.log('image',this.carouselItems);
     this.goToTopic();
-    // this.$store.dispatch('getSubTitle',{id:this.topic.fsCommonId,language: this.language});
     try {
       await this.$store.dispatch('getSubTitle', { id: this.$store.getters.getMainData[0].commonId, language: this.language });
     }
@@ -423,15 +421,12 @@ export default ({
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
         const bgUrl = topic.backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
-       
         const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
-        console.log('background image sub1', backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
     },
     posterUrl(thumbnailName) {
-      console.log("posterUrl");
     const mainPoster = `${this.mediaUrl}/${thumbnailName}`;
     if(thumbnailName){
       return mainPoster
