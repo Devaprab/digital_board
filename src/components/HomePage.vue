@@ -1,7 +1,7 @@
 <template>
   <v-main class="main">
     <header class=" pt-3 d-flex justify-content-between mx-5">
-      <h3 class=" select-topic text-uppercase">Select Topics</h3>
+      <h3 class=" select-topic text-uppercase"></h3>
     </header>
     <div class="topic-list-display">
       <div class="d-flex align-items-center py-1" v-for="(topic, index) in topics" :key="index"
@@ -169,7 +169,7 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
   gap: 20px;
-  height: 80vh;
+  height: 85vh;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -234,7 +234,7 @@ export default {
   gap: 15px;
   position: absolute;
   bottom: 0;
-  top: 90%;
+  top: 85%;
   right: 1%;
   padding-top: 5px;
 }

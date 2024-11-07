@@ -53,7 +53,7 @@
             <v-carousel-item v-for="(item, index) in carouselItems" :key="item.furl" @click="openDialog(index)"
               class="sub-carousel image-box">
               <template v-if="item.type === 'image'">
-                <v-img :src="item.furl" :lazy-src="item.furl" alt="Image"
+                <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" alt="Image"
                   style="width: 100%; height: 100%; object-fit: cover;">
                   <template v-slot:placeholder>
                     <div class="d-flex align-center justify-center fill-height">
@@ -63,14 +63,13 @@
                 </v-img>
               </template>
               <template v-else-if="item.type === 'video'">
-                <div 
-                  class="p-0 bg-transparent d-flex align-items-center justify-content-center flex-column">
+                <div class="p-0 bg-transparent d-flex align-items-center justify-content-center flex-column">
                   <v-overlay v-model="videoOverlay" class="align-center justify-center" contained>
                     <v-btn variant="text" size="100">
                       <v-icon class="mdi mdi-play-circle-outline" size="100" color="#EFEBE9"></v-icon>
                     </v-btn>
                   </v-overlay>
-                  <video :src="item.furl" :lazy-src="item.furl" autoplay></video>
+                  <video class="video" :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" ></video>
                 </div>
               </template>
             </v-carousel-item>
@@ -89,7 +88,7 @@
                     <!-- Conditional rendering based on the item type -->
                     <template v-if="item.type === 'image'">
                       <h5 class="text-center">{{ item.name ?? ' ' }}</h5>
-                      <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
+                      <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" :alt="item.description ?? 'no image'" contain
                         height="60vh" width="100vw">
                         <template v-slot:placeholder>
                           <div class="d-flex align-center justify-center fill-height">
@@ -101,8 +100,10 @@
                         style="line-height: 15px;">{{item.description ?? ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="item.furl" :lazy-src="item.furl" controls autoplay
-                        style="width:100%; object-fit: contain;" @ended="dialog = false;">
+                      <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
+                        controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @play="this.$store.commit('setIsVideoPlaying', true);"
+                        @pause="this.$store.commit('setIsVideoPlaying', false);" @contextmenu.prevent
+                        style="width:100%; object-fit: contain;" @ended="dialog = false; this.$store.commit('setIsVideoPlaying', false);">
                         Your browser does not support the video tag.
                       </video>
                     </template>
@@ -124,8 +125,8 @@
                 <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                   style="height: 100vh;">
                   <template v-if="item.type === 'image'">
-                    <v-img :src="item.furl" :lazy-src="item.furl" :alt="item.description ?? 'no image'" contain
-                      height="50vh" width="100vw">
+                    <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`"
+                      :alt="item.description ?? 'no image'" contain height="50vh" width="100vw">
                       <template v-slot:placeholder>
                         <div class="d-flex align-center justify-center fill-height">
                           <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -134,8 +135,9 @@
                     </v-img>
                   </template>
                   <template v-else-if="item.type === 'video'">
-                    <video :src="item.furl" :lazy-src="item.furl" controls autoplay loop
-                      style=" height:100vh; width:100%; object-fit: cover;">
+                    <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
+                      controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @contextmenu.prevent
+                      loop style=" height:100vh; width:100%; object-fit: cover;">
                     </video>
                   </template>
                   <v-card-text class="text-center imgdesc pb-0 pt-1 px-2" style="line-height: 15px;">{{ item.description
@@ -158,7 +160,7 @@
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
                 </v-btn>
               </v-overlay>
-              <video :src="video.furl" :lazy-src="video.furl"
+              <video :poster="posterUrl(video.thumbnailName)" :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
                 style=" height:120px; width:250px; object-fit: contain;"></video>
             </v-card>
             <v-card-text class="text-center p-0 py-3 text-wrap">{{ video.name }}</v-card-text>
@@ -169,8 +171,9 @@
           <div v-for="video in topic.mp4DataList" :key="video.furl" class="mx-auto">
             <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
               :width="dynamicWidth">
-              <video :src="video.furl" :lazy-src="video.furl" style=" height:100%; width:100%; object-fit: contain;"
-                autoplay controls loop></video>
+              <video :poster="posterUrl(video.thumbnailName)" :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
+                style=" height:100%; width:100%; object-fit: contain;" autoplay 
+                controls disablepictureinpicture controlsList="nodownload noplaybackrate" @contextmenu.prevent loop></video>
             </v-card>
 
             <v-card-text class="text-center p-0 py-4">{{ video.name }}</v-card-text>
@@ -178,11 +181,13 @@
         </v-card>
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
-          <video :src="selectedVideo.furl" :lazy-src="selectedVideo.furl" controls autoplay
-            style="height: 100%; object-fit: contain;" class="dialog-video" @ended="videoShow = false;">
+          <video :poster="posterUrl(selectedVideo.thumbnailName)" :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" 
+            controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @contextmenu.prevent
+            style="height: 100%; object-fit: contain;" class="dialog-video" @play="this.$store.commit('setIsVideoPlaying', true);"
+            @pause="this.$store.commit('setIsVideoPlaying', false);" @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);">
           </video>
           <div class="d-flex justify-content-end">
-            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;"></v-icon>
+            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;this.$store.commit('setIsVideoPlaying', false);"></v-icon>
           </div>
         </v-dialog>
       </div>
@@ -208,7 +213,7 @@
 </template>
 
 <script>
-import defaultImg from '@/assets/ancient.jpg';
+import defaultImg from '@/assets/aksharamBG.jpeg';
 export default {
   data() {
     return {
@@ -222,7 +227,8 @@ export default {
       overlayvideo: true,
       videoShow: false,
       selectedVideo: null,
-      videoOverlay: true
+      videoOverlay: true,
+      fallbackPoster: require('@/assets/aksharamBG.jpeg'),
     }
   },
   watch: {
@@ -230,7 +236,12 @@ export default {
       if (newValue) {
         this.dialog = false;
       }
-    }
+    },
+     dialog(newValue) {
+       if (!newValue) {
+         this.$store.commit('setIsVideoPlaying',false)
+       }
+     }
   },
   computed: {
     resetTime() {
@@ -242,17 +253,34 @@ export default {
     language() {
       return this.$store.getters.getLanguage;
     },
+    mediaUrl() {
+      return this.$store.getters.getMediaUrl; 
+    },
+    // posterUrl() {
+    //   console.log("posterUrl");
+    // const mainPoster = `${this.mediaUrl}/${this.carouselItems.thumbnailName}`;
+    // if(this.carouselItems.thumbnailName){
+    //   return mainPoster
+    // }else {
+    //   return this.fallbackPoster;
+    // }
+    // },
     carouselItems() {
       const images = this.mainTopics[0].imgDataList.map(image => ({
         type: 'image',
         furl: image.furl,
+        fname: image.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
         description: image.description,
         name: image.name
       }));
       const videos = this.mainTopics[0].mp4DataList.map(video => ({
         type: 'video',
         furl: video.furl,
-        description: video.name 
+        fname: video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
+        description: video.name ,
+        thumbnailName: video.thumbnailName
+        ? video.thumbnailName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')
+        : null
       }));
       return [...images, ...videos];
       // return [...images];
@@ -329,7 +357,7 @@ export default {
   },
   mounted() {
     this.goToTopic();
-    // console.log(this.carouselItems)
+    console.log("carousel",this.carouselItems);
   },
   methods: {
     hasScroll() {
@@ -339,6 +367,15 @@ export default {
       } else {
         return false;
       }
+    },
+    posterUrl(thumbnailName) {
+      console.log("posterUrl",thumbnailName);
+    const mainPoster = `${this.mediaUrl}/${thumbnailName}`;
+    if(thumbnailName){
+      return mainPoster
+    }else {
+      return this.fallbackPoster;
+    }
     },
     selectVideo(video) {
       this.selectedVideo = video;
@@ -370,7 +407,10 @@ export default {
     },
     getBackgroundImage(topic) {
       if (topic.backgroundImgList && topic.backgroundImgList.length > 0) {
-        const backgroundImage = topic.backgroundImgList[0].bgUrl || '';
+        const bgUrl = topic.backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
+        
+        const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
+        console.log('background image', backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
@@ -379,13 +419,18 @@ export default {
     const imgDataList = this.mainTopics[0].imgDataList.map(image => ({
       type: 'image',
       furl: image.furl,
+      fname: image.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
       description: image.description || '',
       name: image.name
     }));
     const mp4DataList = this.mainTopics[0].mp4DataList.map(video => ({
       type: 'video',
       furl: video.furl,
-      description: video.name || '' 
+      fname: video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
+      description: video.name || '' ,
+      thumbnailName: video.thumbnailName
+        ? video.thumbnailName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')
+        : null
     }));
       const combinedList = [...imgDataList, ...mp4DataList];
       // const combinedList = [...imgDataList];
@@ -500,6 +545,14 @@ export default {
   50% {
     transform: translate(0, 5px);
   }
+}
+.video {
+  padding-top: 12%;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  /* background-size: contain; */
+  background-position: center;
 }
 .border-card {
   border: 2px solid cornsilk;

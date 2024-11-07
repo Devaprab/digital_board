@@ -36,6 +36,7 @@ export default {
       }
     });
     commit('setTopic', topicDataArray);
+    console.log('topics array', rootGetters.getSelectedTopics)
     return results.every(result => result !== null);
   },
   //main topic details
@@ -160,7 +161,7 @@ export default {
       commit('setClearTitle');
       try {
         const response = await axios.get(`${rootGetters.getUrl}/api/DataEntry1/getSubDataByCommonId?dtId=${payload.language}&commonId=${payload.id}`);
-        if (response.status >= 200 || response.status < 300) {
+        if (response.status >= 200 && response.status < 300) {
           const subData = response.data
           // console.log(filteredData);
             commit('setSubFirstTitle', subData);
@@ -171,25 +172,29 @@ export default {
       }
   },
   // send ipaddress
-  async sendIpAddress({rootGetters, dispatch}, payload) {
+  async sendIpAddress({rootGetters,commit, dispatch}, payload) {
     try {
-      const response = await axios.post('https://aksharammuseum.com/cms-api/get-topicsbyip', {
+      const response = await axios.post('http://192.168.10.100/cms-api/get-topicsbyip', {
         ip: payload
       })
-      if (response.status >= 200 || response.status < 300) {
+      if (response.status >= 200 && response.status < 300) {
         let res;
-        if (response.data.length > 1) {
-         res = dispatch('selectedTopics', {
+        if (response.data.topics.length > 1) {
+          console.log('going to route')
+          commit('setCommonIds', response.data.topics)
+         res = await dispatch('selectedTopics', {
           language: rootGetters.getLanguage,
           selectedTopics: response.data.topics,
         }) 
         } else {
-          res = dispatch('getMainDetails', {
+          commit('setCommonIds', response.data.topics)
+          res = await dispatch('getMainDetails', {
           language: rootGetters.getLanguage,
           item: response.data.topics[0],
         }) 
         }
         if (res) {
+          console.log(res)
           return res;
         }
       }
@@ -197,5 +202,5 @@ export default {
     catch (error) {
       console.error(error)
     }
-  }
+  },
 }

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import defaultImg from '@/assets/ancient.jpg';
+import defaultImg from '@/assets/aksharamBG.jpeg';
 export default {
   props: {
     Topics: {
@@ -49,12 +49,18 @@ export default {
   computed: {
     language() {
       return this.$store.getters.getLanguage;
-    }
+    },
+    mediaUrl() {
+      return this.$store.getters.getMediaUrl;
+    },
   },
   methods: {
     getBackgroundImage(topic) {
       if (topic[0].backgroundImgList && topic[0].backgroundImgList.length > 0) {
-        const backgroundImage = topic[0].backgroundImgList[0].bgUrl || '';
+        const bgUrl = topic[0].backgroundImgList[0].bgName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
+        console.log('bgurl',bgUrl)
+        const backgroundImage = `${this.mediaUrl}/${bgUrl}` || '';
+        console.log(backgroundImage)
         return `url(${backgroundImage})`;
       }
       return `url(${defaultImg})`;
