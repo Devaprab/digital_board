@@ -30,22 +30,22 @@ export default {
 
     handleInactivity() {
       if (!this.isVideoPlaying) {
-        if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedCommonIds.length > 1) {
-          this.$store.commit('setResetTime', false);
-          this.$router.push('/digitalBoard/selectedTopics');
-        }
-
-        if ((this.$route.path != '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedCommonIds.length == 1) {
-          this.$store.commit('setResetTime', false);
-          this.$router.push('/digitalBoard/detailsPage');
-        }
-
-        if ((this.$route.path == '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedCommonIds.length == 1) {
-          this.$store.commit('setResetTime', true);
-        }
-      } else {
-        console.log("Navigation skipped due to video playing.");
+        if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedTopics.length > 1 > 1) {
+        this.$store.commit('setResetTime', false);
+        this.$router.push('/digitalBoard/selectedTopics');
       }
+
+        if ((this.$route.path != '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
+        this.$store.commit('setResetTime', false);
+        this.$router.push('/digitalBoard/detailsPage');
+      }
+      
+        if ((this.$route.path == '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedTopics.length == 1) {
+        this.$store.commit('setResetTime', true);
+      }
+    } else {
+    console.log("Navigation skipped due to video playing.");
+  }
     },
     mounted() {
       this.resetInactivityTimeout();
