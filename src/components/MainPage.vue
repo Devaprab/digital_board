@@ -69,7 +69,7 @@
                       <v-icon class="mdi mdi-play-circle-outline" size="100" color="#EFEBE9"></v-icon>
                     </v-btn>
                   </v-overlay>
-                  <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" ></video>
+                  <video class="video" :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" ></video>
                 </div>
               </template>
             </v-carousel-item>
@@ -100,7 +100,7 @@
                         style="line-height: 15px;">{{item.description ?? ''}}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
+                      <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
                         controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @play="this.$store.commit('setIsVideoPlaying', true);"
                         @pause="this.$store.commit('setIsVideoPlaying', false);" @contextmenu.prevent
                         style="width:100%; object-fit: contain;" @ended="dialog = false; this.$store.commit('setIsVideoPlaying', false);">
@@ -135,7 +135,7 @@
                     </v-img>
                   </template>
                   <template v-else-if="item.type === 'video'">
-                    <video :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
+                    <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
                       controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @contextmenu.prevent
                       loop style=" height:100vh; width:100%; object-fit: cover;">
                     </video>
@@ -160,7 +160,7 @@
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
                 </v-btn>
               </v-overlay>
-              <video :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
+              <video :poster="posterUrl(video.thumbnailName)" :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
                 style=" height:120px; width:250px; object-fit: contain;"></video>
             </v-card>
             <v-card-text class="text-center p-0 py-3 text-wrap">{{ video.name }}</v-card-text>
@@ -171,7 +171,7 @@
           <div v-for="video in topic.mp4DataList" :key="video.furl" class="mx-auto">
             <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
               :width="dynamicWidth">
-              <video :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
+              <video :poster="posterUrl(video.thumbnailName)" :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`"
                 style=" height:100%; width:100%; object-fit: contain;" autoplay 
                 controls disablepictureinpicture controlsList="nodownload noplaybackrate" @contextmenu.prevent loop></video>
             </v-card>
@@ -181,7 +181,7 @@
         </v-card>
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
-          <video :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" 
+          <video :poster="posterUrl(selectedVideo.thumbnailName)" :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" 
             controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @contextmenu.prevent
             style="height: 100%; object-fit: contain;" class="dialog-video" @play="this.$store.commit('setIsVideoPlaying', true);"
             @pause="this.$store.commit('setIsVideoPlaying', false);" @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);">
@@ -227,7 +227,8 @@ export default {
       overlayvideo: true,
       videoShow: false,
       selectedVideo: null,
-      videoOverlay: true
+      videoOverlay: true,
+      fallbackPoster: require('@/assets/aksharamBG.jpeg'),
     }
   },
   watch: {
@@ -255,6 +256,15 @@ export default {
     mediaUrl() {
       return this.$store.getters.getMediaUrl; 
     },
+    // posterUrl() {
+    //   console.log("posterUrl");
+    // const mainPoster = `${this.mediaUrl}/${this.carouselItems.thumbnailName}`;
+    // if(this.carouselItems.thumbnailName){
+    //   return mainPoster
+    // }else {
+    //   return this.fallbackPoster;
+    // }
+    // },
     carouselItems() {
       const images = this.mainTopics[0].imgDataList.map(image => ({
         type: 'image',
@@ -267,7 +277,10 @@ export default {
         type: 'video',
         furl: video.furl,
         fname: video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
-        description: video.name 
+        description: video.name ,
+        thumbnailName: video.thumbnailName
+        ? video.thumbnailName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')
+        : null
       }));
       return [...images, ...videos];
       // return [...images];
@@ -344,7 +357,7 @@ export default {
   },
   mounted() {
     this.goToTopic();
-    // console.log(this.carouselItems)
+    console.log("carousel",this.carouselItems);
   },
   methods: {
     hasScroll() {
@@ -354,6 +367,15 @@ export default {
       } else {
         return false;
       }
+    },
+    posterUrl(thumbnailName) {
+      console.log("posterUrl",thumbnailName);
+    const mainPoster = `${this.mediaUrl}/${thumbnailName}`;
+    if(thumbnailName){
+      return mainPoster
+    }else {
+      return this.fallbackPoster;
+    }
     },
     selectVideo(video) {
       this.selectedVideo = video;
@@ -405,7 +427,10 @@ export default {
       type: 'video',
       furl: video.furl,
       fname: video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29'),
-      description: video.name || '' 
+      description: video.name || '' ,
+      thumbnailName: video.thumbnailName
+        ? video.thumbnailName.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')
+        : null
     }));
       const combinedList = [...imgDataList, ...mp4DataList];
       // const combinedList = [...imgDataList];
@@ -520,6 +545,14 @@ export default {
   50% {
     transform: translate(0, 5px);
   }
+}
+.video {
+  padding-top: 12%;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  /* background-size: contain; */
+  background-position: center;
 }
 .border-card {
   border: 2px solid cornsilk;
