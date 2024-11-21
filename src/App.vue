@@ -10,8 +10,6 @@ export default {
     return {
       inactivityTimeout: null,
       inactivityDuration: 90000,
-      // inactivityDuration: 10000,
-      // ipAddress: null
     };
   },
   methods: {
@@ -19,15 +17,12 @@ export default {
       if (this.isVideoPlaying) {
         return; 
       }
-
       if (this.inactivityTimeout) {
         this.$store.commit('setResetTime', false);
         clearTimeout(this.inactivityTimeout);
       }
       this.inactivityTimeout = setTimeout(this.handleInactivity, this.inactivityDuration);
     },
-    
-
     handleInactivity() {
       console.log('inactivity', this.$store.getters.getSelectedCommonIds.length)
       if (!this.isVideoPlaying) {
@@ -48,7 +43,6 @@ export default {
     console.log("Navigation skipped due to video playing.");
   }
     },
-
     async getIP(){
       try{
         let ip= location.href.split("?")[1].split("=")[1]
@@ -69,33 +63,12 @@ export default {
         console.error('Error fetching IP address:', error);
       }
     },
-    // async getPublicIP() {
-    //   try {
-    //     const response = await axios.get('https://api.ipify.org?format=json');
-    //     if (response.status >= 200 || response.status < 300) {
-    //       this.$store.commit('setIp',response.data.ip);
-    //       const res = await this.$store.dispatch('sendIpAddress', this.ipAddress);
-    //       if (res) {
-    //         if (this.$store.getters.getSelectedTopics.length > 1) {
-    //           this.$router.push('/digitalBoard/selectedTopics')
-    //         } else {
-    //           this.$router.push({ name: 'detailsPage' })
-    //         }
-    //       }
-    //     }
-    //   }
-    //   catch (error) {
-    //     console.error('Error fetching IP address:', error);
-    //   }
-    // },
   },
   created() {
     this.getIP();
   },
-  
   mounted() {
-    this.resetInactivityTimeout();
-    
+    this.resetInactivityTimeout(); 
     // Add event listeners for user activity
     document.addEventListener('touchstart', this.resetInactivityTimeout);
     document.addEventListener('play', this.resetInactivityTimeout);
@@ -104,12 +77,9 @@ export default {
     document.addEventListener('mousedown', this.resetInactivityTimeout);
     document.addEventListener('keydown', this.resetInactivityTimeout);
     document.addEventListener('scroll', this.resetInactivityTimeout);
-
-    console.log(window.location.href);
   },
   
   beforeUnmount() {
-
     document.removeEventListener('play', this.resetInactivityTimeout);
     document.removeEventListener('playing', this.resetInactivityTimeout);
     document.removeEventListener('touchstart', this.resetInactivityTimeout);
@@ -117,7 +87,6 @@ export default {
     document.removeEventListener('mousedown', this.resetInactivityTimeout);
     document.removeEventListener('keydown', this.resetInactivityTimeout);
     document.removeEventListener('scroll', this.resetInactivityTimeout);
-
     if (this.inactivityTimeout) {
       clearTimeout(this.inactivityTimeout);
     }
@@ -145,22 +114,19 @@ export default {
 </script>
 
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@100..900&family=Noto+Serif+Malayalam:wght@100..900&display=swap'); */
-/* Default font for English or other languages */
 @font-face {
   font-family: 'Noto Serif Malayalam, serif';
   src: url('@/assets/fonts/Noto_Serif_Malayalam/NotoSerifMalayalam-VariableFont_wght.ttf') format('truetype');
-   
 }
 .default-font * {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-/* Font for Malayalam */
+.mal-text {
+  font-family: 'Noto Serif Malayalam, serif' !important;
+}
 .malayalam-font * {
   font-family: 'Noto Serif Malayalam, serif';
 }
-
 * {
   margin: 0;
   padding: 0;
