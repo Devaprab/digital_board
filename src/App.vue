@@ -96,9 +96,17 @@ export default {
 /* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@100..900&family=Noto+Serif+Malayalam:wght@100..900&display=swap'); */
 /* Default font for English or other languages */
 @font-face {
+  /* font-family: 'Noto Serif Malayalam, serif';
+  src: url('@/assets/fonts/Noto_Serif_Malayalam/NotoSerifMalayalam-VariableFont_wght.ttf') format('truetype'); */
+   font-family: 'ShapesNoto-Regular,serif';
+   src: url('@/assets/fonts/ShapesNoto-Regular.ttf') format('truetype');
+}
+@font-face {
   font-family: 'Noto Serif Malayalam, serif';
   src: url('@/assets/fonts/Noto_Serif_Malayalam/NotoSerifMalayalam-VariableFont_wght.ttf') format('truetype');
-   
+}
+.mal-text {
+  font-family: 'Noto Serif Malayalam, serif' !important;
 }
 .default-font * {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -106,6 +114,7 @@ export default {
 
 /* Font for Malayalam */
 .malayalam-font * {
+  /* font-family: 'ShapesNoto-Regular,serif'; */
   font-family: 'Noto Serif Malayalam, serif';
 }
 
