@@ -111,12 +111,17 @@ export default {
         }
     },
     methods: {
+        onAudioEnd() {
+            this.$store.commit('setIsVideoPlaying', false); 
+        },
         toggleAnimation() {
             this.isAnimating = !this.isAnimating;
             if (this.isAnimating) {
                 this.audio.play();
+                this.$store.commit('setIsVideoPlaying', true);
             } else {
                 this.audio.pause();
+                this.$store.commit('setIsVideoPlaying', false);
             }
         },
         updateAudioSource(src) {
@@ -134,6 +139,7 @@ export default {
         stopAudio() {
             if (this.audio) {
                 this.audio.pause();
+                this.$store.commit('setIsVideoPlaying', false);
                 this.audio.currentTime = 0; 
                 this.isAnimating = false;
             }
