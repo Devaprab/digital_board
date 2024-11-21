@@ -30,7 +30,8 @@
               </ul>
             </div>
             <div class="audio-element px-2" v-if="topic.mp3DataList.length > 0">
-              <AudioPlayer/>
+              <AudioPlayer
+                :audioSrc="`${mediaUrl}/${topic.mp3DataList[0].fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" />
             </div>
           </div>
           <!-- Scroll down -->

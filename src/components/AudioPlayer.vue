@@ -102,11 +102,14 @@ export default {
     mounted() {
         this.audio = new Audio(this.audioSrc);
         this.audio.addEventListener('ended', this.onAudioEnd);
+        this.audio.addEventListener('pause', this.onAudioEnd);
     },
     beforeUnmount() {
+        this.$store.commit('setIsVideoPlaying', false);
         if (this.audio) {
             this.audio.pause();
             this.audio.removeEventListener('ended', this.onAudioEnd);
+            this.audio.removeEventListener('pause', this.onAudioEnd);
             this.audio = null;
         }
     },
@@ -137,9 +140,9 @@ export default {
             }
         },
         stopAudio() {
+            this.$store.commit('setIsVideoPlaying', false);
             if (this.audio) {
                 this.audio.pause();
-                this.$store.commit('setIsVideoPlaying', false);
                 this.audio.currentTime = 0; 
                 this.isAnimating = false;
             }

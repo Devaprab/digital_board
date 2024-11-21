@@ -18,7 +18,8 @@
           <div ref="fulldesc" class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
             <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
             <div class="audio-element px-2" v-if="topic.mp3Data2List.length > 0">
-              <AudioPlayer />
+              <AudioPlayer
+                :audioSrc="`${mediaUrl}/${topic.mp3Data2List[0].fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29')}`" />
             </div>
           </div>
           <div class="d-flex justify-content-center arrow-down py-3">
