@@ -27,6 +27,9 @@
                 </li>
               </ul>
             </div>
+            <div class="audio-element px-2 py-1"  v-if="topic.mp3DataList.length > 0">
+              <AudioPlayer :audioSrc="topic.mp3DataList[0].furl"/>
+            </div>
           </div>
           <!-- Scroll down -->
           <div class="d-flex justify-content-center arrow-down py-3">
@@ -58,7 +61,8 @@
                       <v-icon class="mdi mdi-play-circle-outline" size="100" color="#EFEBE9"></v-icon>
                     </v-btn>
                   </v-overlay>
-                  <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" ></video>
+                  <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`"
+                    :lazy-src="`${mediaUrl}/${item.fname}`"></video>
                 </div>
               </template>
             </v-carousel-item>
@@ -77,8 +81,8 @@
                     <!-- Conditional rendering based on the item type -->
                     <template v-if="item.type === 'image'">
                       <h5 class="text-center">{{ item.name ?? ' ' }}</h5>
-                      <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" :alt="item.description ?? 'no image'" contain
-                        height="60vh" width="100vw">
+                      <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`"
+                        :alt="item.description ?? 'no image'" contain height="60vh" width="100vw">
                         <template v-slot:placeholder>
                           <div class="d-flex align-center justify-center fill-height">
                             <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -90,10 +94,13 @@
                         item.description ?? '' }}</v-card-text>
                     </template>
                     <template v-else-if="item.type === 'video'">
-                      <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
-                        controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @play="this.$store.commit('setIsVideoPlaying', true);"
+                      <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`"
+                        :lazy-src="`${mediaUrl}/${item.fname}`" controls disablepictureinpicture
+                        controlsList="nodownload noplaybackrate" autoplay
+                        @play="this.$store.commit('setIsVideoPlaying', true);"
                         @pause="this.$store.commit('setIsVideoPlaying', false);" @contextmenu.prevent
-                        style="width:100%; object-fit: contain;" @ended="dialog = false;this.$store.commit('setIsVideoPlaying', false);">
+                        style="width:100%; object-fit: contain;"
+                        @ended="dialog = false;this.$store.commit('setIsVideoPlaying', false);">
                         Your browser does not support the video tag.
                       </video>
                     </template>
@@ -115,8 +122,8 @@
                 <v-container class="d-flex justify-content-center align-items-center flex-column flex-grow-0"
                   style="height: 100vh;">
                   <template v-if="item.type === 'image'">
-                    <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" :alt="item.description ?? 'no image'" contain
-                      height="50vh" width="100vw">
+                    <v-img :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`"
+                      :alt="item.description ?? 'no image'" contain height="50vh" width="100vw">
                       <template v-slot:placeholder>
                         <div class="d-flex align-center justify-center fill-height">
                           <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -125,8 +132,9 @@
                     </v-img>
                   </template>
                   <template v-else-if="item.type === 'video'">
-                    <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`" :lazy-src="`${mediaUrl}/${item.fname}`" 
-                      controls disablepictureinpicture controlsList="nodownload noplaybackrate" @contextmenu.prevent autoplay loop
+                    <video :poster="posterUrl(item.thumbnailName)" :src="`${mediaUrl}/${item.fname}`"
+                      :lazy-src="`${mediaUrl}/${item.fname}`" controls disablepictureinpicture
+                      controlsList="nodownload noplaybackrate" @contextmenu.prevent autoplay loop
                       style=" height:100vh; width:100%; object-fit: cover;">
                     </video>
                   </template>
@@ -150,7 +158,9 @@
                   <v-icon class="mdi mdi-play-circle-outline" size="50" color="#EFEBE9"></v-icon>
                 </v-btn>
               </v-overlay>
-              <video :poster="posterUrl(video.thumbnailName)" :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`"
+              <video :poster="posterUrl(video.thumbnailName)"
+                :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`"
+                :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`"
                 style=" height:120px; width:250px; object-fit: contain;"></video>
             </v-card>
             <v-card-text class="text-center p-0 py-3 text-wrap">{{ video.name }}</v-card-text>
@@ -161,21 +171,29 @@
           <div v-for="video in topic.mp4DataList" :key="video.furl" class="mx-auto">
             <v-card class="bg-transparent" flat v-if="carouselItems && carouselItems.length > 0" :height="dynamicHeight"
               :width="dynamicWidth">
-              <video :poster="posterUrl(video.thumbnailName)" :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" style=" height:100%; width:100%; object-fit: contain;"
-                autoplay controls disablepictureinpicture controlsList="nodownload noplaybackrate" @contextmenu.prevent loop></video>
+              <video :poster="posterUrl(video.thumbnailName)"
+                :src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`"
+                :lazy-src="`${mediaUrl}/${video.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`"
+                style=" height:100%; width:100%; object-fit: contain;" autoplay controls disablepictureinpicture
+                controlsList="nodownload noplaybackrate" @contextmenu.prevent loop></video>
             </v-card>
             <v-card-text class="text-center p-0 py-4">{{ video.name }}</v-card-text>
           </div>
         </v-card>
         <!-- dialog to show video content -->
         <v-dialog v-model="videoShow" max-width="100%" class="bg-grey-darken-4" height="100%">
-          <video :poster="posterUrl(selectVideo.thumbnailName)" :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`" 
+          <video :poster="posterUrl(selectVideo.thumbnailName)"
+            :src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`"
+            :lazy-src="`${mediaUrl}/${selectedVideo.fname.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29') }`"
             controls disablepictureinpicture controlsList="nodownload noplaybackrate" autoplay @contextmenu.prevent
-            style="height: 100%; object-fit: contain;" class="dialog-video" @play="this.$store.commit('setIsVideoPlaying', true);"
-            @pause="this.$store.commit('setIsVideoPlaying', false);" @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);">
+            style="height: 100%; object-fit: contain;" class="dialog-video"
+            @play="this.$store.commit('setIsVideoPlaying', true);"
+            @pause="this.$store.commit('setIsVideoPlaying', false);"
+            @ended="videoShow = false;this.$store.commit('setIsVideoPlaying', false);">
           </video>
           <div class="d-flex justify-content-end">
-            <v-icon class="mdi mdi-close close-video" color="white" @click="videoShow = false;this.$store.commit('setIsVideoPlaying', false);"></v-icon>
+            <v-icon class="mdi mdi-close close-video" color="white"
+              @click="videoShow = false;this.$store.commit('setIsVideoPlaying', false);"></v-icon>
           </div>
         </v-dialog>
       </div>
@@ -236,7 +254,9 @@
 
 <script>
 import defaultImg from '@/assets/aksharamBG.jpeg';
+import AudioPlayer from './AudioPlayer.vue';
 export default ({
+  components: { AudioPlayer },
   data() {
     return {
       dialog: false,
@@ -562,6 +582,16 @@ export default ({
 </script>
 
 <style scoped>
+ .audio-element {
+   width: fit-content;
+   border-radius: 50px;
+   position: absolute;
+   z-index: 100;
+   right: 50%;
+   left: 50%;
+   transform: translateX(-50%);
+   border: 1px solid rgba(255, 248, 220, 0.403);
+ }
 @keyframes scaleUpDown {
   0%,100% {
     transform: scale(1);
@@ -737,6 +767,10 @@ export default ({
   background-color: none;
 }
 @media only screen and (orientation: portrait) {
+  .audio-element {  
+      top: 18.5%;
+      transition: translateY(-19%);
+    }
     :deep(.v-speed-dial__content) {
         gap: 2px;
       }
@@ -831,6 +865,9 @@ export default ({
   }
 }
 @media only screen and (orientation: landscape) {
+  .audio-element{
+    bottom: 5%;
+  }
   .card {
     width: 80%;
     position: relative;
