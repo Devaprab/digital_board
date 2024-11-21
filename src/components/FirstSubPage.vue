@@ -216,7 +216,6 @@
                   </v-btn>
                 </div>
               </div>
-              <v-icon class="mdi mdi-plus" color="white"></v-icon>
             </v-overlay>
           </div>
           <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate"
