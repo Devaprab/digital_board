@@ -79,7 +79,12 @@ export default {
         const playing = this.$store.getters.getIsVideoPlaying;
         return playing;
       }
+  },
+  watch: {
+    isVideoPlaying() {
+      this.resetInactivityTimeout();
     }
+  }
 };
 </script>
 
