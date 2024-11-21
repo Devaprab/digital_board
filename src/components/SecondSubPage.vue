@@ -487,9 +487,16 @@ console.log('image',imgDataList);
     },
     formattedDescription(description) {
       if (description) {
-        return description.replace(/\n/g, '<br>');
+        const malayalamRegex = /([\u0D00-\u0D7F]+)/g;
+        return description
+          .replace(/\n/g, '<br>')
+          .replace(
+            malayalamRegex,
+            '<span class="mal-text">$1</span>'
+          );
+      } else {
+        return '';
       }
-      else return '';
     },
     async goToTopic() {
       try {
@@ -552,6 +559,7 @@ console.log('image',imgDataList);
 })
 </script>
 <style scoped>
+
 @keyframes scaleUpDown {
   0%,100% {
     transform: scale(1);
