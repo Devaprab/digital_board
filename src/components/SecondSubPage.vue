@@ -206,16 +206,6 @@
                   </v-btn>
                 </div>
               </div>
-              <!-- <div class="d-flex justify-content-center">
-              <v-icon class="mdi mdi-plus" color="white" v-if="scroll"></v-icon>  
-              </div> -->
-              <div class="container" v-if="scroll">
-                <div class="chevron"></div>
-                <div class="chevron"></div>
-                <div class="chevron"></div>
-                <span class="text">Scroll down</span>
-              </div>
-
             </v-overlay>
           </div>
           <v-card class="translate-btn text-capitalize p-2 rounded-5" elevation="10" @click="translate"
