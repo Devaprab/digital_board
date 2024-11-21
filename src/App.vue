@@ -10,8 +10,6 @@ export default {
     return {
       inactivityTimeout: null,
       inactivityDuration: 90000,
-      // inactivityDuration: 10000,
-      // ipAddress: null
     };
   },
   methods: {
@@ -19,27 +17,22 @@ export default {
       if (this.isVideoPlaying) {
         return;
       }
-
       if (this.inactivityTimeout) {
         this.$store.commit('setResetTime', false);
         clearTimeout(this.inactivityTimeout);
       }
       this.inactivityTimeout = setTimeout(this.handleInactivity, this.inactivityDuration);
     },
-
-
     handleInactivity() {
       if (!this.isVideoPlaying) {
         if (this.$route.path != '/digitalBoard/' && this.$store.getters.getSelectedCommonIds.length > 1) {
           this.$store.commit('setResetTime', false);
           this.$router.push('/digitalBoard/selectedTopics');
         }
-
         if ((this.$route.path != '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedCommonIds.length == 1) {
           this.$store.commit('setResetTime', false);
           this.$router.push('/digitalBoard/detailsPage');
         }
-
         if ((this.$route.path == '/digitalBoard/detailsPage' && this.$route.path != '/digitalBoard/') && this.$store.getters.getSelectedCommonIds.length == 1) {
           this.$store.commit('setResetTime', true);
         }
@@ -76,11 +69,9 @@ export default {
       language() {
         return this.$store.getters.getLanguage;
       },
-
       fontClass() {
         return this.language == 1 ? 'malayalam-font' : 'default-font';
       },
-
       ipAddress() {
         return this.$store.getters.getIpAddress;
       },
@@ -93,11 +84,7 @@ export default {
 </script>
 
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@100..900&family=Noto+Serif+Malayalam:wght@100..900&display=swap'); */
-/* Default font for English or other languages */
 @font-face {
-  /* font-family: 'Noto Serif Malayalam, serif';
-  src: url('@/assets/fonts/Noto_Serif_Malayalam/NotoSerifMalayalam-VariableFont_wght.ttf') format('truetype'); */
    font-family: 'ShapesNoto-Regular,serif';
    src: url('@/assets/fonts/ShapesNoto-Regular.ttf') format('truetype');
 }
@@ -111,13 +98,10 @@ export default {
 .default-font * {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-/* Font for Malayalam */
 .malayalam-font * {
   /* font-family: 'ShapesNoto-Regular,serif'; */
   font-family: 'Noto Serif Malayalam, serif';
 }
-
 * {
   margin: 0;
   padding: 0;
