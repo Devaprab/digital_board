@@ -109,6 +109,11 @@ export default {
     console.log("Current isVideoPlaying state:", playing); // Debug log
     return playing;
   }
+  },
+  watch: {
+    isVideoPlaying() {
+      this.resetInactivityTimeout();
+    }
   }
 };
 </script>
