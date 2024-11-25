@@ -3,7 +3,12 @@
     <div class="topic-list">
       <!-- Topic title -->
       <div class="title">
-        <h1 class="text-center text-wrap title-h1 mt-2">{{ topic.title }}</h1>
+        <h1 
+      class="text-center text-wrap title-h1 mt-2" 
+      :style="{ fontSize: dynamicFontSize }"
+    >
+      {{ topic.title }}
+    </h1>
       </div>
       <!-- Card with topic description & image -->
       <div class=" card mb-3" :style="cardPortrait"
@@ -287,6 +292,15 @@ export default ({
     },
     mediaUrl() {
       return this.$store.getters.getMediaUrl;
+    },
+    dynamicFontSize() {
+      const length = this.topic.title.length;
+
+      
+      if (length <= 50) return '2rem'; 
+      if (length <= 100) return '1.75rem'; 
+      if (length <= 150) return '1.5rem'; 
+      return '1.25rem'; 
     },
     carouselItems() {
       const images = this.topic.imgData2List.map(image => ({

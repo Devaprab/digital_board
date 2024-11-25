@@ -3,7 +3,12 @@
     <div class="topic-list">
       <!-- Topic title -->
       <div class="title">
-        <h1 class="text-center text-wrap title-h1 mt-2">{{ topic.title }}</h1>
+        <h1 
+      class="text-center text-wrap title-h1 mt-2" 
+      :style="{ fontSize: dynamicFontSize }"
+    >
+      {{ topic.title }}
+    </h1>
       </div>
       <!-- Card with topic description & image -->
       <div class=" card mb-3" :style="cardPortrait"
@@ -19,11 +24,14 @@
           <div class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
             <p class=" text-wrap text-start description" v-html="formattedDescription(topic.description)"></p>
             <!-- Subheadings -->
-            <div v-if="topic.combinedDataSubSubList && topic.combinedDataSubSubList.length >= 1" class="list">
-              <ul v-for="sub in topic.combinedDataSubSubList" :key="sub.commonId" style="z-index: 2;"
+            <div v-if="sortedCombinedDataSubList && sortedCombinedDataSubList.length >= 1" class="list">
+              <ul v-for="sub in sortedCombinedDataSubList" :key="sub.commonId" style="z-index: 2;"
                 class="list-unstyled my-0 mt-2">
-                <li @click="goToSub(sub)" class="subtopics mb-2" style="font-size: 100%;"><v-icon
-                    class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>{{ sub.title }}
+                <li @click="goToSub(sub)" class="subtopics mb-2" style="font-size: 100%;">
+                  <div class="d-flex">
+                  <v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>
+                  <div>{{ sub.title?.trim() || ' ' }}</div>
+                </div>
                 </li>
               </ul>
             </div>
@@ -295,6 +303,27 @@ export default ({
     },
     mediaUrl() {
       return this.$store.getters.getMediaUrl;
+    },
+    dynamicFontSize() {
+      const length = this.topic.title.length;
+
+      
+      if (length <= 50) return '2rem'; 
+      if (length <= 100) return '1.75rem'; 
+      if (length <= 150) return '1.5rem'; 
+      return '1.25rem'; 
+    },
+    sortedCombinedDataSubList() {
+      if (!this.topic.combinedDataSubSubList) return [];
+
+      // Determine locale based on current language
+      // const locale = this.currentLanguage === 'ml' ? 'ml' : 'en';
+
+      return [...this.topic.combinedDataSubSubList].sort((a, b) => {
+        const titleA = a.title?.trim() || ''; // Handle null/undefined titles
+        const titleB = b.title?.trim() || '';
+        return titleA.localeCompare(titleB);
+      });
     },
     carouselItems() {
       const images = this.topic.imgDataList.map(image => ({
