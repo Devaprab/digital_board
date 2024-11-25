@@ -116,6 +116,7 @@ export default {
     methods: {
         onAudioEnd() {
             this.$store.commit('setIsVideoPlaying', false); 
+            this.isAnimating = false;
         },
         toggleAnimation() {
             this.isAnimating = !this.isAnimating;
