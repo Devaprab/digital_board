@@ -3,8 +3,12 @@
     <div class="topic-list" v-for="topic in mainTopics" :key="topic.uId">
       <!-- Topic title -->
       <div class="title">
-        <h1 class="text-center text-wrap title-h1 mt-2">
-          {{ topic.title }}</h1>
+        <h1 
+      class="text-center text-wrap title-h1 mt-2" 
+      :style="{ fontSize: dynamicFontSize }"
+    >
+      {{ topic.title }}
+    </h1>
       </div>
       <!-- Card with topic description & image -->
       <div class=" card mb-3" :style="cardPortrait"
@@ -20,12 +24,14 @@
           <div class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
             <p class=" text-wrap text-start description my-0" v-html="formattedDescription(topic.description)"></p>
             <!-- Subheadings -->
-            <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >= 1" class="list">
-              <ul v-for="sub in topic.combinedDataSubList" :key="sub.commonId" style="z-index: 2;"
+            <div v-if="sortedCombinedDataSubList && sortedCombinedDataSubList.length >= 1" class="list">
+              <ul v-for="sub in sortedCombinedDataSubList" :key="sub.commonId" style="z-index: 2;"
                 class="list-unstyled my-0 mt-2">
                 <li @click="goToSub(sub)" class="subtopics mb-2" style="font-size: 100%;">
+                  <div class="d-flex">
                   <v-icon class="mdi mdi-chevron-double-right arrow me-2 my-0" size="22"></v-icon>
-                  {{ sub.title }}
+                  <div>{{ sub.title?.trim() || ' ' }}</div>
+                </div>
                 </li>
               </ul>
             </div>
@@ -270,6 +276,27 @@ components: {AudioPlayer},
     mediaUrl() {
       return this.$store.getters.getMediaUrl; 
     },
+    dynamicFontSize() {
+      const length = this.mainTopics[0].title.length;
+
+      
+      if (length <= 50) return '2rem'; 
+      if (length <= 100) return '1.75rem'; 
+      if (length <= 150) return '1.5rem'; 
+      return '1.25rem'; 
+    },
+    sortedCombinedDataSubList() {
+      if (!this.mainTopics[0].combinedDataSubList) return [];
+
+      // Determine locale based on current language
+      // const locale = this.currentLanguage === 'ml' ? 'ml' : 'en';
+
+      return [...this.mainTopics[0].combinedDataSubList].sort((a, b) => {
+        const titleA = a.title?.trim() || ''; // Handle null/undefined titles
+        const titleB = b.title?.trim() || '';
+        return titleA.localeCompare(titleB);
+      });
+    },
     // posterUrl() {
     //   console.log("posterUrl");
     // const mainPoster = `${this.mediaUrl}/${this.carouselItems.thumbnailName}`;
@@ -372,6 +399,7 @@ components: {AudioPlayer},
   mounted() {
     this.goToTopic();
     console.log("carousel",this.carouselItems);
+    console.log("malayalam order",this.sortedCombinedDataSubList)
   },
   methods: {
     hasScroll() {
