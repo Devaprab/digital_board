@@ -395,7 +395,7 @@ export default ({
       if (window.matchMedia("(orientation: portrait)").matches) {
         return {
           position: 'absolute',
-          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-590%'
+          top: this.carouselItems && this.carouselItems.length > 0 ? '1' : '-450%'
         };
       }
       return {}
@@ -883,7 +883,7 @@ export default ({
   }
   .arrow-down {
     position: absolute;
-    bottom: 5%;
+    bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
   }
