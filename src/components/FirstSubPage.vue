@@ -462,6 +462,7 @@ export default ({
       try {
         const res = await this.$store.dispatch('getSubDetails', { id: topic, language: this.language });
         if (res) {
+          this.scrollToTop();
           this.overlay = false;
         }
       }
