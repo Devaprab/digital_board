@@ -3,7 +3,7 @@
 
 
         <v-icon color='#f1edd6' :class="isAnimating ? 'mdi mdi-pause-circle-outline' : 'mdi mdi-play-circle-outline'"
-            size="35" @click="toggleAnimation"></v-icon>
+            size="35" @click="toggleAnimation" @ended="!isAnimating"></v-icon>
         <v-icon color='#f1edd6' :disabled="!isAnimating" class="mdi mdi-stop-circle-outline" size="35"
             @click="stopAudio"></v-icon>
         <div class="loader">
