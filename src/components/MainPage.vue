@@ -24,8 +24,8 @@
           <div class=" full-desc" @scroll="handleScroll" :style="portraitHeight">
             <p class=" text-wrap text-start description my-0" v-html="formattedDescription(topic.description)"></p>
             <!-- Subheadings -->
-            <div v-if="sortedCombinedDataSubList && sortedCombinedDataSubList.length >= 1" class="list">
-              <ul v-for="sub in sortedCombinedDataSubList" :key="sub.commonId" style="z-index: 2;"
+            <div v-if="topic.combinedDataSubList && topic.combinedDataSubList.length >= 1" class="list">
+              <ul v-for="sub in topic.combinedDataSubList" :key="sub.commonId" style="z-index: 2;"
                 class="list-unstyled my-0 mt-2">
                 <li @click="goToSub(sub)" class="subtopics mb-2" style="font-size: 100%;">
                   <div class="d-flex">
@@ -398,8 +398,8 @@ components: {AudioPlayer},
   },
   mounted() {
     this.goToTopic();
-    console.log("carousel",this.carouselItems);
-    console.log("malayalam order",this.sortedCombinedDataSubList)
+    // console.log("carousel",this.carouselItems);
+    // console.log("malayalam order",this.sortedCombinedDataSubList)
   },
   methods: {
     hasScroll() {
